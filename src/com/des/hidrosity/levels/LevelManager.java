@@ -44,4 +44,12 @@ public class LevelManager {
 		spriteBatch.draw(currentLevelTexture, -Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2,
 				currentLevelTexture.getWidth() * 2, currentLevelTexture.getHeight() * 2);
 	}
+	
+	public int getLevelWidth() {
+		return currentLevelTexture.getWidth();
+	}
+	
+	public int getLevelHeight() {
+		return currentLevelTexture.getHeight();
+	}
 }

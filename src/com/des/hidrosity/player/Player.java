@@ -61,6 +61,10 @@ public class Player extends GameObject {
 	
 	private boolean canJump = true;
 
+	public void stop() {
+		physicsBody.setLinearVelocity(0, 0);
+	}
+	
 	public Player(Vector2 position, String textureName, World gameWorld) {
 		super(position, textureName);
 		this.gameWorld = gameWorld;

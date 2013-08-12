@@ -101,8 +101,18 @@ public class PlayScreen implements Screen {
 	}
 	
 	private void updateCameraPosition() {
-		camera.position.x = player.getX();
-		camera.update();
+		if (playerWithinCameraBounds()) {
+			camera.position.x = player.getX();
+			camera.update();
+		}
+	}
+	
+	private boolean playerWithinCameraBounds() {
+		if (player.getX() > 0f && player.getX() < levelManager.getLevelWidth() - player.getWidth()) {
+			return true;
+		}
+		
+		return false;
 	}
 
 	private void updatePhysicsWorld() {
