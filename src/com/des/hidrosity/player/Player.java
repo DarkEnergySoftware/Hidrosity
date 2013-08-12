@@ -88,6 +88,7 @@ public class Player extends GameObject {
 
 		physicsBody = gameWorld.createBody(bodyDef);
 		physicsBody.setFixedRotation(true);
+		physicsBody.setLinearDamping(1f);
 
 		Fixture mainFixture = physicsBody.createFixture(fixtureDef);
 		
