@@ -21,8 +21,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.des.hidrosity.constants.CollisionConstants;
-import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.debug.Logger;
 
 public class LevelCreator {
@@ -44,7 +42,7 @@ public class LevelCreator {
 
 		for (LevelBody levelBody : levelBodies) {
 			Logger.log(levelBody.toString());
-			
+
 			createBodyFromLevelBody(levelBody);
 		}
 	}

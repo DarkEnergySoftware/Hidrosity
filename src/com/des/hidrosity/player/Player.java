@@ -90,11 +90,10 @@ public class Player extends GameObject {
 		physicsBody.setFixedRotation(true);
 
 		Fixture mainFixture = physicsBody.createFixture(fixtureDef);
-		mainFixture.setUserData(this);
 		
 		PolygonShape feetShape = new PolygonShape();
 		feetShape.setAsBox(
-				(getWidth() / 2) * GameConstants.UNIT_SCALE,
+				(getWidth() - 5) * GameConstants.UNIT_SCALE,
 				(getHeight() / 4) * GameConstants.UNIT_SCALE,
 				new Vector2(0, -getHeight() * GameConstants.UNIT_SCALE),
 				0f);
@@ -199,7 +198,7 @@ public class Player extends GameObject {
 		updateAnimationStateTime();
 		checkIfStateShouldBeIdle();
 		updateNonPhysicsPosition();
-//		printDebug();
+		printDebug();
 	}
 
 	private void printDebug() {
@@ -240,23 +239,45 @@ public class Player extends GameObject {
 	private void setCurrentFrame() {
 		currentFrame = currentAnimation.getKeyFrame(animationStateTime, true);
 	}
-
+	
 	public void moveLeft() {
 		currentAnimation = animationRunningLeft;
 		currentDirection = PlayerDirection.Left;
 		currentState = PlayerState.Running;
-		physicsBody.applyLinearImpulse(new Vector2(-PlayerConstants.SPEED, 0f), physicsBody.getWorldCenter(), true);
+		
+		if (movingTooFastLeft() == false) {
+			physicsBody.applyLinearImpulse(new Vector2(-PlayerConstants.SPEED, 0f), physicsBody.getWorldCenter(), true);
+		}
 		Logger.log("moveLeft()");
+	}
+	
+	private boolean movingTooFastLeft() {
+		if (physicsBody.getLinearVelocity().x < -PlayerConstants.MAX_VELOCITY) {
+			return true;
+		}
+		
+		return false;
 	}
 
 	public void moveRight() {
 		currentAnimation = animationRunningRight;
 		currentDirection = PlayerDirection.Right;
 		currentState = PlayerState.Running;
-		physicsBody.applyLinearImpulse(new Vector2(PlayerConstants.SPEED, 0f), physicsBody.getWorldCenter(), true);
+		
+		if (movingTooFastRight() == false) {
+			physicsBody.applyLinearImpulse(new Vector2(PlayerConstants.SPEED, 0f), physicsBody.getWorldCenter(), true);
+		}
 		Logger.log("moveRight()");
 	}
-
+	
+	private boolean movingTooFastRight() {
+		if (physicsBody.getLinearVelocity().x > PlayerConstants.MAX_VELOCITY) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public void jump() {
 		if (!canJump) {
 			return;

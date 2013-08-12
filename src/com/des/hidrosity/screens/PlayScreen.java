@@ -66,12 +66,20 @@ public class PlayScreen implements Screen {
 	
 	private void handleCameraInput() {
 		if (Gdx.input.isKeyPressed(Keys.PLUS)) {
-			camera.zoom -= 0.01f;
-			camera.update();
+			zoomInCamera();
 		} else if (Gdx.input.isKeyPressed(Keys.MINUS)) {
-			camera.zoom += 0.01f;
-			camera.update();
+			zoomOutCamera();
 		}
+	}
+	
+	private void zoomOutCamera() {
+		camera.zoom += 0.005f;
+		camera.update();
+	}
+	
+	private void zoomInCamera() {
+		camera.zoom -= 0.005f;
+		camera.update();
 	}
 	
 	private void handlePlayerInput() {
