@@ -1,0 +1,3 @@
+res/player/the hero/waiting/right1.png
+res/player/the hero/waiting/right2.png
+res/player/the hero/waiting/right3.png

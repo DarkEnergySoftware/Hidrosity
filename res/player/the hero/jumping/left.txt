@@ -1,0 +1,1 @@
+res/player/the hero/jumping/left.png

@@ -1,0 +1,2 @@
+res/player/the hero/hurt/right1.png
+res/player/the hero/hurt/right2.png

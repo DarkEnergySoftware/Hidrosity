@@ -1,0 +1,3 @@
+res/player/the hero/shooting/runLeft1.png
+res/player/the hero/shooting/runLeft2.png
+res/player/the hero/shooting/runLeft3.png

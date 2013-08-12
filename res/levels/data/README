@@ -1,0 +1,6 @@
+* The bottom left corner of the screen is (0,0) - they are offset in-game
+
+* The width and height are measured in pixels, they should be double
+  the width and height of the actual platforms as the level image
+  is scaled up to twice it's size.
+
