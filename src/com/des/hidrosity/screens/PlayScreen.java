@@ -120,7 +120,7 @@ public class PlayScreen implements Screen {
 		}
 		spriteBatch.end();
 
-		debugRenderer.render(physicsWorld, camera.combined);
+		debugRenderer.render(physicsWorld, camera.projection);
 	}
 	
 	private void renderPlayer() {

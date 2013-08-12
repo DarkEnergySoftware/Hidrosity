@@ -7,6 +7,6 @@ public class PlayerConstants {
 	public static final float FRICTION = 0f;
 	public static final float RESTITUTION = 0f;
 	public static final float SPEED = 0.05f;
-	public static final float JUMP_FORCE = 0.09f;
+	public static final float JUMP_FORCE = 0.5f;
 	
 }

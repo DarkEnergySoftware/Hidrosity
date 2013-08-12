@@ -13,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.des.hidrosity.animation.AnimationLoader;
-import com.des.hidrosity.constants.CollisionConstants;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.PlayerConstants;
 import com.des.hidrosity.debug.Logger;
@@ -59,6 +58,8 @@ public class Player extends GameObject {
 	private PlayerDirection currentDirection;
 
 	private World gameWorld;
+	
+	private boolean canJump = true;
 
 	public Player(Vector2 position, String textureName, World gameWorld) {
 		super(position, textureName);
@@ -90,7 +91,22 @@ public class Player extends GameObject {
 
 		Fixture mainFixture = physicsBody.createFixture(fixtureDef);
 		mainFixture.setUserData(this);
+		
+		PolygonShape feetShape = new PolygonShape();
+		feetShape.setAsBox(
+				(getWidth() / 2) * GameConstants.UNIT_SCALE,
+				(getHeight() / 4) * GameConstants.UNIT_SCALE,
+				new Vector2(0, -getHeight() * GameConstants.UNIT_SCALE),
+				0f);
+		
+		FixtureDef feetFixtureDef = new FixtureDef();
+		feetFixtureDef.isSensor = true;
+		feetFixtureDef.shape = feetShape;
+		
+		Fixture feetFixture = physicsBody.createFixture(feetFixtureDef);
+		feetFixture.setUserData(this);
 
+		feetShape.dispose();
 		polygonShape.dispose();
 	}
 
@@ -183,7 +199,7 @@ public class Player extends GameObject {
 		updateAnimationStateTime();
 		checkIfStateShouldBeIdle();
 		updateNonPhysicsPosition();
-		printDebug();
+//		printDebug();
 	}
 
 	private void printDebug() {
@@ -242,7 +258,15 @@ public class Player extends GameObject {
 	}
 
 	public void jump() {
+		if (!canJump) {
+			return;
+		}
+		
 		physicsBody.applyLinearImpulse(new Vector2(0f, PlayerConstants.JUMP_FORCE), physicsBody.getWorldCenter(), true);
 		Logger.log("jump()");
+	}
+	
+	public void setCanJump(boolean canJump) {
+		this.canJump = canJump;
 	}
 }
