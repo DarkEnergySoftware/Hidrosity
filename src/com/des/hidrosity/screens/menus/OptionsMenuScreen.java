@@ -1,31 +1,41 @@
 package com.des.hidrosity.screens.menus;
 
+import aurelienribon.tweenengine.Tween;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.des.hidrosity.constants.KeyConstants;
 import com.des.hidrosity.interfaces.Menu;
+import com.des.hidrosity.tweens.SpriteTweenAccessor;
 import com.jakehorsfield.libld.Utils;
 
 public class OptionsMenuScreen extends Menu implements Screen {
 
 	public OptionsMenuScreen() {
 		super(loadTextures());
+
+		createFadeInTween();
 	}
-	
+
+	private void createFadeInTween() {
+		Tween.registerAccessor(Sprite.class, new SpriteTweenAccessor());
+		Tween.set(startingSprite, SpriteTweenAccessor.ALPHA).target(0f).start(tweenManager);
+		Tween.to(startingSprite, SpriteTweenAccessor.ALPHA, 0.8f).target(1).start(tweenManager);
+	}
+
 	private static Texture[] loadTextures() {
-		return new Texture[] {
-				Utils.loadTexture("res/menus/options menu/controls.png"),
+		return new Texture[] { Utils.loadTexture("res/menus/options menu/controls.png"),
 				Utils.loadTexture("res/menus/options menu/soundtest.png"),
-				Utils.loadTexture("res/menus/options menu/back.png")
-		};
+				Utils.loadTexture("res/menus/options menu/back.png") };
 	}
 
 	public void show() {
 		Gdx.input.setInputProcessor(new OptionsInputProcessor());
 	}
-	
+
 	public void render(float delta) {
 		spriteBatch.begin();
 		{
@@ -33,31 +43,38 @@ public class OptionsMenuScreen extends Menu implements Screen {
 			renderCurrentMenu(spriteBatch);
 		}
 		spriteBatch.end();
-	}	
+	}
 
 	public void hide() {
 		Gdx.input.setInputProcessor(null);
 	}
-	
-	public void resize(int width, int height) {}
-	public void pause() {}
-	public void resume() {}
-	public void dispose() {}
+
+	public void resize(int width, int height) {
+	}
+
+	public void pause() {
+	}
+
+	public void resume() {
+	}
+
+	public void dispose() {
+	}
 
 	public void itemSelected() {
 		if (backTextureSelected()) {
 			changeScreen(new MainMenuScreen());
 		}
 	}
-	
+
 	private boolean backTextureSelected() {
 		if (currentTexture == menuTextures[2]) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	class OptionsInputProcessor implements InputProcessor {
 
 		public boolean keyDown(int keycode) {
@@ -83,8 +100,7 @@ public class OptionsMenuScreen extends Menu implements Screen {
 			return false;
 		}
 
-		public boolean touchDown(int screenX, int screenY, int pointer,
-				int button) {
+		public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 			return false;
 		}
 
@@ -103,7 +119,7 @@ public class OptionsMenuScreen extends Menu implements Screen {
 		public boolean scrolled(int amount) {
 			return false;
 		}
-		
+
 	}
 
 }

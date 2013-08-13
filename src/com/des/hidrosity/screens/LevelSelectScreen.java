@@ -1,13 +1,17 @@
 package com.des.hidrosity.screens;
 
+import aurelienribon.tweenengine.Tween;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.des.hidrosity.audio.MusicManager;
 import com.des.hidrosity.constants.KeyConstants;
 import com.des.hidrosity.interfaces.Menu;
+import com.des.hidrosity.tweens.SpriteTweenAccessor;
 import com.jakehorsfield.libld.Utils;
 
 public class LevelSelectScreen extends Menu implements Screen {
@@ -16,6 +20,14 @@ public class LevelSelectScreen extends Menu implements Screen {
 	
 	public LevelSelectScreen() {
 		super(loadTextures());
+		
+		createFadeInTween();
+	}
+	
+	private void createFadeInTween() {
+		Tween.registerAccessor(Sprite.class, new SpriteTweenAccessor());
+		Tween.set(startingSprite, SpriteTweenAccessor.ALPHA).target(0f).start(tweenManager);
+		Tween.to(startingSprite, SpriteTweenAccessor.ALPHA, 0.8f).target(1).start(tweenManager);
 	}
 	
 	private static Texture[] loadTextures() {
