@@ -1,13 +1,14 @@
 package com.des.hidrosity.main;
 
 import com.badlogic.gdx.Game;
+import com.des.hidrosity.screens.SplashScreen;
 import com.des.hidrosity.screens.TitleScreen;
 import com.jakehorsfield.libld.Utils;
 
 public class HidrosityGame extends Game {
 
 	public void create() {
-		setScreen(new TitleScreen());
+		setScreen(new SplashScreen());
 	}
 
 	public void render() {
