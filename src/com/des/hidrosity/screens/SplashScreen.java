@@ -8,6 +8,7 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -49,6 +50,7 @@ public class SplashScreen implements Screen {
 	}
 	
 	public void render(float delta) {
+		handleInput();
 		updateTween();
 		
 		Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
@@ -59,6 +61,12 @@ public class SplashScreen implements Screen {
 			splashScreenSprite.draw(spriteBatch);
 		}
 		spriteBatch.end();
+	}
+	
+	private void handleInput() {
+		if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+			((Game) Gdx.app.getApplicationListener()).setScreen(new TitleScreen());
+		}
 	}
 	
 	private void updateTween() {
