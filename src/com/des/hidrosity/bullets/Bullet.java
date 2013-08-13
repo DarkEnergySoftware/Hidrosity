@@ -56,6 +56,7 @@ public abstract class Bullet extends GameObject {
 		fixtureDef.restitution = BulletConstants.RESTITUTION;
 		fixtureDef.shape = polygonShape;
 		fixtureDef.density = BulletConstants.DENSITY;
+		fixtureDef.isSensor = true;
 
 		physicsBody = gameWorld.createBody(bodyDef);
 

@@ -294,6 +294,17 @@ public class Player extends GameObject {
 	public void render(SpriteBatch spriteBatch) {
 		setCurrentFrame();
 
+		renderPlayer(spriteBatch);
+		renderBullets(spriteBatch);
+	}
+	
+	private void renderBullets(SpriteBatch spriteBatch) {
+		for (PlayerBullet b : bullets) {
+			b.render(spriteBatch);
+		}
+	}
+	
+	private void renderPlayer(SpriteBatch spriteBatch) {
 		spriteBatch.draw(currentFrame, physicsBody.getPosition().x / GameConstants.UNIT_SCALE - getWidth(),
 				physicsBody.getPosition().y / GameConstants.UNIT_SCALE - getHeight(), currentFrame.getRegionWidth()
 						* GameConstants.IMAGE_SCALE, currentFrame.getRegionHeight() * GameConstants.IMAGE_SCALE);
