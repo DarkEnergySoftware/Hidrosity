@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.des.hidrosity.constants.BulletConstants;
 import com.des.hidrosity.constants.GameConstants;
 import com.jakehorsfield.libld.GameObject;
 
@@ -45,10 +46,10 @@ public abstract class Bullet extends GameObject {
 				((getHeight() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE);
 		
 		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.friction = 0f;
-		fixtureDef.restitution = 0f;
+		fixtureDef.friction = BulletConstants.FRICTION;
+		fixtureDef.restitution = BulletConstants.RESTITUTION;
 		fixtureDef.shape = polygonShape;
-		fixtureDef.density = 1f;
+		fixtureDef.density = BulletConstants.DENSITY;
 		
 		physicsBody = gameWorld.createBody(bodyDef);
 		
