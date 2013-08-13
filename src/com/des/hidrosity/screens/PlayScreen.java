@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+import com.des.hidrosity.bullets.PlayerBullet;
 import com.des.hidrosity.collisions.CollisionListener;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.KeyConstants;
@@ -91,6 +93,10 @@ public class PlayScreen implements Screen {
 		
 		if (Gdx.input.isKeyPressed(KeyConstants.PLAYER_JUMP)) {
 			player.jump();
+		}
+		
+		if (Gdx.input.isKeyPressed(KeyConstants.PLAYER_SHOOT)) {
+			player.shoot();
 		}
 	}
 	

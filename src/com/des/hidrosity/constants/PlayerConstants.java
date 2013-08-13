@@ -9,4 +9,5 @@ public class PlayerConstants {
 	public static final float SPEED = 0.03f;
 	public static final float JUMP_FORCE = 0.25f;
 	public static final float MAX_VELOCITY = 5f;
+	public static final long SHOOT_DELAY = 1000;
 }

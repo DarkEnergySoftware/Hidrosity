@@ -12,8 +12,10 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.des.hidrosity.animation.AnimationLoader;
+import com.des.hidrosity.bullets.PlayerBullet;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.PlayerConstants;
 import com.des.hidrosity.debug.Logger;
@@ -63,7 +65,11 @@ public class Player extends GameObject {
 	private boolean canJump = true;
 
 	private float timeSpentStanding;
+
 	private long timeStartedWaiting;
+	private long lastTimeShot;
+
+	private Array<PlayerBullet> bullets = new Array<>();
 
 	public Player(Vector2 position, String textureName, World gameWorld) {
 		super(position, textureName);
@@ -127,7 +133,7 @@ public class Player extends GameObject {
 				"res/player/the hero/running/left.txt");
 		animationRunningRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
 				"res/player/the hero/running/right.txt");
-		
+
 		animationRunningLeft.setPlayMode(Animation.LOOP_PINGPONG);
 		animationRunningRight.setPlayMode(Animation.LOOP_PINGPONG);
 	}
@@ -213,7 +219,7 @@ public class Player extends GameObject {
 	private void checkIfStateShouldBeJumping() {
 		if (!canJump) {
 			currentState = PlayerState.Jumping;
-			
+
 			if (currentDirection == PlayerDirection.Left) {
 				currentAnimation = animationJumpingLeft;
 			} else {
@@ -221,13 +227,13 @@ public class Player extends GameObject {
 			}
 		}
 	}
-	
+
 	private void updateWaitingAnimation() {
 		if (currentState != PlayerState.Waiting) {
 			return;
 		}
 	}
-	
+
 	private void updateStandingTime() {
 		if (currentState == PlayerState.Standing) {
 			timeSpentStanding += Gdx.graphics.getDeltaTime();
@@ -266,7 +272,7 @@ public class Player extends GameObject {
 			if (waitingAndAnimationNotFinished()) {
 				return;
 			}
-			
+
 			currentState = PlayerState.Standing;
 
 			if (currentDirection == PlayerDirection.Left) {
@@ -276,7 +282,7 @@ public class Player extends GameObject {
 			}
 		}
 	}
-	
+
 	private boolean waitingAndAnimationNotFinished() {
 		return currentState == PlayerState.Waiting && TimeUtils.millis() - timeStartedWaiting < 1000f;
 	}
@@ -339,6 +345,79 @@ public class Player extends GameObject {
 		}
 
 		physicsBody.applyLinearImpulse(new Vector2(0f, PlayerConstants.JUMP_FORCE), physicsBody.getWorldCenter(), true);
+	}
+
+	public void shoot() {
+		if (shootingTooFast()) {
+			return;
+		}
+
+		setShootingStateAndAnimation();
+
+		if (currentDirection == PlayerDirection.Left) {
+			createBulletFromLeft();
+		} else {
+			createBulletFromRight();
+		}
+	}
+
+	private void createBulletFromRight() {
+		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()), "res/bullets/heroBullet.png", 1, gameWorld);
+		bullets.add(b);
+	}
+
+	private void createBulletFromLeft() {
+		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()), "res/bullets/heroBullet.png", -1, gameWorld);
+		bullets.add(b);
+	}
+
+	private void setShootingStateAndAnimation() {
+		switch (currentState) {
+		case Running:
+			currentState = PlayerState.ShootingRunning;
+			setAnimationToShootingRunning();
+			break;
+		case Jumping:
+			currentState = PlayerState.ShootingJumping;
+			setAnimationToShootingJumping();
+			break;
+		case Standing:
+			currentState = PlayerState.ShootingStanding;
+			setAnimationToShootingStanding();
+			break;
+		}
+	}
+
+	private void setAnimationToShootingStanding() {
+		if (currentDirection == PlayerDirection.Left) {
+			currentAnimation = animationStandingShootingLeft;
+		} else {
+			currentAnimation = animationStandingShootingRight;
+		}
+	}
+
+	private void setAnimationToShootingJumping() {
+		if (currentDirection == PlayerDirection.Left) {
+			currentAnimation = animationJumpingShootingLeft;
+		} else {
+			currentAnimation = animationJumpingShootingRight;
+		}
+	}
+
+	private void setAnimationToShootingRunning() {
+		if (currentDirection == PlayerDirection.Left) {
+			currentAnimation = animationRunningShootingLeft;
+		} else {
+			currentAnimation = animationRunningShootingRight;
+		}
+	}
+
+	private boolean shootingTooFast() {
+		if (TimeUtils.millis() - lastTimeShot > PlayerConstants.SHOOT_DELAY) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public void setCanJump(boolean canJump) {
