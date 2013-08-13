@@ -370,6 +370,8 @@ public class Player extends GameObject {
 		} else {
 			createBulletFromRight();
 		}
+		
+		lastTimeShot = TimeUtils.millis();
 	}
 
 	private void createBulletFromRight() {
