@@ -15,22 +15,22 @@ import com.jakehorsfield.libld.GameObject;
 
 public abstract class Bullet extends GameObject {
 
-	private enum BulletDirection {
-		Left, Right
-	}
-
-	private BulletDirection direction;
-
 	private Body physicsBody;
 	private World gameWorld;
 	
-	private boolean shouldBeRemoved = false;
+	public boolean shouldBeRemoved = false;
+	
+	private int direction;
 
-	public Bullet(Vector2 position, String textureName, BulletDirection direction, World gameWorld) {
+	public Bullet(Vector2 position, String textureName, int direction, World gameWorld) {
 		super(position, textureName);
 
-		this.direction = direction;
+		if (direction < -1 || direction > 1) {
+			assert false : "Direction isn't -1 or 1";
+		}
+		
 		this.gameWorld = gameWorld;
+		this.direction = direction;
 
 		createPhysicsBody();
 	}
@@ -58,7 +58,7 @@ public abstract class Bullet extends GameObject {
 	}
 
 	public void update(float delta) {
-
+		
 	}
 
 	public void render(SpriteBatch spriteBatch) {
