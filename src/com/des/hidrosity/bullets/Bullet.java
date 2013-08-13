@@ -17,9 +17,9 @@ public abstract class Bullet extends GameObject {
 
 	private Body physicsBody;
 	private World gameWorld;
-	
+
 	public boolean shouldBeRemoved = false;
-	
+
 	private int direction;
 
 	public Bullet(Vector2 position, String textureName, int direction, World gameWorld) {
@@ -28,7 +28,7 @@ public abstract class Bullet extends GameObject {
 		if (direction < -1 || direction > 1) {
 			assert false : "Direction isn't -1 or 1";
 		}
-		
+
 		this.gameWorld = gameWorld;
 		this.direction = direction;
 
@@ -44,24 +44,26 @@ public abstract class Bullet extends GameObject {
 		PolygonShape polygonShape = new PolygonShape();
 		polygonShape.setAsBox(((getWidth() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE,
 				((getHeight() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE);
-		
+
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.friction = BulletConstants.FRICTION;
 		fixtureDef.restitution = BulletConstants.RESTITUTION;
 		fixtureDef.shape = polygonShape;
 		fixtureDef.density = BulletConstants.DENSITY;
-		
+
 		physicsBody = gameWorld.createBody(bodyDef);
-		
+
 		Fixture fixture = physicsBody.createFixture(fixtureDef);
 		fixture.setUserData(this);
 	}
 
 	public void update(float delta) {
-		
+
 	}
 
 	public void render(SpriteBatch spriteBatch) {
-
+		spriteBatch.draw(getTexture(), physicsBody.getPosition().x / GameConstants.UNIT_SCALE - getWidth(),
+				physicsBody.getPosition().y / GameConstants.UNIT_SCALE - getHeight(), getTexture().getWidth()
+						* GameConstants.IMAGE_SCALE, getTexture().getHeight() * GameConstants.IMAGE_SCALE);
 	}
 }
