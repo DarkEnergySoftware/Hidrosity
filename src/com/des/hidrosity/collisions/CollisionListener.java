@@ -8,27 +8,45 @@ import com.des.hidrosity.player.Player;
 
 public class CollisionListener implements ContactListener {
 
+	private int numPlayerCollisions;
+	
 	public void beginContact(Contact contact) {
 		checkIfContactIsPlayer(contact);
 	}
 
 	private void checkIfContactIsPlayer(Contact contact) {
 		if (contact.getFixtureA().getUserData() instanceof Player) {
-			((Player) contact.getFixtureA().getUserData()).setCanJump(true);
+			numPlayerCollisions++;
+			
+			if (numPlayerCollisions > 0) {
+				((Player) contact.getFixtureB().getUserData()).setCanJump(true);
+			}
 		}
 		
 		if (contact.getFixtureB().getUserData() instanceof Player) {
-			((Player) contact.getFixtureB().getUserData()).setCanJump(true);
+			numPlayerCollisions++;
+			
+			if (numPlayerCollisions > 0) {
+				((Player) contact.getFixtureB().getUserData()).setCanJump(true);
+			}
 		}
 	}
 
 	public void endContact(Contact contact) {
 		if (contact.getFixtureA().getUserData() instanceof Player) {
-			((Player) contact.getFixtureA().getUserData()).setCanJump(false);
+			numPlayerCollisions--;
+			
+			if (numPlayerCollisions <= 0) {
+				((Player) contact.getFixtureA().getUserData()).setCanJump(false);
+			}
 		}
 		
 		if (contact.getFixtureB().getUserData() instanceof Player) {
-			((Player) contact.getFixtureB().getUserData()).setCanJump(false);
+			numPlayerCollisions--;
+			
+			if (numPlayerCollisions <= 0) {
+				((Player) contact.getFixtureB().getUserData()).setCanJump(false);
+			}
 		}
 	}
 

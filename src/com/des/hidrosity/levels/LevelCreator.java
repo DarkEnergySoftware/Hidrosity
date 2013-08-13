@@ -69,6 +69,7 @@ public class LevelCreator {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.friction = 0f;
 		fixtureDef.shape = polygonShape;
+		fixtureDef.restitution = 0f;
 		
 		Fixture fixture = currentBody.createFixture(fixtureDef);
 	}
