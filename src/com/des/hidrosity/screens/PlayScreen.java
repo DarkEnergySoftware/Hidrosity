@@ -93,7 +93,7 @@ public class PlayScreen implements Screen {
 			player.jump();
 		}
 	}
-
+	
 	private void update() {
 		updatePlayer();
 		updatePhysicsWorld();
@@ -148,7 +148,7 @@ public class PlayScreen implements Screen {
 	private void renderLevel() {
 		levelManager.renderLevel(spriteBatch);
 	}
-
+	
 	public void resize(int width, int height) {
 	}
 

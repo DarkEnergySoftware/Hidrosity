@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.des.hidrosity.animation.AnimationLoader;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.PlayerConstants;
@@ -58,13 +59,16 @@ public class Player extends GameObject {
 	private PlayerDirection currentDirection;
 
 	private World gameWorld;
-	
+
 	private boolean canJump = true;
+
+	private float timeSpentStanding;
+	private long timeStartedWaiting;
 
 	public void stop() {
 		physicsBody.setLinearVelocity(0, 0);
 	}
-	
+
 	public Player(Vector2 position, String textureName, World gameWorld) {
 		super(position, textureName);
 		this.gameWorld = gameWorld;
@@ -95,18 +99,15 @@ public class Player extends GameObject {
 		physicsBody.setLinearDamping(1f);
 
 		Fixture mainFixture = physicsBody.createFixture(fixtureDef);
-		
+
 		PolygonShape feetShape = new PolygonShape();
-		feetShape.setAsBox(
-				(getWidth() - 5) * GameConstants.UNIT_SCALE,
-				(getHeight() / 4) * GameConstants.UNIT_SCALE,
-				new Vector2(0, -getHeight() * GameConstants.UNIT_SCALE),
-				0f);
-		
+		feetShape.setAsBox((getWidth() - 5) * GameConstants.UNIT_SCALE, (getHeight() / 4) * GameConstants.UNIT_SCALE,
+				new Vector2(0, -getHeight() * GameConstants.UNIT_SCALE), 0f);
+
 		FixtureDef feetFixtureDef = new FixtureDef();
 		feetFixtureDef.isSensor = true;
 		feetFixtureDef.shape = feetShape;
-		
+
 		Fixture feetFixture = physicsBody.createFixture(feetFixtureDef);
 		feetFixture.setUserData(this);
 
@@ -130,6 +131,9 @@ public class Player extends GameObject {
 				"res/player/the hero/running/left.txt");
 		animationRunningRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
 				"res/player/the hero/running/right.txt");
+		
+		animationRunningLeft.setPlayMode(Animation.LOOP_PINGPONG);
+		animationRunningRight.setPlayMode(Animation.LOOP_PINGPONG);
 	}
 
 	private void loadHurtAnimations() {
@@ -201,9 +205,39 @@ public class Player extends GameObject {
 
 	public void update(float delta) {
 		updateAnimationStateTime();
-		checkIfStateShouldBeIdle();
+		updateStandingTime();
+		updateWaitingAnimation();
 		updateNonPhysicsPosition();
+		checkIfStateShouldBeStanding();
+		checkIfStateShouldBeWaiting();
+		checkIfStateShouldBeJumping();
 		printDebug();
+	}
+
+	private void checkIfStateShouldBeJumping() {
+		if (!canJump) {
+			currentState = PlayerState.Jumping;
+			
+			if (currentDirection == PlayerDirection.Left) {
+				currentAnimation = animationJumpingLeft;
+			} else {
+				currentAnimation = animationJumpingRight;
+			}
+		}
+	}
+	
+	private void updateWaitingAnimation() {
+		if (currentState != PlayerState.Waiting) {
+			return;
+		}
+	}
+	
+	private void updateStandingTime() {
+		if (currentState == PlayerState.Standing) {
+			timeSpentStanding += Gdx.graphics.getDeltaTime();
+		} else {
+			timeSpentStanding = 0f;
+		}
 	}
 
 	private void printDebug() {
@@ -212,13 +246,31 @@ public class Player extends GameObject {
 				/ GameConstants.UNIT_SCALE + ")");
 	}
 
+	private void checkIfStateShouldBeWaiting() {
+		if ((int) timeSpentStanding != 0 && (int) timeSpentStanding >= 5) {
+			currentState = PlayerState.Waiting;
+
+			if (currentDirection == PlayerDirection.Left) {
+				currentAnimation = animationWaitingLeft;
+			} else {
+				currentAnimation = animationWaitingRight;
+			}
+
+			timeStartedWaiting = TimeUtils.millis();
+		}
+	}
+
 	private void updateNonPhysicsPosition() {
 		setX(physicsBody.getPosition().x / GameConstants.UNIT_SCALE);
 		setY(physicsBody.getPosition().y / GameConstants.UNIT_SCALE);
 	}
 
-	private void checkIfStateShouldBeIdle() {
+	private void checkIfStateShouldBeStanding() {
 		if (physicsBody.getLinearVelocity().x >= -1f && physicsBody.getLinearVelocity().x <= 1f) {
+			if (waitingAndAnimationNotFinished()) {
+				return;
+			}
+			
 			currentState = PlayerState.Standing;
 
 			if (currentDirection == PlayerDirection.Left) {
@@ -227,6 +279,10 @@ public class Player extends GameObject {
 				currentAnimation = animationStandingRight;
 			}
 		}
+	}
+	
+	private boolean waitingAndAnimationNotFinished() {
+		return currentState == PlayerState.Waiting && TimeUtils.millis() - timeStartedWaiting < 1000f;
 	}
 
 	private void updateAnimationStateTime() {
@@ -244,23 +300,22 @@ public class Player extends GameObject {
 	private void setCurrentFrame() {
 		currentFrame = currentAnimation.getKeyFrame(animationStateTime, true);
 	}
-	
+
 	public void moveLeft() {
 		currentAnimation = animationRunningLeft;
 		currentDirection = PlayerDirection.Left;
 		currentState = PlayerState.Running;
-		
+
 		if (movingTooFastLeft() == false) {
 			physicsBody.applyLinearImpulse(new Vector2(-PlayerConstants.SPEED, 0f), physicsBody.getWorldCenter(), true);
 		}
-		Logger.log("moveLeft()");
 	}
-	
+
 	private boolean movingTooFastLeft() {
 		if (physicsBody.getLinearVelocity().x < -PlayerConstants.MAX_VELOCITY) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -268,31 +323,33 @@ public class Player extends GameObject {
 		currentAnimation = animationRunningRight;
 		currentDirection = PlayerDirection.Right;
 		currentState = PlayerState.Running;
-		
+
 		if (movingTooFastRight() == false) {
 			physicsBody.applyLinearImpulse(new Vector2(PlayerConstants.SPEED, 0f), physicsBody.getWorldCenter(), true);
 		}
-		Logger.log("moveRight()");
 	}
-	
+
 	private boolean movingTooFastRight() {
 		if (physicsBody.getLinearVelocity().x > PlayerConstants.MAX_VELOCITY) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	public void jump() {
 		if (!canJump) {
 			return;
 		}
-		
+
 		physicsBody.applyLinearImpulse(new Vector2(0f, PlayerConstants.JUMP_FORCE), physicsBody.getWorldCenter(), true);
-		Logger.log("jump()");
 	}
-	
+
 	public void setCanJump(boolean canJump) {
 		this.canJump = canJump;
+	}
+
+	public Body getPhysicsBody() {
+		return physicsBody;
 	}
 }
