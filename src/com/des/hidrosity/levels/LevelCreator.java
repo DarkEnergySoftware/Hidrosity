@@ -99,7 +99,7 @@ public class LevelCreator {
 
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = polygonShape;
-		fixtureDef.friction = 5f;
+		fixtureDef.friction = 100f;
 
 		Body body = gameWorld.createBody(bodyDef);
 		Fixture fixture = body.createFixture(fixtureDef);

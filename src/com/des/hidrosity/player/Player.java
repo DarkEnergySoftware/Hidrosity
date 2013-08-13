@@ -65,10 +65,6 @@ public class Player extends GameObject {
 	private float timeSpentStanding;
 	private long timeStartedWaiting;
 
-	public void stop() {
-		physicsBody.setLinearVelocity(0, 0);
-	}
-
 	public Player(Vector2 position, String textureName, World gameWorld) {
 		super(position, textureName);
 		this.gameWorld = gameWorld;
