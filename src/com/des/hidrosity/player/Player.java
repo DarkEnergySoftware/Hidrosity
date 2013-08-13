@@ -98,7 +98,7 @@ public class Player extends GameObject {
 
 		PolygonShape feetShape = new PolygonShape();
 		feetShape.setAsBox((getWidth()) * GameConstants.UNIT_SCALE, (getHeight() / 3) * GameConstants.UNIT_SCALE,
-				new Vector2(0, -getHeight() * GameConstants.UNIT_SCALE), 0f);
+				new Vector2(0, (-getHeight() - getHeight() / 3) * GameConstants.UNIT_SCALE), 0f);
 
 		FixtureDef feetFixtureDef = new FixtureDef();
 		feetFixtureDef.isSensor = true;
