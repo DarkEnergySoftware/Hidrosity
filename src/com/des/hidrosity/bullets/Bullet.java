@@ -33,6 +33,12 @@ public abstract class Bullet extends GameObject {
 		this.direction = direction;
 
 		createPhysicsBody();
+		applyInitialImpulse();
+	}
+
+	private void applyInitialImpulse() {
+		physicsBody.applyLinearImpulse(new Vector2(direction * BulletConstants.SPEED, 0f),
+				physicsBody.getWorldCenter(), true);
 	}
 
 	private void createPhysicsBody() {
