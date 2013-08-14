@@ -17,19 +17,8 @@ public class CollisionListener implements ContactListener {
 		}
 		
 		checkIfPlayerTouchesGround(contact);
-		checkIfPlayerBulletHitsLevel(contact);
 	}
 	
-	private void checkIfPlayerBulletHitsLevel(Contact contact) {
-		if (contact.getFixtureA().getUserData() instanceof PlayerBullet && contact.getFixtureB().getUserData().toString().equals("level")) {
-			((PlayerBullet) contact.getFixtureA().getUserData()).shouldBeRemoved = true;
-		}
-		
-		if (contact.getFixtureB().getUserData() instanceof PlayerBullet && contact.getFixtureA().getUserData().toString().equals("level")) {
-			((PlayerBullet) contact.getFixtureB().getUserData()).shouldBeRemoved = true;
-		}
-	}
-
 	private void checkIfPlayerTouchesGround(Contact contact) {
 		if (contact.getFixtureA().getUserData() instanceof Player
 				&& contact.getFixtureB().getUserData().toString().equals("level")) {
