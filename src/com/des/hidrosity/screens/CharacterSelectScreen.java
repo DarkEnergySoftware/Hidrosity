@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.des.hidrosity.audio.MusicManager;
 import com.des.hidrosity.characters.CharacterManager;
+import com.des.hidrosity.characters.Jetten;
 import com.des.hidrosity.characters.TheHero;
 import com.des.hidrosity.constants.KeyConstants;
 import com.des.hidrosity.interfaces.Menu;
@@ -72,7 +73,18 @@ public class CharacterSelectScreen extends Menu implements Screen {
 		} else if (heroTextureSelected()) {
 			CharacterManager.setCharacter(new TheHero());
 			changeScreen(new LevelSelectScreen());
+		} else if (jettenTextureSelected()) {
+			CharacterManager.setCharacter(new Jetten());
+			changeScreen(new LevelSelectScreen());
 		}
+	}
+	
+	private boolean jettenTextureSelected() {
+		if (currentTexture == menuTextures[1]) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	private boolean heroTextureSelected() {
