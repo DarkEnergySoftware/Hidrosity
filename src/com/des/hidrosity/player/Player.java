@@ -84,7 +84,7 @@ public class Player extends GameObject {
 		Fixture mainFixture = physicsBody.createFixture(fixtureDef);
 
 		PolygonShape feetShape = new PolygonShape();
-		feetShape.setAsBox((getWidth()) * GameConstants.UNIT_SCALE, (getHeight() / 3) * GameConstants.UNIT_SCALE,
+		feetShape.setAsBox((getWidth() - 5) * GameConstants.UNIT_SCALE, (getHeight() / 3) * GameConstants.UNIT_SCALE,
 				new Vector2(0, (-getHeight() - getHeight() / 3) * GameConstants.UNIT_SCALE), 0f);
 
 		FixtureDef feetFixtureDef = new FixtureDef();
@@ -116,6 +116,17 @@ public class Player extends GameObject {
 		checkIfStateShouldBeWaiting();
 		checkIfStateShouldBeJumping();
 		printDebug();
+		updateBullets();
+	}
+	
+	private void updateBullets() {
+		for (PlayerBullet b : bullets) {
+			if (b.shouldBeRemoved) {
+				gameWorld.destroyBody(b.getBody());
+				bullets.removeValue(b, true);
+				break;
+			}
+		}
 	}
 
 	private void checkIfStateShouldBeJumping() {

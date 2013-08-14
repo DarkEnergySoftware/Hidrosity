@@ -4,6 +4,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.des.hidrosity.bullets.PlayerBullet;
 import com.des.hidrosity.player.Player;
 
 public class CollisionListener implements ContactListener {
@@ -11,7 +12,22 @@ public class CollisionListener implements ContactListener {
 	private int numPlayerCollisions;
 
 	public void beginContact(Contact contact) {
+		if (contact.getFixtureA().getUserData() == null || contact.getFixtureB().getUserData() == null) {
+			return;
+		}
+		
 		checkIfPlayerTouchesGround(contact);
+		checkIfPlayerBulletHitsLevel(contact);
+	}
+	
+	private void checkIfPlayerBulletHitsLevel(Contact contact) {
+		if (contact.getFixtureA().getUserData() instanceof PlayerBullet && contact.getFixtureB().getUserData().toString().equals("level")) {
+			((PlayerBullet) contact.getFixtureA().getUserData()).shouldBeRemoved = true;
+		}
+		
+		if (contact.getFixtureB().getUserData() instanceof PlayerBullet && contact.getFixtureA().getUserData().toString().equals("level")) {
+			((PlayerBullet) contact.getFixtureB().getUserData()).shouldBeRemoved = true;
+		}
 	}
 
 	private void checkIfPlayerTouchesGround(Contact contact) {
@@ -35,6 +51,10 @@ public class CollisionListener implements ContactListener {
 	}
 
 	public void endContact(Contact contact) {
+		if (contact.getFixtureA().getUserData() == null || contact.getFixtureB().getUserData() == null) {
+			return;
+		}
+		
 		checkIfPlayerLeavesGround(contact);
 	}
 

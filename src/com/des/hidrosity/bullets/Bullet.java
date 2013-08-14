@@ -73,4 +73,8 @@ public abstract class Bullet extends GameObject {
 				physicsBody.getPosition().y / GameConstants.UNIT_SCALE - getHeight(), getTexture().getWidth()
 						* GameConstants.IMAGE_SCALE, getTexture().getHeight() * GameConstants.IMAGE_SCALE);
 	}
+	
+	public Body getBody() {
+		return physicsBody;
+	}
 }
