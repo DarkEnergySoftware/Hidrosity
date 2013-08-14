@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.des.hidrosity.bullets.PlayerBullet;
 import com.des.hidrosity.collisions.CollisionListener;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.KeyConstants;
@@ -22,9 +22,11 @@ public class PlayScreen implements Screen {
 	private SpriteBatch spriteBatch;
 	private OrthographicCamera camera;
 
-	private World physicsWorld;
+	public static World physicsWorld;
 	private Box2DDebugRenderer debugRenderer;
 
+	public static Array<Body> bodiesToRemove = new Array<>();
+	
 	private LevelManager levelManager;
 
 	private Player player;
@@ -103,7 +105,15 @@ public class PlayScreen implements Screen {
 	private void update() {
 		updatePlayer();
 		updatePhysicsWorld();
+		removeBodies();
 		updateCameraPosition();
+	}
+	
+	private void removeBodies() {
+		for (Body b : bodiesToRemove) {
+			physicsWorld.destroyBody(b);
+			bodiesToRemove.removeValue(b, true);
+		}
 	}
 	
 	private void updateCameraPosition() {

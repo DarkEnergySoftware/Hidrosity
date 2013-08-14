@@ -16,16 +16,17 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.des.hidrosity.bullets.PlayerBullet;
 import com.des.hidrosity.characters.CharacterManager;
-import com.des.hidrosity.constants.CollisionConstants;
+import com.des.hidrosity.characters.Jetten;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.PlayerConstants;
 import com.des.hidrosity.debug.Logger;
+import com.des.hidrosity.screens.PlayScreen;
 import com.jakehorsfield.libld.GameObject;
 
 public class Player extends GameObject {
 
 	private enum PlayerState {
-		Standing, Waiting, Walking, Running, Jumping, ShootingStanding, ShootingRunning, ShootingJumping
+		Standing, Waiting, Walking, Running, Jumping, ShootingStanding, ShootingRunning, ShootingJumping, Spawning
 	};
 
 	private enum PlayerDirection {
@@ -51,6 +52,8 @@ public class Player extends GameObject {
 	private long lastTimeShot;
 
 	private Array<PlayerBullet> bullets = new Array<>();
+	
+	private long timePlayerCreated;
 
 	public Player(Vector2 position, String textureName, World gameWorld) {
 		super(position, textureName);
@@ -59,6 +62,8 @@ public class Player extends GameObject {
 		setInitialStateAndDirection();
 		loadAnimations();
 		createPhysicsBody();
+		
+		timePlayerCreated = TimeUtils.millis();
 	}
 
 	private void createPhysicsBody() {
@@ -108,6 +113,7 @@ public class Player extends GameObject {
 	}
 
 	public void update(float delta) {
+		checkIfSpawning();
 		updateAnimationStateTime();
 		updateStandingTime();
 		updateWaitingAnimation();
@@ -119,12 +125,21 @@ public class Player extends GameObject {
 		updateBullets();
 	}
 	
+	private void checkIfSpawning() {
+		if (CharacterManager.getCharacter() instanceof Jetten == false) return;
+		
+		if (TimeUtils.millis() - timePlayerCreated < PlayerConstants.SPAWN_TIME) {
+			System.out.println("Should be spawning");
+			currentState = PlayerState.Spawning;
+			currentAnimation = ((Jetten) CharacterManager.getCharacter()).animationAppear;
+			currentDirection = PlayerDirection.Right;
+		}
+	}
+	
 	private void updateBullets() {
 		for (PlayerBullet b : bullets) {
 			if (b.shouldBeRemoved) {
-				gameWorld.destroyBody(b.getBody());
-				bullets.removeValue(b, true);
-				break;
+				PlayScreen.bodiesToRemove.add(b.getBody());
 			}
 		}
 	}

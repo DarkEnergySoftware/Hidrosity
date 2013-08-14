@@ -1,0 +1,8 @@
+res/player/jetten/appear/appear1.png
+res/player/jetten/appear/appear2.png
+res/player/jetten/appear/appear3.png
+res/player/jetten/appear/appear4.png
+res/player/jetten/appear/appear5.png
+res/player/jetten/appear/appear6.png
+res/player/jetten/appear/appear7.png
+res/player/jetten/appear/appear8.png

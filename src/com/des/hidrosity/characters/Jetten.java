@@ -6,8 +6,16 @@ import com.des.hidrosity.constants.PlayerConstants;
 
 public class Jetten extends Character {
 
+	public Animation animationAppear;
+	
 	public Jetten() {
 		super();
+		
+		loadAppearAnimation();
+	}
+	
+	private void loadAppearAnimation() {
+		animationAppear = AnimationLoader.loadAnimation(1f, "res/player/jetten/appear/appear.txt");
 	}
 	
 	public void loadStandingAnimations() {

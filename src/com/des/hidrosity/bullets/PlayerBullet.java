@@ -1,6 +1,7 @@
 package com.des.hidrosity.bullets;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.des.hidrosity.constants.CollisionConstants;
@@ -11,5 +12,9 @@ public class PlayerBullet extends Bullet {
 		super(position, textureName, direction, gameWorld);
 		
 		fixture.setUserData(this);
+	}
+
+	public Body getBody() {
+		return physicsBody;
 	}
 }

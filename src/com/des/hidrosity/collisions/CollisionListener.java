@@ -17,6 +17,17 @@ public class CollisionListener implements ContactListener {
 		}
 		
 		checkIfPlayerTouchesGround(contact);
+		checkIfPlayerBulletCollides(contact);
+	}
+	
+	private void checkIfPlayerBulletCollides(Contact contact) {
+		if (contact.getFixtureA().getUserData() instanceof PlayerBullet) {
+			((PlayerBullet) contact.getFixtureA().getUserData()).shouldBeRemoved = true;
+		}
+		
+		if (contact.getFixtureB().getUserData() instanceof PlayerBullet) {
+			((PlayerBullet) contact.getFixtureB().getUserData()).shouldBeRemoved = true;
+		}
 	}
 	
 	private void checkIfPlayerTouchesGround(Contact contact) {
