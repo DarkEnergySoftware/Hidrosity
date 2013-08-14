@@ -14,8 +14,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.des.hidrosity.animation.AnimationLoader;
 import com.des.hidrosity.bullets.PlayerBullet;
+import com.des.hidrosity.characters.CharacterManager;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.PlayerConstants;
 import com.des.hidrosity.debug.Logger;
@@ -32,26 +32,6 @@ public class Player extends GameObject {
 	};
 
 	private Body physicsBody;
-
-	private Animation animationStandingLeft;
-	private Animation animationStandingShootingLeft;
-	private Animation animationStandingRight;
-	private Animation animationStandingShootingRight;
-	private Animation animationWaitingLeft;
-	private Animation animationWaitingRight;
-
-	private Animation animationRunningLeft;
-	private Animation animationRunningShootingLeft;
-	private Animation animationRunningRight;
-	private Animation animationRunningShootingRight;
-
-	private Animation animationJumpingLeft;
-	private Animation animationJumpingRight;
-	private Animation animationJumpingShootingLeft;
-	private Animation animationJumpingShootingRight;
-
-	private Animation animationHurtLeft;
-	private Animation animationHurtRight;
 
 	private Animation currentAnimation;
 	private float animationStateTime;
@@ -118,86 +98,7 @@ public class Player extends GameObject {
 	}
 
 	private void loadAnimations() {
-		loadStandingAnimations();
-		loadWaitingAnimations();
-		loadJumpingAnimations();
-		loadShootingAnimations();
-		loadHurtAnimations();
-		loadRunningAnimations();
-
-		currentAnimation = animationStandingRight;
-	}
-
-	private void loadRunningAnimations() {
-		animationRunningLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/running/left.txt");
-		animationRunningRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/running/right.txt");
-
-		animationRunningLeft.setPlayMode(Animation.LOOP_PINGPONG);
-		animationRunningRight.setPlayMode(Animation.LOOP_PINGPONG);
-	}
-
-	private void loadHurtAnimations() {
-		animationHurtLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/hurt/left.txt");
-		animationHurtRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/hurt/right.txt");
-
-		animationHurtLeft.setPlayMode(Animation.LOOP);
-		animationHurtRight.setPlayMode(Animation.LOOP);
-	}
-
-	private void loadShootingAnimations() {
-		animationStandingShootingLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/shooting/left.txt");
-		animationStandingShootingRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/shooting/right.txt");
-		animationRunningShootingLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/shooting/runLeft.txt");
-		animationRunningShootingRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/shooting/runRight.txt");
-		animationJumpingShootingLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/shooting/jumpLeft.txt");
-		animationJumpingShootingRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/shooting/jumpRight.txt");
-
-		animationStandingShootingLeft.setPlayMode(Animation.LOOP);
-		animationStandingShootingRight.setPlayMode(Animation.LOOP);
-		animationRunningShootingLeft.setPlayMode(Animation.LOOP);
-		animationRunningShootingRight.setPlayMode(Animation.LOOP);
-		animationJumpingShootingLeft.setPlayMode(Animation.LOOP);
-		animationJumpingShootingRight.setPlayMode(Animation.LOOP);
-	}
-
-	private void loadJumpingAnimations() {
-		animationJumpingLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/jumping/left.txt");
-		animationJumpingRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/jumping/right.txt");
-
-		animationJumpingLeft.setPlayMode(Animation.LOOP);
-		animationJumpingRight.setPlayMode(Animation.LOOP);
-	}
-
-	private void loadWaitingAnimations() {
-		animationWaitingLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/waiting/left.txt");
-		animationWaitingRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/waiting/right.txt");
-
-		animationWaitingLeft.setPlayMode(Animation.LOOP);
-		animationWaitingRight.setPlayMode(Animation.LOOP);
-	}
-
-	private void loadStandingAnimations() {
-		animationStandingLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/standing/left.txt");
-		animationStandingRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
-				"res/player/the hero/standing/right.txt");
-
-		animationStandingLeft.setPlayMode(Animation.LOOP);
-		animationStandingRight.setPlayMode(Animation.LOOP);
+		currentAnimation = CharacterManager.getCharacter().animationStandingRight;
 	}
 
 	private void setInitialStateAndDirection() {
@@ -221,9 +122,9 @@ public class Player extends GameObject {
 			currentState = PlayerState.Jumping;
 
 			if (currentDirection == PlayerDirection.Left) {
-				currentAnimation = animationJumpingLeft;
+				currentAnimation = CharacterManager.getCharacter().animationJumpingLeft;
 			} else {
-				currentAnimation = animationJumpingRight;
+				currentAnimation = CharacterManager.getCharacter().animationJumpingRight;
 			}
 		}
 	}
@@ -253,9 +154,9 @@ public class Player extends GameObject {
 			currentState = PlayerState.Waiting;
 
 			if (currentDirection == PlayerDirection.Left) {
-				currentAnimation = animationWaitingLeft;
+				currentAnimation = CharacterManager.getCharacter().animationWaitingLeft;
 			} else {
-				currentAnimation = animationWaitingRight;
+				currentAnimation = CharacterManager.getCharacter().animationWaitingRight;
 			}
 
 			timeStartedWaiting = TimeUtils.millis();
@@ -276,9 +177,9 @@ public class Player extends GameObject {
 			currentState = PlayerState.Standing;
 
 			if (currentDirection == PlayerDirection.Left) {
-				currentAnimation = animationStandingLeft;
+				currentAnimation = CharacterManager.getCharacter().animationStandingLeft;
 			} else {
-				currentAnimation = animationStandingRight;
+				currentAnimation = CharacterManager.getCharacter().animationStandingRight;
 			}
 		}
 	}
@@ -315,7 +216,7 @@ public class Player extends GameObject {
 	}
 
 	public void moveLeft() {
-		currentAnimation = animationRunningLeft;
+		currentAnimation = CharacterManager.getCharacter().animationRunningLeft;
 		currentDirection = PlayerDirection.Left;
 		currentState = PlayerState.Running;
 
@@ -333,7 +234,7 @@ public class Player extends GameObject {
 	}
 
 	public void moveRight() {
-		currentAnimation = animationRunningRight;
+		currentAnimation = CharacterManager.getCharacter().animationRunningRight;
 		currentDirection = PlayerDirection.Right;
 		currentState = PlayerState.Running;
 
@@ -403,25 +304,25 @@ public class Player extends GameObject {
 
 	private void setAnimationToShootingStanding() {
 		if (currentDirection == PlayerDirection.Left) {
-			currentAnimation = animationStandingShootingLeft;
+			currentAnimation = CharacterManager.getCharacter().animationStandingShootingLeft;
 		} else {
-			currentAnimation = animationStandingShootingRight;
+			currentAnimation = CharacterManager.getCharacter().animationStandingShootingRight;
 		}
 	}
 
 	private void setAnimationToShootingJumping() {
 		if (currentDirection == PlayerDirection.Left) {
-			currentAnimation = animationJumpingShootingLeft;
+			currentAnimation = CharacterManager.getCharacter().animationJumpingShootingLeft;
 		} else {
-			currentAnimation = animationJumpingShootingRight;
+			currentAnimation = CharacterManager.getCharacter().animationJumpingShootingRight;
 		}
 	}
 
 	private void setAnimationToShootingRunning() {
 		if (currentDirection == PlayerDirection.Left) {
-			currentAnimation = animationRunningShootingLeft;
+			currentAnimation = CharacterManager.getCharacter().animationRunningShootingLeft;
 		} else {
-			currentAnimation = animationRunningShootingRight;
+			currentAnimation = CharacterManager.getCharacter().animationRunningShootingRight;
 		}
 	}
 

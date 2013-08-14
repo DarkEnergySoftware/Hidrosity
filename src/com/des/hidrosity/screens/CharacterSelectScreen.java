@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.des.hidrosity.audio.MusicManager;
+import com.des.hidrosity.characters.CharacterManager;
+import com.des.hidrosity.characters.TheHero;
 import com.des.hidrosity.constants.KeyConstants;
 import com.des.hidrosity.interfaces.Menu;
 import com.des.hidrosity.screens.menus.MainMenuScreen;
@@ -67,9 +69,18 @@ public class CharacterSelectScreen extends Menu implements Screen {
 	public void itemSelected() {
 		if (backTextureSelected()) {
 			changeScreen(new MainMenuScreen());
-		} else {
+		} else if (heroTextureSelected()) {
+			CharacterManager.setCharacter(new TheHero());
 			changeScreen(new LevelSelectScreen());
 		}
+	}
+	
+	private boolean heroTextureSelected() {
+		if (currentTexture == menuTextures[0]) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	private boolean backTextureSelected() {
