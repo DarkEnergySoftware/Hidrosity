@@ -1,0 +1,3 @@
+res/player/jetten/shooting/runRight1.png
+res/player/jetten/shooting/runRight2.png
+res/player/jetten/shooting/runRight3.png

@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.des.hidrosity.bullets.PlayerBullet;
 import com.des.hidrosity.characters.CharacterManager;
+import com.des.hidrosity.constants.CollisionConstants;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.PlayerConstants;
 import com.des.hidrosity.debug.Logger;

@@ -1,0 +1,1 @@
+res/player/jetten/jumping/right.png

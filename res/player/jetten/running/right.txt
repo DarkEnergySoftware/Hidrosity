@@ -1,0 +1,3 @@
+res/player/jetten/running/right1.png
+res/player/jetten/running/right2.png
+res/player/jetten/running/right3.png

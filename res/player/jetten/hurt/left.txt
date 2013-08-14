@@ -1,0 +1,2 @@
+res/player/jetten/hurt/left1.png
+res/player/jetten/hurt/left2.png

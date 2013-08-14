@@ -14,14 +14,16 @@ import com.des.hidrosity.constants.GameConstants;
 import com.jakehorsfield.libld.GameObject;
 
 public abstract class Bullet extends GameObject {
-
-	private Body physicsBody;
-	private World gameWorld;
-
 	public boolean shouldBeRemoved = false;
 
 	private int direction;
-
+	
+	protected World gameWorld;
+	protected Body physicsBody;
+	protected BodyDef bodyDef;
+	protected FixtureDef fixtureDef;
+	protected Fixture fixture;
+	
 	public Bullet(Vector2 position, String textureName, int direction, World gameWorld) {
 		super(position, textureName);
 
@@ -42,7 +44,7 @@ public abstract class Bullet extends GameObject {
 	}
 
 	private void createPhysicsBody() {
-		BodyDef bodyDef = new BodyDef();
+		bodyDef = new BodyDef();
 		bodyDef.position.set((getX() + (getWidth() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE,
 				(getY() + (getHeight() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE);
 		bodyDef.type = BodyType.DynamicBody;
@@ -51,17 +53,15 @@ public abstract class Bullet extends GameObject {
 		polygonShape.setAsBox(((getWidth() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE,
 				((getHeight() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE);
 
-		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef = new FixtureDef();
 		fixtureDef.friction = BulletConstants.FRICTION;
 		fixtureDef.restitution = BulletConstants.RESTITUTION;
 		fixtureDef.shape = polygonShape;
 		fixtureDef.density = BulletConstants.DENSITY;
-		fixtureDef.isSensor = true;
 
 		physicsBody = gameWorld.createBody(bodyDef);
 
-		Fixture fixture = physicsBody.createFixture(fixtureDef);
-		fixture.setUserData(this);
+		fixture = physicsBody.createFixture(fixtureDef);
 	}
 
 	public void update(float delta) {

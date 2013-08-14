@@ -9,23 +9,25 @@ import com.des.hidrosity.player.Player;
 public class CollisionListener implements ContactListener {
 
 	private int numPlayerCollisions;
-	
+
 	public void beginContact(Contact contact) {
-		checkIfContactIsPlayer(contact);
+		checkIfPlayerTouchesGround(contact);
 	}
 
-	private void checkIfContactIsPlayer(Contact contact) {
-		if (contact.getFixtureA().getUserData() instanceof Player) {
+	private void checkIfPlayerTouchesGround(Contact contact) {
+		if (contact.getFixtureA().getUserData() instanceof Player
+				&& contact.getFixtureB().getUserData().toString().equals("level")) {
 			numPlayerCollisions++;
-			
+
 			if (numPlayerCollisions > 0) {
 				((Player) contact.getFixtureB().getUserData()).setCanJump(true);
 			}
 		}
-		
-		if (contact.getFixtureB().getUserData() instanceof Player) {
+
+		if (contact.getFixtureB().getUserData() instanceof Player
+				&& contact.getFixtureA().getUserData().toString().equals("level")) {
 			numPlayerCollisions++;
-			
+
 			if (numPlayerCollisions > 0) {
 				((Player) contact.getFixtureB().getUserData()).setCanJump(true);
 			}
@@ -33,17 +35,23 @@ public class CollisionListener implements ContactListener {
 	}
 
 	public void endContact(Contact contact) {
-		if (contact.getFixtureA().getUserData() instanceof Player) {
+		checkIfPlayerLeavesGround(contact);
+	}
+
+	private void checkIfPlayerLeavesGround(Contact contact) {
+		if (contact.getFixtureA().getUserData() instanceof Player
+				&& contact.getFixtureB().getUserData().toString().equals("level")) {
 			numPlayerCollisions--;
-			
+
 			if (numPlayerCollisions <= 0) {
 				((Player) contact.getFixtureA().getUserData()).setCanJump(false);
 			}
 		}
-		
-		if (contact.getFixtureB().getUserData() instanceof Player) {
+
+		if (contact.getFixtureB().getUserData() instanceof Player
+				&& contact.getFixtureA().getUserData().toString().equals("level")) {
 			numPlayerCollisions--;
-			
+
 			if (numPlayerCollisions <= 0) {
 				((Player) contact.getFixtureB().getUserData()).setCanJump(false);
 			}

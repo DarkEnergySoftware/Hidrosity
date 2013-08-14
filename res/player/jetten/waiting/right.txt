@@ -1,0 +1,3 @@
+res/player/jetten/waiting/right1.png
+res/player/jetten/waiting/right2.png
+res/player/jetten/waiting/right3.png

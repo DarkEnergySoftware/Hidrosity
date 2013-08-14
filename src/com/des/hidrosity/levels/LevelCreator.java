@@ -22,6 +22,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.des.hidrosity.constants.CollisionConstants;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.debug.Logger;
 
@@ -72,6 +73,7 @@ public class LevelCreator {
 		fixtureDef.restitution = 0f;
 		
 		Fixture fixture = currentBody.createFixture(fixtureDef);
+		fixture.setUserData("level");
 	}
 	
 	private void createLeftSideFixture(LevelBody levelBody) {
@@ -88,6 +90,7 @@ public class LevelCreator {
 		fixtureDef.shape = polygonShape;
 		
 		Fixture fixture = currentBody.createFixture(fixtureDef);
+		fixture.setUserData("level");
 	}
 	
 	private void createMainFixture(LevelBody levelBody) {
