@@ -36,8 +36,8 @@ public class Player extends GameObject {
 	private Body physicsBody;
 
 	private Animation currentAnimation;
-	private float animationStateTime;
 	private TextureRegion currentFrame;
+	private float animationStateTime;
 
 	private PlayerState currentState;
 	private PlayerDirection currentDirection;
@@ -67,6 +67,11 @@ public class Player extends GameObject {
 	}
 
 	private void createPhysicsBody() {
+		createMainFixture();
+		createFeetFixture();
+	}
+	
+	private void createMainFixture() {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.position.set((getX() + (getWidth() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE,
 				(getY() + (getHeight() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE);
@@ -87,7 +92,11 @@ public class Player extends GameObject {
 		physicsBody.setLinearDamping(1f);
 
 		Fixture mainFixture = physicsBody.createFixture(fixtureDef);
-
+		
+		polygonShape.dispose();
+	}
+	
+	private void createFeetFixture() {
 		PolygonShape feetShape = new PolygonShape();
 		feetShape.setAsBox((getWidth() - 5) * GameConstants.UNIT_SCALE, (getHeight() / 3) * GameConstants.UNIT_SCALE,
 				new Vector2(0, (-getHeight() - getHeight() / 3) * GameConstants.UNIT_SCALE), 0f);
@@ -100,7 +109,6 @@ public class Player extends GameObject {
 		feetFixture.setUserData(this);
 
 		feetShape.dispose();
-		polygonShape.dispose();
 	}
 
 	private void loadAnimations() {
@@ -114,26 +122,53 @@ public class Player extends GameObject {
 
 	public void update(float delta) {
 		checkIfSpawning();
-		updateAnimationStateTime();
 		updateStandingTime();
-		updateWaitingAnimation();
+		updateAnimations();
 		updateNonPhysicsPosition();
+		updateStates();
+		updateBullets();
+		printDebug();
+	}
+	
+	private void updateAnimations() {
+		updateWaitingAnimation();
+		updateAnimationStateTime();
+	}
+	
+	private void updateStates() {
 		checkIfStateShouldBeStanding();
 		checkIfStateShouldBeWaiting();
 		checkIfStateShouldBeJumping();
-		printDebug();
-		updateBullets();
 	}
 	
 	private void checkIfSpawning() {
-		if (CharacterManager.getCharacter() instanceof Jetten == false) return;
+		if (characterHasSpawnAnimation() == false) return;
 		
-		if (TimeUtils.millis() - timePlayerCreated < PlayerConstants.SPAWN_TIME) {
-			System.out.println("Should be spawning");
-			currentState = PlayerState.Spawning;
-			currentAnimation = ((Jetten) CharacterManager.getCharacter()).animationAppear;
-			currentDirection = PlayerDirection.Right;
+		if (notFinishedSpawning()) {
+			setStateToSpawning();
 		}
+	}
+	
+	private void setStateToSpawning() {
+		currentState = PlayerState.Spawning;
+		currentAnimation = ((Jetten) CharacterManager.getCharacter()).animationAppear;
+		currentDirection = PlayerDirection.Right;
+	}
+	
+	private boolean notFinishedSpawning() {
+		if (TimeUtils.millis() - timePlayerCreated < PlayerConstants.SPAWN_TIME) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean characterHasSpawnAnimation() {
+		if (CharacterManager.getCharacter() instanceof Jetten) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	private void updateBullets() {
@@ -146,13 +181,17 @@ public class Player extends GameObject {
 
 	private void checkIfStateShouldBeJumping() {
 		if (!canJump) {
-			currentState = PlayerState.Jumping;
+			setStateToJumping();
+		}
+	}
+	
+	private void setStateToJumping() {
+		currentState = PlayerState.Jumping;
 
-			if (currentDirection == PlayerDirection.Left) {
-				currentAnimation = CharacterManager.getCharacter().animationJumpingLeft;
-			} else {
-				currentAnimation = CharacterManager.getCharacter().animationJumpingRight;
-			}
+		if (currentDirection == PlayerDirection.Left) {
+			currentAnimation = CharacterManager.getCharacter().animationJumpingLeft;
+		} else {
+			currentAnimation = CharacterManager.getCharacter().animationJumpingRight;
 		}
 	}
 
@@ -178,16 +217,20 @@ public class Player extends GameObject {
 
 	private void checkIfStateShouldBeWaiting() {
 		if ((int) timeSpentStanding != 0 && (int) timeSpentStanding >= 5) {
-			currentState = PlayerState.Waiting;
-
-			if (currentDirection == PlayerDirection.Left) {
-				currentAnimation = CharacterManager.getCharacter().animationWaitingLeft;
-			} else {
-				currentAnimation = CharacterManager.getCharacter().animationWaitingRight;
-			}
-
-			timeStartedWaiting = TimeUtils.millis();
+			setStateToWaiting();
 		}
+	}
+	
+	private void setStateToWaiting() {
+		currentState = PlayerState.Waiting;
+
+		if (currentDirection == PlayerDirection.Left) {
+			currentAnimation = CharacterManager.getCharacter().animationWaitingLeft;
+		} else {
+			currentAnimation = CharacterManager.getCharacter().animationWaitingRight;
+		}
+
+		timeStartedWaiting = TimeUtils.millis();
 	}
 
 	private void updateNonPhysicsPosition() {
@@ -201,13 +244,17 @@ public class Player extends GameObject {
 				return;
 			}
 
-			currentState = PlayerState.Standing;
+			setStateToStanding();
+		}
+	}
+	
+	private void setStateToStanding() {
+		currentState = PlayerState.Standing;
 
-			if (currentDirection == PlayerDirection.Left) {
-				currentAnimation = CharacterManager.getCharacter().animationStandingLeft;
-			} else {
-				currentAnimation = CharacterManager.getCharacter().animationStandingRight;
-			}
+		if (currentDirection == PlayerDirection.Left) {
+			currentAnimation = CharacterManager.getCharacter().animationStandingLeft;
+		} else {
+			currentAnimation = CharacterManager.getCharacter().animationStandingRight;
 		}
 	}
 
@@ -292,7 +339,10 @@ public class Player extends GameObject {
 		}
 
 		setShootingStateAndAnimation();
-
+		createBullet();
+	}
+	
+	private void createBullet() {
 		if (currentDirection == PlayerDirection.Left) {
 			createBulletFromLeft();
 		} else {

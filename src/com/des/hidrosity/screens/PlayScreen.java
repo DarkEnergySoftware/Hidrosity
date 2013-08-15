@@ -23,18 +23,19 @@ public class PlayScreen implements Screen {
 
 	private SpriteBatch spriteBatch;
 	private OrthographicCamera camera;
+	private Box2DDebugRenderer debugRenderer;
 
 	public static World physicsWorld;
-	private Box2DDebugRenderer debugRenderer;
+	
 	private LevelManager levelManager;
 
-	public static Array<Body> bodiesToRemove = new Array<>();
-
 	private Player player;
-	private StationaryEnemy testEnemy;
 	
+	private StationaryEnemy testEnemy;
 	private Array<Enemy> enemies = new Array<Enemy>();
 
+	public static Array<Body> bodiesToRemove = new Array<>();
+	
 	public void show() {
 		setupRenderingStuff();
 		createPhysicsWorld();
@@ -135,9 +136,13 @@ public class PlayScreen implements Screen {
 	
 	private void updateCameraPosition() {
 		if (playerWithinCameraBounds()) {
-			camera.position.x = player.getX();
-			camera.update();
+			cameraFollowPlayer();
 		}
+	}
+	
+	private void cameraFollowPlayer() {
+		camera.position.x = player.getX();
+		camera.update();
 	}
 	
 	private boolean playerWithinCameraBounds() {
@@ -172,6 +177,10 @@ public class PlayScreen implements Screen {
 		}
 		spriteBatch.end();
 
+		renderDebugWorld();
+	}
+	
+	private void renderDebugWorld() {
 		debugRenderer.render(physicsWorld, camera.projection);
 	}
 	
