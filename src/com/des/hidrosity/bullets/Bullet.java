@@ -60,6 +60,7 @@ public abstract class Bullet extends GameObject {
 		fixtureDef.density = BulletConstants.DENSITY;
 
 		physicsBody = gameWorld.createBody(bodyDef);
+		physicsBody.setFixedRotation(true);
 
 		fixture = physicsBody.createFixture(fixtureDef);
 	}
