@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <level>
+    <!-- First part -->
 	<body> 
 		<x>0</x>
 		<y>0</y>
@@ -50,16 +51,9 @@
 	    <height>15</height>
 	</body>
 	
-	<!-- Left boundary -->
-	<body>
-	    <x>0</x>
-	    <y>0</y>
-	    <width>1</width>
-	    <height>224</height>
-	</body>
-
-	<body>
-		<x>993</x>
+	<!-- Second part -->
+	<body> 
+		<x>1000</x>
 		<y>0</y>
 		<width>144</width>
 		<height>63</height>
@@ -68,14 +62,14 @@
 	<body> 
 		<x>1209</x>
 		<y>49</y>
-		<width>27</width>
+		<width>37</width>
 		<height>13</height>
 	</body>
 	
 	<body> 
 		<x>1309</x>
 		<y>49</y>
-		<width>27</width>
+		<width>37</width>
 		<height>13</height>
 	</body>
 	
@@ -107,6 +101,14 @@
 	    <height>15</height>
 	</body>
 	
+	<!-- Left boundary -->
+	<body>
+	    <x>0</x>
+	    <y>0</y>
+	    <width>1</width>
+	    <height>224</height>
+	</body>
+
 	<!-- Right boundary -->
 	<body>
 	    <x>2000</x>
