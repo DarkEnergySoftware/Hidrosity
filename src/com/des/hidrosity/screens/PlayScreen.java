@@ -143,7 +143,7 @@ public class PlayScreen implements Screen {
 	}
 
 	private boolean playerWithinCameraBounds() {
-		if (player.getX() > 0f && player.getX() < levelManager.getLevelWidth() - player.getWidth()) {
+		if (player.getX() > 0f && player.getX() < levelManager.getLevelWidth() - player.getWidth() - GameConstants.X_OFFSET) {
 			return true;
 		}
 
