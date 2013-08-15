@@ -12,6 +12,10 @@ public class CollisionListener implements ContactListener {
 	private int numPlayerCollisions;
 
 	public void beginContact(Contact contact) {
+		if (contact.getFixtureA().getUserData() == null || contact.getFixtureB().getUserData() == null) {
+			return;
+		}
+		
 		checkIfPlayerTouchesGround(contact);
 	}
 	
@@ -36,6 +40,10 @@ public class CollisionListener implements ContactListener {
 	}
 
 	public void endContact(Contact contact) {
+		if (contact.getFixtureA().getUserData() == null || contact.getFixtureB().getUserData() == null) {
+			return;
+		}
+		
 		checkIfPlayerLeavesGround(contact);
 	}
 
