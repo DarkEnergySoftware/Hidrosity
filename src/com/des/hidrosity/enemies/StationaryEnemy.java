@@ -44,12 +44,12 @@ public class StationaryEnemy extends Enemy {
 	}
 	
 	private void shootBulletFromRight() {
-		StationaryEnemyBullet b = new StationaryEnemyBullet(new Vector2(getX(), getY()), "res/bullets/jettenBullet.png", 1, PlayScreen.physicsWorld);
+		StationaryEnemyBullet b = new StationaryEnemyBullet(new Vector2(getX(), getY() + getHeight() / 2), "res/bullets/jettenBullet.png", 1, PlayScreen.physicsWorld);
 		bullets.add(b);
 	}
 	
 	private void shootBulletFromLeft() {
-		StationaryEnemyBullet b = new StationaryEnemyBullet(new Vector2(getX(), getY()), "res/bullets/jettenBullet.png", -1, PlayScreen.physicsWorld);
+		StationaryEnemyBullet b = new StationaryEnemyBullet(new Vector2(getX(), getY() + getHeight() / 2), "res/bullets/jettenBullet.png", -1, PlayScreen.physicsWorld);
 		bullets.add(b);
 	}
 	
