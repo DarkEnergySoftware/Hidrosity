@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.Array;
 import com.des.hidrosity.collisions.CollisionListener;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.KeyConstants;
+import com.des.hidrosity.enemies.Enemy;
+import com.des.hidrosity.enemies.StationaryEnemy;
 import com.des.hidrosity.levels.LevelManager;
 import com.des.hidrosity.player.Player;
 
@@ -24,18 +26,26 @@ public class PlayScreen implements Screen {
 
 	public static World physicsWorld;
 	private Box2DDebugRenderer debugRenderer;
-
-	public static Array<Body> bodiesToRemove = new Array<>();
-	
 	private LevelManager levelManager;
 
+	public static Array<Body> bodiesToRemove = new Array<>();
+
 	private Player player;
+	private StationaryEnemy testEnemy;
+	
+	private Array<Enemy> enemies = new Array<Enemy>();
 
 	public void show() {
 		setupRenderingStuff();
 		createPhysicsWorld();
 		createLevelManager();
 		createPlayer();
+		createEnemies();
+	}
+	
+	private void createEnemies() {
+		testEnemy = new StationaryEnemy(new Vector2(616*2 + GameConstants.X_OFFSET, 94*2 + GameConstants.Y_OFFSET), "res/enemies/stationary enemy/left.png", player);
+		enemies.add(testEnemy);
 	}
 
 	private void createPlayer() {
@@ -104,9 +114,16 @@ public class PlayScreen implements Screen {
 	
 	private void update() {
 		updatePlayer();
+		updateEnemies();
 		updatePhysicsWorld();
 		removeBodies();
 		updateCameraPosition();
+	}
+	
+	private void updateEnemies() {
+		for (Enemy e : enemies) {
+			e.update(Gdx.graphics.getDeltaTime());
+		}
 	}
 	
 	private void removeBodies() {
@@ -151,10 +168,17 @@ public class PlayScreen implements Screen {
 		{
 			renderLevel();
 			renderPlayer();
+			renderEnemies();
 		}
 		spriteBatch.end();
 
 		debugRenderer.render(physicsWorld, camera.projection);
+	}
+	
+	private void renderEnemies() {
+		for (Enemy e : enemies) {
+			e.render(spriteBatch);
+		}
 	}
 	
 	private void renderPlayer() {

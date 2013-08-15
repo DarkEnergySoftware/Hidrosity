@@ -12,22 +12,7 @@ public class CollisionListener implements ContactListener {
 	private int numPlayerCollisions;
 
 	public void beginContact(Contact contact) {
-		if (contact.getFixtureA().getUserData() == null || contact.getFixtureB().getUserData() == null) {
-			return;
-		}
-		
 		checkIfPlayerTouchesGround(contact);
-		checkIfPlayerBulletCollides(contact);
-	}
-	
-	private void checkIfPlayerBulletCollides(Contact contact) {
-		if (contact.getFixtureA().getUserData() instanceof PlayerBullet) {
-			((PlayerBullet) contact.getFixtureA().getUserData()).shouldBeRemoved = true;
-		}
-		
-		if (contact.getFixtureB().getUserData() instanceof PlayerBullet) {
-			((PlayerBullet) contact.getFixtureB().getUserData()).shouldBeRemoved = true;
-		}
 	}
 	
 	private void checkIfPlayerTouchesGround(Contact contact) {
@@ -51,10 +36,6 @@ public class CollisionListener implements ContactListener {
 	}
 
 	public void endContact(Contact contact) {
-		if (contact.getFixtureA().getUserData() == null || contact.getFixtureB().getUserData() == null) {
-			return;
-		}
-		
 		checkIfPlayerLeavesGround(contact);
 	}
 
