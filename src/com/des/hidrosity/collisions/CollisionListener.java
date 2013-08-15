@@ -4,8 +4,10 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.des.hidrosity.bullets.Bullet;
 import com.des.hidrosity.bullets.PlayerBullet;
 import com.des.hidrosity.player.Player;
+import com.des.hidrosity.screens.PlayScreen;
 
 public class CollisionListener implements ContactListener {
 
@@ -15,10 +17,10 @@ public class CollisionListener implements ContactListener {
 		if (contact.getFixtureA().getUserData() == null || contact.getFixtureB().getUserData() == null) {
 			return;
 		}
-		
+
 		checkIfPlayerTouchesGround(contact);
 	}
-	
+
 	private void checkIfPlayerTouchesGround(Contact contact) {
 		if (contact.getFixtureA().getUserData() instanceof Player
 				&& contact.getFixtureB().getUserData().toString().equals("level")) {
@@ -43,7 +45,7 @@ public class CollisionListener implements ContactListener {
 		if (contact.getFixtureA().getUserData() == null || contact.getFixtureB().getUserData() == null) {
 			return;
 		}
-		
+
 		checkIfPlayerLeavesGround(contact);
 	}
 

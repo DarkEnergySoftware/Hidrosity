@@ -26,16 +26,16 @@ public class PlayScreen implements Screen {
 	private Box2DDebugRenderer debugRenderer;
 
 	public static World physicsWorld;
-	
+
 	private LevelManager levelManager;
 
 	private Player player;
-	
+
 	private StationaryEnemy testEnemy;
 	private Array<Enemy> enemies = new Array<Enemy>();
 
 	public static Array<Body> bodiesToRemove = new Array<>();
-	
+
 	public void show() {
 		setupRenderingStuff();
 		createPhysicsWorld();
@@ -43,9 +43,10 @@ public class PlayScreen implements Screen {
 		createPlayer();
 		createEnemies();
 	}
-	
+
 	private void createEnemies() {
-		testEnemy = new StationaryEnemy(new Vector2(616*2 + GameConstants.X_OFFSET, 94*2 + GameConstants.Y_OFFSET), "res/enemies/stationary enemy/left.png", player);
+		testEnemy = new StationaryEnemy(new Vector2(616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET),
+				"res/enemies/stationary enemy/left.png", player);
 		enemies.add(testEnemy);
 	}
 
@@ -78,7 +79,7 @@ public class PlayScreen implements Screen {
 		handlePlayerInput();
 		handleCameraInput();
 	}
-	
+
 	private void handleCameraInput() {
 		if (Gdx.input.isKeyPressed(Keys.PLUS)) {
 			zoomInCamera();
@@ -86,77 +87,73 @@ public class PlayScreen implements Screen {
 			zoomOutCamera();
 		}
 	}
-	
+
 	private void zoomOutCamera() {
 		camera.zoom += 0.005f;
 		camera.update();
 	}
-	
+
 	private void zoomInCamera() {
 		camera.zoom -= 0.005f;
 		camera.update();
 	}
-	
+
 	private void handlePlayerInput() {
 		if (Gdx.input.isKeyPressed(KeyConstants.PLAYER_LEFT)) {
 			player.moveLeft();
 		} else if (Gdx.input.isKeyPressed(KeyConstants.PLAYER_RIGHT)) {
 			player.moveRight();
 		}
-		
+
 		if (Gdx.input.isKeyPressed(KeyConstants.PLAYER_JUMP)) {
 			player.jump();
 		}
-		
+
 		if (Gdx.input.isKeyPressed(KeyConstants.PLAYER_SHOOT)) {
 			player.shoot();
 		}
 	}
-	
+
 	private void update() {
 		updatePlayer();
 		updateEnemies();
 		updatePhysicsWorld();
-		removeBodies();
 		updateCameraPosition();
+		removeBodies();
 	}
-	
+
 	private void updateEnemies() {
 		for (Enemy e : enemies) {
 			e.update(Gdx.graphics.getDeltaTime());
 		}
 	}
-	
+
 	private void removeBodies() {
-		for (Body b : bodiesToRemove) {
-			physicsWorld.destroyBody(b);
-			bodiesToRemove.removeValue(b, true);
-		}
 	}
-	
+
 	private void updateCameraPosition() {
 		if (playerWithinCameraBounds()) {
 			cameraFollowPlayer();
 		}
 	}
-	
+
 	private void cameraFollowPlayer() {
 		camera.position.x = player.getX();
 		camera.update();
 	}
-	
+
 	private boolean playerWithinCameraBounds() {
 		if (player.getX() > 0f && player.getX() < levelManager.getLevelWidth() - player.getWidth()) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	private void updatePhysicsWorld() {
 		physicsWorld.step(1 / 60f, 8, 3);
 	}
-	
+
 	private void updatePlayer() {
 		player.update(Gdx.graphics.getDeltaTime());
 	}
@@ -179,17 +176,17 @@ public class PlayScreen implements Screen {
 
 		renderDebugWorld();
 	}
-	
+
 	private void renderDebugWorld() {
 		debugRenderer.render(physicsWorld, camera.projection);
 	}
-	
+
 	private void renderEnemies() {
 		for (Enemy e : enemies) {
 			e.render(spriteBatch);
 		}
 	}
-	
+
 	private void renderPlayer() {
 		player.render(spriteBatch);
 	}
@@ -197,7 +194,7 @@ public class PlayScreen implements Screen {
 	private void renderLevel() {
 		levelManager.renderLevel(spriteBatch);
 	}
-	
+
 	public void resize(int width, int height) {
 	}
 

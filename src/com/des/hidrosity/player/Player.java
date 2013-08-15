@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.des.hidrosity.bullets.Bullet;
 import com.des.hidrosity.bullets.PlayerBullet;
 import com.des.hidrosity.characters.CharacterManager;
 import com.des.hidrosity.characters.Jetten;
@@ -172,11 +173,6 @@ public class Player extends GameObject {
 	}
 	
 	private void updateBullets() {
-		for (PlayerBullet b : bullets) {
-			if (b.shouldBeRemoved) {
-				PlayScreen.bodiesToRemove.add(b.getBody());
-			}
-		}
 	}
 
 	private void checkIfStateShouldBeJumping() {
