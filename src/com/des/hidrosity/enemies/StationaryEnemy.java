@@ -28,7 +28,7 @@ public class StationaryEnemy extends Enemy {
 	public void update(float delta) {
 		super.update(delta);
 		
-		if (shouldShoot()) {
+		if (inRangeOfPlayer() && shouldShoot()) {
 			shoot();
 		}
 	}
@@ -41,6 +41,20 @@ public class StationaryEnemy extends Enemy {
 		}
 		
 		lastTimeShot = TimeUtils.millis();
+	}
+	
+	private boolean inRangeOfPlayer() {
+		float distanceToPlayer = getDistanceToPlayer();
+		
+		if (distanceToPlayer < EnemyConstants.SHOOT_RANGE) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private float getDistanceToPlayer() {
+		return (float) Math.sqrt( Math.pow(getX() - player.getX(), 2) + Math.pow(getY() - player.getY(), 2) );
 	}
 	
 	private void shootBulletFromRight() {
