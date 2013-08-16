@@ -33,7 +33,7 @@ public class Player extends GameObject {
 	private enum PlayerDirection {
 		Left, Right
 	};
-
+	
 	private Body physicsBody;
 
 	private Animation currentAnimation;
