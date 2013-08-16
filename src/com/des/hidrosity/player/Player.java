@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.des.hidrosity.bullets.Bullet;
 import com.des.hidrosity.bullets.PlayerBullet;
 import com.des.hidrosity.characters.CharacterManager;
 import com.des.hidrosity.characters.Jetten;
@@ -21,6 +22,7 @@ import com.des.hidrosity.constants.CollisionConstants;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.PlayerConstants;
 import com.des.hidrosity.debug.Logger;
+import com.des.hidrosity.screens.PlayScreen;
 import com.jakehorsfield.libld.GameObject;
 
 public class Player extends GameObject {
@@ -42,9 +44,12 @@ public class Player extends GameObject {
 	private PlayerState currentState;
 	private PlayerDirection currentDirection;
 
-	private World physicsWorld;
+	private World gameWorld;
+
+	private boolean canJump = true;
 
 	private float timeSpentStanding;
+
 	private long timeStartedWaiting;
 	private long timeStartedShooting;
 	private long lastTimeShot;
@@ -53,12 +58,11 @@ public class Player extends GameObject {
 	
 	private long timePlayerCreated;
 	
-	private boolean canJump = true;
 	private boolean shooting = false;
 
 	public Player(Vector2 position, String textureName, World gameWorld) {
 		super(position, textureName);
-		this.physicsWorld = gameWorld;
+		this.gameWorld = gameWorld;
 
 		setInitialStateAndDirection();
 		loadAnimations();
@@ -90,7 +94,7 @@ public class Player extends GameObject {
 		fixtureDef.filter.categoryBits = CollisionConstants.PLAYER;
 		fixtureDef.filter.maskBits = CollisionConstants.PLAYER_MASK;
 
-		physicsBody = physicsWorld.createBody(bodyDef);
+		physicsBody = gameWorld.createBody(bodyDef);
 		physicsBody.setFixedRotation(true);
 		physicsBody.setLinearDamping(1f);
 
@@ -115,7 +119,7 @@ public class Player extends GameObject {
 	}
 
 	private void loadAnimations() {
-		currentAnimation = CharacterManager.getCharacter().animationStandingRight;
+		currentAnimation = CharacterManager.getCharacter().animationStandingShootingRight;
 	}
 
 	private void setInitialStateAndDirection() {
@@ -126,9 +130,11 @@ public class Player extends GameObject {
 	public void update(float delta) {
 		updateShootingTime();
 		updateStandingTime();
+		checkIfSpawning();
 		updateAnimations();
 		updateNonPhysicsPosition();
 		updateStates();
+		updateBullets();
 		printDebug();
 	}
 	
@@ -151,10 +157,9 @@ public class Player extends GameObject {
 		checkIfStateShouldBeStanding();
 		checkIfStateShouldBeWaiting();
 		checkIfStateShouldBeJumping();
-		checkIfStateShouldBeSpawning();
 	}
 	
-	private void checkIfStateShouldBeSpawning() {
+	private void checkIfSpawning() {
 		if (characterHasSpawnAnimation() == false) return;
 		
 		if (notFinishedSpawning()) {
@@ -184,6 +189,9 @@ public class Player extends GameObject {
 		return false;
 	}
 	
+	private void updateBullets() {
+	}
+
 	private void checkIfStateShouldBeJumping() {
 		if (!canJump) {
 			setStateToJumping();
@@ -298,18 +306,14 @@ public class Player extends GameObject {
 		if (shooting) {
 			moveLeftShooting();
 		} else {
-			moveLeftNormal();
+			currentAnimation = CharacterManager.getCharacter().animationRunningLeft;
+			currentDirection = PlayerDirection.Left;
+			currentState = PlayerState.Running;	
 		}
 		
 		if (movingTooFastLeft() == false) {
 			physicsBody.applyLinearImpulse(new Vector2(-PlayerConstants.SPEED, 0f), physicsBody.getWorldCenter(), true);
 		}
-	}
-	
-	private void moveLeftNormal() {
-		currentAnimation = CharacterManager.getCharacter().animationRunningLeft;
-		currentDirection = PlayerDirection.Left;
-		currentState = PlayerState.Running;	
 	}
 	
 	private void moveLeftShooting() {
@@ -330,18 +334,14 @@ public class Player extends GameObject {
 		if (shooting) {
 			moveRightShooting();
 		} else {
-			moveRightNormal();
+			currentAnimation = CharacterManager.getCharacter().animationRunningRight;
+			currentDirection = PlayerDirection.Right;
+			currentState = PlayerState.Running;
 		}
 
 		if (movingTooFastRight() == false) {
 			physicsBody.applyLinearImpulse(new Vector2(PlayerConstants.SPEED, 0f), physicsBody.getWorldCenter(), true);
 		}
-	}
-	
-	private void moveRightNormal() {
-		currentAnimation = CharacterManager.getCharacter().animationRunningRight;
-		currentDirection = PlayerDirection.Right;
-		currentState = PlayerState.Running;
 	}
 	
 	private void moveRightShooting() {
@@ -389,28 +389,33 @@ public class Player extends GameObject {
 	}
 
 	private void createBulletFromRight() {
-		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()), "res/bullets/heroBullet.png", 1, physicsWorld);
+		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()), "res/bullets/heroBullet.png", 1, gameWorld);
 		bullets.add(b);
 	}
 
 	private void createBulletFromLeft() {
-		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()), "res/bullets/heroBullet.png", -1, physicsWorld);
+		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()), "res/bullets/heroBullet.png", -1, gameWorld);
 		bullets.add(b);
 	}
 
 	private void setShootingStateAndAnimation() {
+		Logger.log("setShootingStateAndAnimation()");
+		
 		switch (currentState) {
 		case Running:
 			currentState = PlayerState.ShootingRunning;
 			setAnimationToShootingRunning();
+			Logger.log("Set to ShootingRunning");
 			break;
 		case Jumping:
 			currentState = PlayerState.ShootingJumping;
 			setAnimationToShootingJumping();
+			Logger.log("Set to ShootingJumping");
 			break;
 		case Standing:
 			currentState = PlayerState.ShootingStanding;
 			setAnimationToShootingStanding();
+			Logger.log("Set to ShootingStanding");
 			break;
 		}
 	}
