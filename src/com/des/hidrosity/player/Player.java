@@ -128,19 +128,22 @@ public class Player extends GameObject {
 	}
 
 	public void update(float delta) {
-		if (TimeUtils.millis() - timeStartedShooting < 1000) {
-			shooting = true;
-		} else {
-			shooting = false;
-		}
-		
-		checkIfSpawning();
+		updateShootingTime();
 		updateStandingTime();
+		checkIfSpawning();
 		updateAnimations();
 		updateNonPhysicsPosition();
 		updateStates();
 		updateBullets();
 		printDebug();
+	}
+	
+	private void updateShootingTime() {
+		if (TimeUtils.millis() - timeStartedShooting < 1000) {
+			shooting = true;
+		} else {
+			shooting = false;
+		}
 	}
 	
 	private void updateAnimations() {
@@ -150,6 +153,7 @@ public class Player extends GameObject {
 	
 	private void updateStates() {
 		if (shooting) return;
+		
 		checkIfStateShouldBeStanding();
 		checkIfStateShouldBeWaiting();
 		checkIfStateShouldBeJumping();
@@ -299,13 +303,23 @@ public class Player extends GameObject {
 	}
 
 	public void moveLeft() {
-		currentAnimation = CharacterManager.getCharacter().animationRunningLeft;
-		currentDirection = PlayerDirection.Left;
-		currentState = PlayerState.Running;
-
+		if (shooting) {
+			moveLeftShooting();
+		} else {
+			currentAnimation = CharacterManager.getCharacter().animationRunningLeft;
+			currentDirection = PlayerDirection.Left;
+			currentState = PlayerState.Running;	
+		}
+		
 		if (movingTooFastLeft() == false) {
 			physicsBody.applyLinearImpulse(new Vector2(-PlayerConstants.SPEED, 0f), physicsBody.getWorldCenter(), true);
 		}
+	}
+	
+	private void moveLeftShooting() {
+		currentAnimation = CharacterManager.getCharacter().animationRunningShootingLeft;
+		currentDirection = PlayerDirection.Left;
+		currentState = PlayerState.ShootingRunning;
 	}
 
 	private boolean movingTooFastLeft() {
@@ -317,13 +331,23 @@ public class Player extends GameObject {
 	}
 
 	public void moveRight() {
-		currentAnimation = CharacterManager.getCharacter().animationRunningRight;
-		currentDirection = PlayerDirection.Right;
-		currentState = PlayerState.Running;
+		if (shooting) {
+			moveRightShooting();
+		} else {
+			currentAnimation = CharacterManager.getCharacter().animationRunningRight;
+			currentDirection = PlayerDirection.Right;
+			currentState = PlayerState.Running;
+		}
 
 		if (movingTooFastRight() == false) {
 			physicsBody.applyLinearImpulse(new Vector2(PlayerConstants.SPEED, 0f), physicsBody.getWorldCenter(), true);
 		}
+	}
+	
+	private void moveRightShooting() {
+		currentAnimation = CharacterManager.getCharacter().animationRunningShootingRight;
+		currentDirection = PlayerDirection.Right;
+		currentState = PlayerState.ShootingRunning;
 	}
 
 	private boolean movingTooFastRight() {
