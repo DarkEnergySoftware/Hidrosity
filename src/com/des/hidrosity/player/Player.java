@@ -28,7 +28,7 @@ import com.jakehorsfield.libld.GameObject;
 public class Player extends GameObject {
 
 	private enum PlayerState {
-		Standing, Waiting, Walking, Running, Jumping, ShootingStanding, ShootingRunning, ShootingJumping, Spawning
+		Standing, Waiting, Running, Jumping, ShootingStanding, ShootingRunning, ShootingJumping, Spawning
 	};
 
 	private enum PlayerDirection {
