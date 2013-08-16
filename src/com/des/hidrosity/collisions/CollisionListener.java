@@ -13,36 +13,48 @@ public class CollisionListener implements ContactListener {
 
 	private int numPlayerCollisions;
 
+	private Object fixtureAUserData;
+	private Object fixtureBUserData;
+
 	public void beginContact(Contact contact) {
-		if (contact.getFixtureA().getUserData() == null || contact.getFixtureB().getUserData() == null) {
+		fixtureAUserData = contact.getFixtureA().getUserData();
+		fixtureBUserData = contact.getFixtureB().getUserData();
+
+		if (userDataIsNull(contact)) {
 			return;
 		}
 
 		checkIfPlayerTouchesGround(contact);
 	}
 
+	private boolean userDataIsNull(Contact contact) {
+		if (fixtureAUserData == null || fixtureBUserData == null) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private void checkIfPlayerTouchesGround(Contact contact) {
-		if (contact.getFixtureA().getUserData() instanceof Player
-				&& contact.getFixtureB().getUserData().toString().equals("level")) {
+		if (fixtureAUserData instanceof Player && fixtureBUserData.toString().equals("level")) {
 			numPlayerCollisions++;
 
 			if (numPlayerCollisions > 0) {
-				((Player) contact.getFixtureB().getUserData()).setCanJump(true);
+				((Player) fixtureBUserData).setCanJump(true);
 			}
 		}
 
-		if (contact.getFixtureB().getUserData() instanceof Player
-				&& contact.getFixtureA().getUserData().toString().equals("level")) {
+		if (fixtureBUserData instanceof Player && fixtureAUserData.toString().equals("level")) {
 			numPlayerCollisions++;
 
 			if (numPlayerCollisions > 0) {
-				((Player) contact.getFixtureB().getUserData()).setCanJump(true);
+				((Player) fixtureBUserData).setCanJump(true);
 			}
 		}
 	}
 
 	public void endContact(Contact contact) {
-		if (contact.getFixtureA().getUserData() == null || contact.getFixtureB().getUserData() == null) {
+		if (userDataIsNull(contact)) {
 			return;
 		}
 
@@ -50,31 +62,34 @@ public class CollisionListener implements ContactListener {
 	}
 
 	private void checkIfPlayerLeavesGround(Contact contact) {
-		if (contact.getFixtureA().getUserData() instanceof Player
-				&& contact.getFixtureB().getUserData().toString().equals("level")) {
+		if (fixtureAUserData instanceof Player && fixtureBUserData.toString().equals("level")) {
 			numPlayerCollisions--;
 
-			if (numPlayerCollisions <= 0) {
-				((Player) contact.getFixtureA().getUserData()).setCanJump(false);
+			if (playerCanJump()) {
+				((Player) fixtureAUserData).setCanJump(false);
 			}
 		}
 
-		if (contact.getFixtureB().getUserData() instanceof Player
-				&& contact.getFixtureA().getUserData().toString().equals("level")) {
+		if (fixtureBUserData instanceof Player && fixtureAUserData.toString().equals("level")) {
 			numPlayerCollisions--;
 
-			if (numPlayerCollisions <= 0) {
-				((Player) contact.getFixtureB().getUserData()).setCanJump(false);
+			if (playerCanJump()) {
+				((Player) fixtureBUserData).setCanJump(false);
 			}
 		}
+	}
+
+	private boolean playerCanJump() {
+		if (numPlayerCollisions <= 0) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public void preSolve(Contact contact, Manifold oldManifold) {
-
 	}
 
 	public void postSolve(Contact contact, ContactImpulse impulse) {
-
 	}
-
 }
