@@ -71,6 +71,8 @@ public class LevelCreator {
 		fixtureDef.friction = 0f;
 		fixtureDef.shape = polygonShape;
 		fixtureDef.restitution = 0f;
+		fixtureDef.filter.categoryBits = CollisionConstants.LEVEL;
+		fixtureDef.filter.maskBits = CollisionConstants.LEVEL_MASK;
 		
 		Fixture fixture = currentBody.createFixture(fixtureDef);
 		fixture.setUserData("level");
@@ -88,6 +90,8 @@ public class LevelCreator {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.friction = 0f;
 		fixtureDef.shape = polygonShape;
+		fixtureDef.filter.categoryBits = CollisionConstants.LEVEL;
+		fixtureDef.filter.maskBits = CollisionConstants.LEVEL_MASK;
 		
 		Fixture fixture = currentBody.createFixture(fixtureDef);
 		fixture.setUserData("level");
@@ -104,6 +108,8 @@ public class LevelCreator {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = polygonShape;
 		fixtureDef.friction = 0.1f;
+		fixtureDef.filter.categoryBits = CollisionConstants.LEVEL;
+		fixtureDef.filter.maskBits = CollisionConstants.LEVEL_MASK;
 
 		Body body = gameWorld.createBody(bodyDef);
 		Fixture fixture = body.createFixture(fixtureDef);

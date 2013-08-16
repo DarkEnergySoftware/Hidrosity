@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.des.hidrosity.constants.CollisionConstants;
 import com.des.hidrosity.constants.EnemyConstants;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.player.Player;
@@ -57,6 +58,8 @@ public abstract class Enemy extends GameObject {
 		fixtureDef.shape = polygonShape;
 		fixtureDef.density = EnemyConstants.DENSITY;
 		fixtureDef.restitution = EnemyConstants.RESTITUTION;
+		fixtureDef.filter.categoryBits = CollisionConstants.ENEMY;
+		fixtureDef.filter.maskBits = CollisionConstants.ENEMY_MASK;
 		
 		physicsBody = PlayScreen.physicsWorld.createBody(bodyDef);
 		physicsBody.setFixedRotation(true);

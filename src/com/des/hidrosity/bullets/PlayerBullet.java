@@ -11,6 +11,11 @@ public class PlayerBullet extends Bullet {
 	public PlayerBullet(Vector2 position, String textureName, int direction, World gameWorld) {
 		super(position, textureName, direction, gameWorld);
 		
+		Filter filterData = new Filter();
+		filterData.categoryBits = CollisionConstants.PLAYER;
+		filterData.maskBits = CollisionConstants.PLAYER_MASK;
+		
+		fixture.setFilterData(filterData);
 		fixture.setUserData(this);
 	}
 

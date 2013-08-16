@@ -18,6 +18,7 @@ import com.des.hidrosity.bullets.Bullet;
 import com.des.hidrosity.bullets.PlayerBullet;
 import com.des.hidrosity.characters.CharacterManager;
 import com.des.hidrosity.characters.Jetten;
+import com.des.hidrosity.constants.CollisionConstants;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.PlayerConstants;
 import com.des.hidrosity.debug.Logger;
@@ -87,6 +88,8 @@ public class Player extends GameObject {
 		fixtureDef.density = PlayerConstants.DENSITY;
 		fixtureDef.friction = PlayerConstants.FRICTION;
 		fixtureDef.restitution = PlayerConstants.RESTITUTION;
+		fixtureDef.filter.categoryBits = CollisionConstants.PLAYER;
+		fixtureDef.filter.maskBits = CollisionConstants.PLAYER_MASK;
 
 		physicsBody = gameWorld.createBody(bodyDef);
 		physicsBody.setFixedRotation(true);
