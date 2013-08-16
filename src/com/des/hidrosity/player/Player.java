@@ -51,11 +51,14 @@ public class Player extends GameObject {
 	private float timeSpentStanding;
 
 	private long timeStartedWaiting;
+	private long timeStartedShooting;
 	private long lastTimeShot;
 
 	private Array<PlayerBullet> bullets = new Array<>();
 	
 	private long timePlayerCreated;
+	
+	private boolean shooting = false;
 
 	public Player(Vector2 position, String textureName, World gameWorld) {
 		super(position, textureName);
@@ -116,7 +119,7 @@ public class Player extends GameObject {
 	}
 
 	private void loadAnimations() {
-		currentAnimation = CharacterManager.getCharacter().animationStandingRight;
+		currentAnimation = CharacterManager.getCharacter().animationStandingShootingRight;
 	}
 
 	private void setInitialStateAndDirection() {
@@ -125,6 +128,12 @@ public class Player extends GameObject {
 	}
 
 	public void update(float delta) {
+		if (TimeUtils.millis() - timeStartedShooting < 1000) {
+			shooting = true;
+		} else {
+			shooting = false;
+		}
+		
 		checkIfSpawning();
 		updateStandingTime();
 		updateAnimations();
@@ -140,6 +149,7 @@ public class Player extends GameObject {
 	}
 	
 	private void updateStates() {
+		if (shooting) return;
 		checkIfStateShouldBeStanding();
 		checkIfStateShouldBeWaiting();
 		checkIfStateShouldBeJumping();
@@ -339,6 +349,9 @@ public class Player extends GameObject {
 
 		setShootingStateAndAnimation();
 		createBullet();
+		
+		shooting = true;
+		timeStartedShooting = TimeUtils.millis();
 	}
 	
 	private void createBullet() {
@@ -362,18 +375,23 @@ public class Player extends GameObject {
 	}
 
 	private void setShootingStateAndAnimation() {
+		Logger.log("setShootingStateAndAnimation()");
+		
 		switch (currentState) {
 		case Running:
 			currentState = PlayerState.ShootingRunning;
 			setAnimationToShootingRunning();
+			Logger.log("Set to ShootingRunning");
 			break;
 		case Jumping:
 			currentState = PlayerState.ShootingJumping;
 			setAnimationToShootingJumping();
+			Logger.log("Set to ShootingJumping");
 			break;
 		case Standing:
 			currentState = PlayerState.ShootingStanding;
 			setAnimationToShootingStanding();
+			Logger.log("Set to ShootingStanding");
 			break;
 		}
 	}
