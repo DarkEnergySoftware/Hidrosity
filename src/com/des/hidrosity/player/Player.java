@@ -139,7 +139,7 @@ public class Player extends GameObject {
 	}
 	
 	private void updateShootingTime() {
-		if (TimeUtils.millis() - timeStartedShooting < 1000) {
+		if (TimeUtils.millis() - timeStartedShooting < PlayerConstants.SHOOTING_TIME) {
 			shooting = true;
 		} else {
 			shooting = false;
