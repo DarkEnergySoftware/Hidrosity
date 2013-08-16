@@ -4,6 +4,8 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.des.hidrosity.bullets.StationaryEnemyBullet;
+import com.des.hidrosity.debug.Logger;
 import com.des.hidrosity.player.Player;
 
 public class CollisionListener implements ContactListener {
@@ -15,7 +17,20 @@ public class CollisionListener implements ContactListener {
 			return;
 		}
 
+		checkIfPlayerHitByBullet(contact);
 		checkIfPlayerTouchesGround(contact);
+	}
+
+	private void checkIfPlayerHitByBullet(Contact contact) {
+		if (contact.getFixtureA().getUserData() instanceof Player
+				&& contact.getFixtureB().getUserData() instanceof StationaryEnemyBullet) {
+			((Player) contact.getFixtureA().getUserData()).hitByBullet();
+		}
+
+		if (contact.getFixtureB().getUserData() instanceof Player
+				&& contact.getFixtureA().getUserData() instanceof StationaryEnemyBullet) {
+			((Player) contact.getFixtureB().getUserData()).hitByBullet();
+		}
 	}
 
 	private void checkIfPlayerTouchesGround(Contact contact) {

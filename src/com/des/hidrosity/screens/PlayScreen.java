@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -18,10 +19,12 @@ import com.des.hidrosity.enemies.Enemy;
 import com.des.hidrosity.enemies.StationaryEnemy;
 import com.des.hidrosity.levels.LevelManager;
 import com.des.hidrosity.player.Player;
+import com.jakehorsfield.libld.Utils;
 
 public class PlayScreen implements Screen {
 
 	private SpriteBatch spriteBatch;
+	private SpriteBatch uiBatch;
 	private OrthographicCamera camera;
 	private Box2DDebugRenderer debugRenderer;
 
@@ -36,12 +39,19 @@ public class PlayScreen implements Screen {
 
 	public static Array<Body> bodiesToRemove = new Array<>();
 
+	private Texture healthBarTexture;
+
 	public void show() {
 		setupRenderingStuff();
 		createPhysicsWorld();
 		createLevelManager();
 		createPlayer();
 		createEnemies();
+		loadTextures();
+	}
+
+	private void loadTextures() {
+		healthBarTexture = Utils.loadTexture("res/ui/healthbar.png");
 	}
 
 	private void createEnemies() {
@@ -66,6 +76,7 @@ public class PlayScreen implements Screen {
 
 	private void setupRenderingStuff() {
 		spriteBatch = new SpriteBatch();
+		uiBatch = new SpriteBatch();
 
 		camera = new OrthographicCamera();
 		camera.viewportWidth = Gdx.graphics.getWidth();
@@ -143,7 +154,8 @@ public class PlayScreen implements Screen {
 	}
 
 	private boolean playerWithinCameraBounds() {
-		if (player.getX() > 0f && player.getX() < levelManager.getLevelWidth() - player.getWidth()*2 - GameConstants.X_OFFSET*2) {
+		if (player.getX() > 0f
+				&& player.getX() < levelManager.getLevelWidth() - player.getWidth() * 2 - GameConstants.X_OFFSET * 2) {
 			return true;
 		}
 
@@ -165,6 +177,26 @@ public class PlayScreen implements Screen {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		renderGame();
+		renderUi();
+
+		renderDebugWorld();
+	}
+
+	private void renderUi() {
+		uiBatch.begin();
+		{
+			renderHealthBar();
+		}
+		uiBatch.end();
+	}
+
+	private void renderHealthBar() {
+		uiBatch.draw(healthBarTexture, 10, Gdx.graphics.getHeight() - healthBarTexture.getHeight() - 10,
+				player.getHealth(), healthBarTexture.getHeight());
+	}
+
+	private void renderGame() {
 		spriteBatch.setProjectionMatrix(camera.combined);
 		spriteBatch.begin();
 		{
@@ -173,8 +205,6 @@ public class PlayScreen implements Screen {
 			renderEnemies();
 		}
 		spriteBatch.end();
-
-		renderDebugWorld();
 	}
 
 	private void renderDebugWorld() {

@@ -59,6 +59,8 @@ public class Player extends GameObject {
 	private long timePlayerCreated;
 	
 	private boolean shooting = false;
+	
+	private int health = 100;
 
 	public Player(Vector2 position, String textureName, World gameWorld) {
 		super(position, textureName);
@@ -99,6 +101,7 @@ public class Player extends GameObject {
 		physicsBody.setLinearDamping(1f);
 
 		Fixture mainFixture = physicsBody.createFixture(fixtureDef);
+		mainFixture.setUserData(this);
 		
 		polygonShape.dispose();
 	}
@@ -135,7 +138,7 @@ public class Player extends GameObject {
 		updateNonPhysicsPosition();
 		updateStates();
 		updateBullets();
-		printDebug();
+//		printDebug();
 	}
 	
 	private void updateShootingTime() {
@@ -455,8 +458,17 @@ public class Player extends GameObject {
 	public void setCanJump(boolean canJump) {
 		this.canJump = canJump;
 	}
+	
+	public void hitByBullet() {
+		Logger.log("Player hit by bullet!");
+		health -= PlayerConstants.HEALTH_DECREASE;
+	}
 
 	public Body getPhysicsBody() {
 		return physicsBody;
+	}
+	
+	public int getHealth() {
+		return health;
 	}
 }
