@@ -1,5 +1,6 @@
 package com.des.hidrosity.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -40,6 +42,8 @@ public class PlayScreen implements Screen {
 	public static Array<Body> bodiesToRemove = new Array<>();
 
 	private Texture healthBarTexture;
+	private Texture healthBarShellTexture;
+	private Rectangle healthBarShellRect;
 
 	public void show() {
 		setupRenderingStuff();
@@ -48,10 +52,18 @@ public class PlayScreen implements Screen {
 		createPlayer();
 		createEnemies();
 		loadTextures();
+		setupUiStuff();
+	}
+
+	private void setupUiStuff() {
+		healthBarShellRect = new Rectangle();
+		healthBarShellRect.x = 10;
+		healthBarShellRect.y = Gdx.graphics.getHeight() - healthBarShellTexture.getHeight() * 2 - 10;
 	}
 
 	private void loadTextures() {
-		healthBarTexture = Utils.loadTexture("res/ui/healthbar.png");
+		healthBarTexture = Utils.loadTexture("res/ui/healthBar.png");
+		healthBarShellTexture = Utils.loadTexture("res/ui/healthBarShell.png");
 	}
 
 	private void createEnemies() {
@@ -127,10 +139,17 @@ public class PlayScreen implements Screen {
 
 	private void update() {
 		updatePlayer();
+		checkIfPlayerDead();
 		updateEnemies();
 		updatePhysicsWorld();
 		updateCameraPosition();
 		removeBodies();
+	}
+	
+	private void checkIfPlayerDead() {
+		if (player.getHealth() <= 0) {
+			((Game) Gdx.app.getApplicationListener()).setScreen(new GameOverScreen());
+		}
 	}
 
 	private void updateEnemies() {
@@ -186,14 +205,20 @@ public class PlayScreen implements Screen {
 	private void renderUi() {
 		uiBatch.begin();
 		{
+			renderHealthBarShell();
 			renderHealthBar();
 		}
 		uiBatch.end();
 	}
 
+	private void renderHealthBarShell() {
+		uiBatch.draw(healthBarShellTexture, healthBarShellRect.x, healthBarShellRect.y,
+				healthBarShellTexture.getWidth() * 2, healthBarShellTexture.getHeight() * 2);
+	}
+
 	private void renderHealthBar() {
-		uiBatch.draw(healthBarTexture, 10, Gdx.graphics.getHeight() - healthBarTexture.getHeight() - 10,
-				player.getHealth(), healthBarTexture.getHeight());
+		uiBatch.draw(healthBarTexture, healthBarShellRect.x + 8, healthBarShellRect.y + 49,
+				healthBarTexture.getWidth() * 2, healthBarTexture.getHeight() * 2 * player.getHealth() / 2);
 	}
 
 	private void renderGame() {
