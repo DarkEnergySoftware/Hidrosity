@@ -40,30 +40,13 @@ public class PlayScreen implements Screen {
 	private Array<Enemy> enemies = new Array<Enemy>();
 
 	public static Array<Body> bodiesToRemove = new Array<>();
-
-	private Texture healthBarTexture;
-	private Texture healthBarShellTexture;
-	private Rectangle healthBarShellRect;
-
+	
 	public void show() {
 		setupRenderingStuff();
 		createPhysicsWorld();
 		createLevelManager();
 		createPlayer();
 		createEnemies();
-		loadTextures();
-		setupUiStuff();
-	}
-
-	private void setupUiStuff() {
-		healthBarShellRect = new Rectangle();
-		healthBarShellRect.x = 10;
-		healthBarShellRect.y = Gdx.graphics.getHeight() - healthBarShellTexture.getHeight() * 2 - 10;
-	}
-
-	private void loadTextures() {
-		healthBarTexture = Utils.loadTexture("res/ui/healthBar.png");
-		healthBarShellTexture = Utils.loadTexture("res/ui/healthBarShell.png");
 	}
 
 	private void createEnemies() {
@@ -145,7 +128,7 @@ public class PlayScreen implements Screen {
 		updateCameraPosition();
 		removeBodies();
 	}
-	
+
 	private void checkIfPlayerDead() {
 		if (player.getHealth() <= 0) {
 			((Game) Gdx.app.getApplicationListener()).setScreen(new GameOverScreen());
@@ -205,20 +188,12 @@ public class PlayScreen implements Screen {
 	private void renderUi() {
 		uiBatch.begin();
 		{
-			renderHealthBarShell();
 			renderHealthBar();
 		}
 		uiBatch.end();
 	}
 
-	private void renderHealthBarShell() {
-		uiBatch.draw(healthBarShellTexture, healthBarShellRect.x, healthBarShellRect.y,
-				healthBarShellTexture.getWidth() * 2, healthBarShellTexture.getHeight() * 2);
-	}
-
 	private void renderHealthBar() {
-		uiBatch.draw(healthBarTexture, healthBarShellRect.x + 8, healthBarShellRect.y + 49,
-				healthBarTexture.getWidth() * 2, healthBarTexture.getHeight() * 2 * player.getHealth() / 2);
 	}
 
 	private void renderGame() {
