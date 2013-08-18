@@ -45,11 +45,14 @@ public class HealthBar {
 	}
 
 	private void renderBar(SpriteBatch spriteBatch) {
-		spriteBatch.draw(healthBarTexture, healthBarRect.x, healthBarRect.y, healthBarRect.width, (player.getHealth() / 100f) * 80f);
+		for (int i = 0; i < player.getHealth(); i++) {
+			spriteBatch.draw(healthBarTexture, healthBarRect.x, healthBarRect.y + i * healthBarRect.height * 2,
+					healthBarRect.width, healthBarRect.height);
+		}
 	}
 
 	private void renderShell(SpriteBatch spriteBatch) {
-		spriteBatch.draw(healthBarShellTexture, healthBarShellRect.x, healthBarShellRect.y,
-				healthBarShellRect.width, healthBarShellRect.height);
+		spriteBatch.draw(healthBarShellTexture, healthBarShellRect.x, healthBarShellRect.y, healthBarShellRect.width,
+				healthBarShellRect.height);
 	}
 }
