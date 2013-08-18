@@ -50,6 +50,6 @@ public class HealthBar {
 
 	private void renderShell(SpriteBatch spriteBatch) {
 		spriteBatch.draw(healthBarShellTexture, healthBarShellRect.x, healthBarShellRect.y,
-				healthBarShellRect.width * 2, healthBarShellRect.height * 2);
+				healthBarShellRect.width, healthBarShellRect.height);
 	}
 }
