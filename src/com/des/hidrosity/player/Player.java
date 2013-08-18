@@ -461,7 +461,6 @@ public class Player extends GameObject {
 	}
 	
 	public void hitByBullet() {
-		Logger.log("Player hit by bullet!");
 		health -= PlayerConstants.HEALTH_DECREASE;
 	}
 

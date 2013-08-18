@@ -17,6 +17,8 @@ public class CollisionListener implements ContactListener {
 			return;
 		}
 
+		System.out.println(contact.getFixtureA().getUserData() + " - " + contact.getFixtureB().getUserData());
+		
 		checkIfPlayerHitByBullet(contact);
 		checkIfPlayerTouchesGround(contact);
 	}
