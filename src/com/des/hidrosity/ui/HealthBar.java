@@ -45,7 +45,8 @@ public class HealthBar {
 	}
 
 	private void renderBar(SpriteBatch spriteBatch) {
-		spriteBatch.draw(healthBarTexture, healthBarRect.x, healthBarRect.y, healthBarRect.width, player.getHealth());
+		System.out.println(player.getHealth() + " = " + (player.getHealth() / 100) * 80);
+		spriteBatch.draw(healthBarTexture, healthBarRect.x, healthBarRect.y, healthBarRect.width, (player.getHealth() / 100f) * 80f);
 	}
 
 	private void renderShell(SpriteBatch spriteBatch) {
