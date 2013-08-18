@@ -6,9 +6,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -21,8 +19,8 @@ import com.des.hidrosity.enemies.Enemy;
 import com.des.hidrosity.enemies.StationaryEnemy;
 import com.des.hidrosity.levels.LevelManager;
 import com.des.hidrosity.player.Player;
+import com.des.hidrosity.ui.EnergyBar;
 import com.des.hidrosity.ui.HealthBar;
-import com.jakehorsfield.libld.Utils;
 
 public class PlayScreen implements Screen {
 
@@ -41,6 +39,7 @@ public class PlayScreen implements Screen {
 	private Array<Enemy> enemies = new Array<Enemy>();
 	
 	private HealthBar healthBar;
+	private EnergyBar energyBar;
 
 	public static Array<Body> bodiesToRemove = new Array<>();
 	
@@ -55,6 +54,7 @@ public class PlayScreen implements Screen {
 	
 	private void createUi() {
 		healthBar = new HealthBar(player);
+		energyBar = new EnergyBar(player);
 	}
 
 	private void createEnemies() {
@@ -197,8 +197,13 @@ public class PlayScreen implements Screen {
 		uiBatch.begin();
 		{
 			renderHealthBar();
+			renderEnergyBar();
 		}
 		uiBatch.end();
+	}
+	
+	private void renderEnergyBar() {
+		energyBar.render(uiBatch);
 	}
 
 	private void renderHealthBar() {

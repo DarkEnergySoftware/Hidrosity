@@ -61,6 +61,7 @@ public class Player extends GameObject {
 	private boolean shooting = false;
 	
 	private int health = 10;
+	private int energy = 10;
 
 	public Player(Vector2 position, String textureName, World gameWorld) {
 		super(position, textureName);
@@ -470,5 +471,9 @@ public class Player extends GameObject {
 	
 	public int getHealth() {
 		return health;
+	}
+	
+	public int getEnergy() {
+		return energy;
 	}
 }
