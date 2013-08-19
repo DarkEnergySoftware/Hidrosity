@@ -28,7 +28,7 @@ import com.jakehorsfield.libld.GameObject;
 public class Player extends GameObject {
 
 	private enum PlayerState {
-		Standing, Waiting, Running, Jumping, ShootingStanding, ShootingRunning, ShootingJumping, Spawning
+		Standing, Waiting, Running, Jumping, ShootingStanding, ShootingRunning, ShootingJumping, Spawning, Hurt
 	};
 
 	private enum PlayerDirection {
@@ -59,6 +59,9 @@ public class Player extends GameObject {
 	private long timePlayerCreated;
 	
 	private boolean shooting = false;
+	private boolean hurt = false;
+	
+	private long timeStartedHurting;
 	
 	private int health = 10;
 	private int energy = 10;
@@ -153,6 +156,28 @@ public class Player extends GameObject {
 	private void updateAnimations() {
 		updateWaitingAnimation();
 		updateAnimationStateTime();
+		updateHurtAnimation();
+	}
+	
+	private void updateHurtAnimation() {
+		if (hurt) {
+			if (TimeUtils.millis() - timeStartedHurting > PlayerConstants.HURT_TIME) {
+				hurt = false;
+				currentState = PlayerState.Standing;
+				setAnimationToStanding();
+				return;
+			}
+			
+			setAnimationToHurt();
+		}
+	}
+	
+	private void setAnimationToStanding() {
+		if (currentDirection == PlayerDirection.Left) {
+			currentAnimation = CharacterManager.getCharacter().animationStandingLeft;
+		} else {
+			currentAnimation = CharacterManager.getCharacter().animationStandingRight;
+		}
 	}
 	
 	private void updateStates() {
@@ -203,6 +228,8 @@ public class Player extends GameObject {
 	}
 	
 	private void setStateToJumping() {
+		if (hurt) return;
+		
 		currentState = PlayerState.Jumping;
 
 		if (currentDirection == PlayerDirection.Left) {
@@ -239,6 +266,8 @@ public class Player extends GameObject {
 	}
 	
 	private void setStateToWaiting() {
+		if (hurt) return;
+		
 		currentState = PlayerState.Waiting;
 
 		if (currentDirection == PlayerDirection.Left) {
@@ -266,6 +295,8 @@ public class Player extends GameObject {
 	}
 	
 	private void setStateToStanding() {
+		if (hurt) return;
+		
 		currentState = PlayerState.Standing;
 
 		if (currentDirection == PlayerDirection.Left) {
@@ -307,12 +338,14 @@ public class Player extends GameObject {
 	}
 
 	public void moveLeft() {
-		if (shooting) {
-			moveLeftShooting();
-		} else {
-			currentAnimation = CharacterManager.getCharacter().animationRunningLeft;
-			currentDirection = PlayerDirection.Left;
-			currentState = PlayerState.Running;	
+		if (!hurt) {
+			if (shooting) {
+				moveLeftShooting();
+			} else {
+				currentAnimation = CharacterManager.getCharacter().animationRunningLeft;
+				currentDirection = PlayerDirection.Left;
+				currentState = PlayerState.Running;	
+			}
 		}
 		
 		if (movingTooFastLeft() == false) {
@@ -335,12 +368,14 @@ public class Player extends GameObject {
 	}
 
 	public void moveRight() {
-		if (shooting) {
-			moveRightShooting();
-		} else {
-			currentAnimation = CharacterManager.getCharacter().animationRunningRight;
-			currentDirection = PlayerDirection.Right;
-			currentState = PlayerState.Running;
+		if (!hurt) {
+			if (shooting) {
+				moveRightShooting();
+			} else {
+				currentAnimation = CharacterManager.getCharacter().animationRunningRight;
+				currentDirection = PlayerDirection.Right;
+				currentState = PlayerState.Running;
+			}
 		}
 
 		if (movingTooFastRight() == false) {
@@ -462,6 +497,18 @@ public class Player extends GameObject {
 	
 	public void hitByBullet() {
 		health -= PlayerConstants.HEALTH_DECREASE;
+		currentState = PlayerState.Hurt;
+		setAnimationToHurt();
+		hurt = true;
+		timeStartedHurting = TimeUtils.millis();
+	}
+	
+	private void setAnimationToHurt() {
+		if (currentDirection == PlayerDirection.Left) {
+			currentAnimation = CharacterManager.getCharacter().animationHurtLeft;
+		} else {
+			currentAnimation = CharacterManager.getCharacter().animationHurtRight;
+		}
 	}
 
 	public Body getPhysicsBody() {

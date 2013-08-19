@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -43,6 +44,8 @@ public class PlayScreen implements Screen {
 
 	public static Array<Body> bodiesToRemove = new Array<>();
 	
+	private FPSLogger fpsLogger;
+	
 	public void show() {
 		setupRenderingStuff();
 		createPhysicsWorld();
@@ -50,6 +53,8 @@ public class PlayScreen implements Screen {
 		createPlayer();
 		createEnemies();
 		createUi();
+		
+		fpsLogger = new FPSLogger();
 	}
 	
 	private void createUi() {
@@ -191,6 +196,8 @@ public class PlayScreen implements Screen {
 		renderUi();
 
 		renderDebugWorld();
+		
+		fpsLogger.log();
 	}
 
 	private void renderUi() {
