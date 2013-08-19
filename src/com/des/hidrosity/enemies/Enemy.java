@@ -30,6 +30,8 @@ public abstract class Enemy extends GameObject {
 	
 	protected int health = 100;
 	
+	public boolean dead = false;
+	
 	protected enum Direction {
 		Left, Right
 	}
@@ -74,6 +76,13 @@ public abstract class Enemy extends GameObject {
 
 	public void update(float delta) {
 		facePlayer();
+		checkIfDead();
+	}
+	
+	private void checkIfDead() {
+		if (health <= 0) {
+			dead = true;
+		}
 	}
 	
 	private void facePlayer() {
@@ -92,6 +101,10 @@ public abstract class Enemy extends GameObject {
 	
 	public int getHealth() {
 		return health;
+	}
+	
+	public Body getBody() {
+		return physicsBody;
 	}
 	
 	public abstract void hitByBullet();

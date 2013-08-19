@@ -150,6 +150,11 @@ public class PlayScreen implements Screen {
 	private void updateEnemies() {
 		for (Enemy e : enemies) {
 			e.update(Gdx.graphics.getDeltaTime());
+			
+			if (e.dead) {
+				enemies.removeValue(e, true);
+				break;
+			}
 		}
 	}
 
