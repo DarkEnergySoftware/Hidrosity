@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.des.hidrosity.player.Player;
 import com.jakehorsfield.libld.Utils;
 
-public class HealthBar {
+public class PlayerHealthBar {
 
 	private Texture healthBarShellTexture;
 	private Texture healthBarTexture;
@@ -16,7 +16,7 @@ public class HealthBar {
 
 	private Player player;
 
-	public HealthBar(Player player) {
+	public PlayerHealthBar(Player player) {
 		this.player = player;
 
 		loadTexturesAndSetPositions();

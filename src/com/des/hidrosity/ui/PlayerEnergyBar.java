@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.des.hidrosity.player.Player;
 import com.jakehorsfield.libld.Utils;
 
-public class EnergyBar {
+public class PlayerEnergyBar {
 
 	private Texture energyBarShellTexture;
 	private Texture energyBarTexture;
@@ -16,7 +16,7 @@ public class EnergyBar {
 
 	private Player player;
 
-	public EnergyBar(Player player) {
+	public PlayerEnergyBar(Player player) {
 		this.player = player;
 
 		loadTexturesAndSetPositions();

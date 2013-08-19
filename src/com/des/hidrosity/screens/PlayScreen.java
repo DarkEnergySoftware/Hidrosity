@@ -20,8 +20,8 @@ import com.des.hidrosity.enemies.Enemy;
 import com.des.hidrosity.enemies.StationaryEnemy;
 import com.des.hidrosity.levels.LevelManager;
 import com.des.hidrosity.player.Player;
-import com.des.hidrosity.ui.EnergyBar;
-import com.des.hidrosity.ui.HealthBar;
+import com.des.hidrosity.ui.PlayerEnergyBar;
+import com.des.hidrosity.ui.PlayerHealthBar;
 
 public class PlayScreen implements Screen {
 
@@ -39,8 +39,8 @@ public class PlayScreen implements Screen {
 	private StationaryEnemy testEnemy;
 	private Array<Enemy> enemies = new Array<Enemy>();
 	
-	private HealthBar healthBar;
-	private EnergyBar energyBar;
+	private PlayerHealthBar healthBar;
+	private PlayerEnergyBar energyBar;
 
 	public static Array<Body> bodiesToRemove = new Array<>();
 	
@@ -58,8 +58,8 @@ public class PlayScreen implements Screen {
 	}
 	
 	private void createUi() {
-		healthBar = new HealthBar(player);
-		energyBar = new EnergyBar(player);
+		healthBar = new PlayerHealthBar(player);
+		energyBar = new PlayerEnergyBar(player);
 	}
 
 	private void createEnemies() {
