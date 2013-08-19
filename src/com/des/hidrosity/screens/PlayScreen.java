@@ -37,6 +37,7 @@ public class PlayScreen implements Screen {
 	private Player player;
 
 	private StationaryEnemy testEnemy;
+	private StationaryEnemy testEnemy2;
 	private Array<Enemy> enemies = new Array<Enemy>();
 	
 	private PlayerHealthBar healthBar;
@@ -65,7 +66,10 @@ public class PlayScreen implements Screen {
 	private void createEnemies() {
 		testEnemy = new StationaryEnemy(new Vector2(616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET),
 				"res/enemies/stationary enemy/left.png", player);
+		testEnemy2 = new StationaryEnemy(new Vector2(1616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET),
+				"res/enemies/stationary enemy/left.png", player);
 		enemies.add(testEnemy);
+		enemies.add(testEnemy2);
 	}
 
 	private void createPlayer() {

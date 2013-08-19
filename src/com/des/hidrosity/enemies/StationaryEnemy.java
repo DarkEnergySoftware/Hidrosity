@@ -9,6 +9,7 @@ import com.des.hidrosity.bullets.StationaryEnemyBullet;
 import com.des.hidrosity.constants.EnemyConstants;
 import com.des.hidrosity.player.Player;
 import com.des.hidrosity.screens.PlayScreen;
+import com.des.hidrosity.ui.EnemyHealthBar;
 import com.jakehorsfield.libld.Utils;
 
 public class StationaryEnemy extends Enemy {
@@ -16,12 +17,16 @@ public class StationaryEnemy extends Enemy {
 	private long lastTimeShot;
 
 	private Array<StationaryEnemyBullet> bullets = new Array<StationaryEnemyBullet>();
+	
+	private EnemyHealthBar healthBar;
 
 	public StationaryEnemy(Vector2 position, String textureName, Player player) {
 		super(position, textureName, player);
 
 		leftTexture = Utils.loadTexture("res/enemies/stationary enemy/left.png");
 		rightTexture = Utils.loadTexture("res/enemies/stationary enemy/right.png");
+		
+		healthBar = new EnemyHealthBar(this);
 	}
 
 	@Override
@@ -74,14 +79,21 @@ public class StationaryEnemy extends Enemy {
 			return true;
 		}
 
+		health = 50;
+		
 		return false;
 	}
 
 	@Override
 	public void render(SpriteBatch spriteBatch) {
 		super.render(spriteBatch);
-
+		
 		renderBullets(spriteBatch);
+		renderHealthBar(spriteBatch);
+	}
+	
+	private void renderHealthBar(SpriteBatch spriteBatch) {
+		healthBar.render(spriteBatch);
 	}
 
 	private void renderBullets(SpriteBatch spriteBatch) {

@@ -28,6 +28,8 @@ public abstract class Enemy extends GameObject {
 	protected FixtureDef fixtureDef;
 	protected Fixture fixture;
 	
+	protected int health = 100;
+	
 	protected enum Direction {
 		Left, Right
 	}
@@ -85,5 +87,9 @@ public abstract class Enemy extends GameObject {
 	
 	public void render(SpriteBatch spriteBatch) {
 		spriteBatch.draw(getTexture(), getX(), getY(), getWidth() * GameConstants.IMAGE_SCALE, getHeight() * GameConstants.IMAGE_SCALE);
+	}
+	
+	public int getHealth() {
+		return health;
 	}
 }
