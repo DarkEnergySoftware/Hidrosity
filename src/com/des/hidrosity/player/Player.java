@@ -196,7 +196,6 @@ public class Player extends GameObject {
 		if (notFinishedSpawning()) {
 			setStateToSpawning();
 		} else {
-			setStateToStanding();
 			spawning = false;
 		}
 	}
