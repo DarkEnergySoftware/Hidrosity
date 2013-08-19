@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.des.hidrosity.bullets.StationaryEnemyBullet;
 import com.des.hidrosity.constants.EnemyConstants;
+import com.des.hidrosity.debug.Logger;
 import com.des.hidrosity.player.Player;
 import com.des.hidrosity.screens.PlayScreen;
 import com.des.hidrosity.ui.EnemyHealthBar;
@@ -79,8 +80,6 @@ public class StationaryEnemy extends Enemy {
 			return true;
 		}
 
-		health = 50;
-		
 		return false;
 	}
 
@@ -100,6 +99,11 @@ public class StationaryEnemy extends Enemy {
 		for (StationaryEnemyBullet b : bullets) {
 			b.render(spriteBatch);
 		}
+	}
+
+	public void hitByBullet() {
+		health -= 5;
+		Logger.log("Fuck! That hurt man. My health is now " + health);
 	}
 
 }

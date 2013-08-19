@@ -140,7 +140,7 @@ public class Player extends GameObject {
 		updateAnimations();
 		updateNonPhysicsPosition();
 		updateStates();
-		printDebug();
+//		printDebug();
 	}
 	
 	private void updateTimes() {

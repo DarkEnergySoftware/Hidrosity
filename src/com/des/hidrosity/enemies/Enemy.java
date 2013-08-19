@@ -67,6 +67,7 @@ public abstract class Enemy extends GameObject {
 		physicsBody.setFixedRotation(true);
 		
 		fixture = physicsBody.createFixture(fixtureDef);
+		fixture.setUserData(this);
 		
 		polygonShape.dispose();
 	}
@@ -92,4 +93,6 @@ public abstract class Enemy extends GameObject {
 	public int getHealth() {
 		return health;
 	}
+	
+	public abstract void hitByBullet();
 }
