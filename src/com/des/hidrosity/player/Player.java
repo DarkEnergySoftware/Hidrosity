@@ -136,14 +136,17 @@ public class Player extends GameObject {
 	}
 
 	public void update(float delta) {
-		updateShootingTime();
-		updateStandingTime();
-		checkIfSpawning();
+		updateTimes();
 		updateAnimations();
 		updateNonPhysicsPosition();
 		updateStates();
-		updateBullets();
 		printDebug();
+	}
+	
+	private void updateTimes() {
+		updateShootingTime();
+		updateStandingTime();
+		updateAnimationStateTime();
 	}
 	
 	private void updateShootingTime() {
@@ -156,13 +159,12 @@ public class Player extends GameObject {
 	
 	private void updateAnimations() {
 		updateWaitingAnimation();
-		updateAnimationStateTime();
 		updateHurtAnimation();
 	}
 	
 	private void updateHurtAnimation() {
 		if (hurt) {
-			if (TimeUtils.millis() - timeStartedHurting > PlayerConstants.HURT_TIME) {
+			if (hurtAnimationFinished()) {
 				hurt = false;
 				currentState = PlayerState.Standing;
 				setAnimationToStanding();
@@ -171,6 +173,14 @@ public class Player extends GameObject {
 			
 			setAnimationToHurt();
 		}
+	}
+	
+	private boolean hurtAnimationFinished() {
+		if (TimeUtils.millis() - timeStartedHurting > PlayerConstants.HURT_TIME) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	private void setAnimationToStanding() {
@@ -188,9 +198,10 @@ public class Player extends GameObject {
 		checkIfStateShouldBeStanding();
 		checkIfStateShouldBeWaiting();
 		checkIfStateShouldBeJumping();
+		checkIfStateShouldBeSpawning();
 	}
 	
-	private void checkIfSpawning() {
+	private void checkIfStateShouldBeSpawning() {
 		if (characterHasSpawnAnimation() == false) return;
 		
 		if (notFinishedSpawning()) {
@@ -223,9 +234,6 @@ public class Player extends GameObject {
 		return false;
 	}
 	
-	private void updateBullets() {
-	}
-
 	private void checkIfStateShouldBeJumping() {
 		if (!canJump) {
 			setStateToJumping();

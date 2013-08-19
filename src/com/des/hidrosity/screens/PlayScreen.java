@@ -36,12 +36,10 @@ public class PlayScreen implements Screen {
 
 	private Player player;
 
-	private StationaryEnemy testEnemy;
-	private StationaryEnemy testEnemy2;
 	private Array<Enemy> enemies = new Array<Enemy>();
 	
-	private PlayerHealthBar healthBar;
-	private PlayerEnergyBar energyBar;
+	private PlayerHealthBar playerHealthBar;
+	private PlayerEnergyBar playerEnergyBar;
 
 	public static Array<Body> bodiesToRemove = new Array<>();
 	
@@ -59,17 +57,15 @@ public class PlayScreen implements Screen {
 	}
 	
 	private void createUi() {
-		healthBar = new PlayerHealthBar(player);
-		energyBar = new PlayerEnergyBar(player);
+		playerHealthBar = new PlayerHealthBar(player);
+		playerEnergyBar = new PlayerEnergyBar(player);
 	}
 
 	private void createEnemies() {
-		testEnemy = new StationaryEnemy(new Vector2(616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET),
-				"res/enemies/stationary enemy/left.png", player);
-		testEnemy2 = new StationaryEnemy(new Vector2(1616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET),
-				"res/enemies/stationary enemy/left.png", player);
-		enemies.add(testEnemy);
-		enemies.add(testEnemy2);
+		enemies.add(new StationaryEnemy(new Vector2(616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET),
+				"res/enemies/stationary enemy/left.png", player));
+		enemies.add(new StationaryEnemy(new Vector2(1616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET),
+				"res/enemies/stationary enemy/left.png", player));
 	}
 
 	private void createPlayer() {
@@ -110,7 +106,7 @@ public class PlayScreen implements Screen {
 			zoomOutCamera();
 		}
 	}
-
+	
 	private void zoomOutCamera() {
 		camera.zoom += 0.005f;
 		camera.update();
@@ -143,7 +139,6 @@ public class PlayScreen implements Screen {
 		updateEnemies();
 		updatePhysicsWorld();
 		updateCameraPosition();
-		removeBodies();
 	}
 
 	private void checkIfPlayerDead() {
@@ -156,9 +151,6 @@ public class PlayScreen implements Screen {
 		for (Enemy e : enemies) {
 			e.update(Gdx.graphics.getDeltaTime());
 		}
-	}
-
-	private void removeBodies() {
 	}
 
 	private void updateCameraPosition() {
@@ -214,11 +206,11 @@ public class PlayScreen implements Screen {
 	}
 	
 	private void renderEnergyBar() {
-		energyBar.render(uiBatch);
+		playerEnergyBar.render(uiBatch);
 	}
 
 	private void renderHealthBar() {
-		healthBar.render(uiBatch);
+		playerHealthBar.render(uiBatch);
 	}
 
 	private void renderGame() {
