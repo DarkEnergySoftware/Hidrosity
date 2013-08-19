@@ -60,6 +60,7 @@ public class Player extends GameObject {
 	
 	private boolean shooting = false;
 	private boolean hurt = false;
+	private boolean spawning = false;
 	
 	private long timeStartedHurting;
 	
@@ -126,7 +127,7 @@ public class Player extends GameObject {
 	}
 
 	private void loadAnimations() {
-		currentAnimation = CharacterManager.getCharacter().animationStandingShootingRight;
+		currentAnimation = CharacterManager.getCharacter().animationStandingRight;
 	}
 
 	private void setInitialStateAndDirection() {
@@ -142,7 +143,7 @@ public class Player extends GameObject {
 		updateNonPhysicsPosition();
 		updateStates();
 		updateBullets();
-//		printDebug();
+		printDebug();
 	}
 	
 	private void updateShootingTime() {
@@ -182,6 +183,7 @@ public class Player extends GameObject {
 	
 	private void updateStates() {
 		if (shooting) return;
+		if (spawning) return;
 		
 		checkIfStateShouldBeStanding();
 		checkIfStateShouldBeWaiting();
@@ -193,6 +195,9 @@ public class Player extends GameObject {
 		
 		if (notFinishedSpawning()) {
 			setStateToSpawning();
+		} else {
+			setStateToStanding();
+			spawning = false;
 		}
 	}
 	
@@ -200,6 +205,7 @@ public class Player extends GameObject {
 		currentState = PlayerState.Spawning;
 		currentAnimation = ((Jetten) CharacterManager.getCharacter()).animationAppear;
 		currentDirection = PlayerDirection.Right;
+		spawning = true;
 	}
 	
 	private boolean notFinishedSpawning() {
@@ -229,6 +235,7 @@ public class Player extends GameObject {
 	
 	private void setStateToJumping() {
 		if (hurt) return;
+		if (spawning) return;
 		
 		currentState = PlayerState.Jumping;
 
@@ -256,7 +263,7 @@ public class Player extends GameObject {
 	private void printDebug() {
 		Logger.log(currentState + " " + currentDirection + " at " + physicsBody.getPosition() + " = ("
 				+ physicsBody.getPosition().x / GameConstants.UNIT_SCALE + ", " + physicsBody.getPosition().y
-				/ GameConstants.UNIT_SCALE + ")");
+				/ GameConstants.UNIT_SCALE + ")" + " spawning????" + spawning);
 	}
 
 	private void checkIfStateShouldBeWaiting() {
@@ -267,6 +274,7 @@ public class Player extends GameObject {
 	
 	private void setStateToWaiting() {
 		if (hurt) return;
+		if (spawning) return;
 		
 		currentState = PlayerState.Waiting;
 
@@ -285,6 +293,8 @@ public class Player extends GameObject {
 	}
 
 	private void checkIfStateShouldBeStanding() {
+		if (spawning) return;
+		
 		if (physicsBody.getLinearVelocity().x >= -1f && physicsBody.getLinearVelocity().x <= 1f) {
 			if (waitingAndAnimationNotFinished()) {
 				return;
@@ -296,6 +306,7 @@ public class Player extends GameObject {
 	
 	private void setStateToStanding() {
 		if (hurt) return;
+		if (spawning) return;
 		
 		currentState = PlayerState.Standing;
 

@@ -15,7 +15,7 @@ public class Jetten extends Character {
 	}
 	
 	private void loadAppearAnimation() {
-		animationAppear = AnimationLoader.loadAnimation(1f, "res/player/jetten/appear/appear.txt");
+		animationAppear = AnimationLoader.loadAnimation(1/3f, "res/player/jetten/appear/appear.txt");
 	}
 	
 	public void loadStandingAnimations() {
