@@ -193,7 +193,6 @@ public class Player extends GameObject {
 	
 	private void updateStates() {
 		if (shooting) return;
-		if (spawning) return;
 		
 		checkIfStateShouldBeStanding();
 		checkIfStateShouldBeWaiting();
@@ -222,6 +221,8 @@ public class Player extends GameObject {
 		if (TimeUtils.millis() - timePlayerCreated < PlayerConstants.SPAWN_TIME) {
 			return true;
 		}
+		
+		System.out.println("Finished spawning");
 		
 		return false;
 	}
@@ -352,7 +353,7 @@ public class Player extends GameObject {
 	}
 
 	private void setCurrentFrame() {
-		currentFrame = currentAnimation.getKeyFrame(animationStateTime, true);
+		currentFrame = currentAnimation.getKeyFrame(animationStateTime, false);
 	}
 
 	public void moveLeft() {
