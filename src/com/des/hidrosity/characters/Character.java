@@ -26,6 +26,8 @@ public abstract class Character {
 
 	public Animation currentAnimation;	
 	
+	public boolean hasSpawnAnimation = false;
+	
 	public Character() {
 		loadStandingAnimations();
 		loadWaitingAnimations();

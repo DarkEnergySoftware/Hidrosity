@@ -11,6 +11,8 @@ public class Jetten extends Character {
 	public Jetten() {
 		super();
 		
+		hasSpawnAnimation = true;
+		
 		loadAppearAnimation();
 	}
 	

@@ -201,7 +201,7 @@ public class Player extends GameObject {
 	}
 	
 	private void checkIfStateShouldBeSpawning() {
-		if (characterHasSpawnAnimation() == false) return;
+		if (CharacterManager.getCharacter().hasSpawnAnimation == false) return;
 		
 		if (notFinishedSpawning()) {
 			setStateToSpawning();
@@ -223,14 +223,6 @@ public class Player extends GameObject {
 		}
 		
 		System.out.println("Finished spawning");
-		
-		return false;
-	}
-	
-	private boolean characterHasSpawnAnimation() {
-		if (CharacterManager.getCharacter() instanceof Jetten) {
-			return true;
-		}
 		
 		return false;
 	}
