@@ -449,23 +449,18 @@ public class Player extends GameObject {
 	}
 
 	private void setShootingStateAndAnimation() {
-		Logger.log("setShootingStateAndAnimation()");
-		
 		switch (currentState) {
 		case Running:
 			currentState = PlayerState.ShootingRunning;
 			setAnimationToShootingRunning();
-			Logger.log("Set to ShootingRunning");
 			break;
 		case Jumping:
 			currentState = PlayerState.ShootingJumping;
 			setAnimationToShootingJumping();
-			Logger.log("Set to ShootingJumping");
 			break;
 		case Standing:
 			currentState = PlayerState.ShootingStanding;
 			setAnimationToShootingStanding();
-			Logger.log("Set to ShootingStanding");
 			break;
 		}
 	}
