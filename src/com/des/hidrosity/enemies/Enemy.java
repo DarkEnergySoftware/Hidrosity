@@ -38,7 +38,6 @@ public abstract class Enemy extends GameObject {
 	protected enum Direction {
 		Left, Right
 	}
-	
 	protected Direction currentDirection;
 	
 	public Enemy(Vector2 position, String textureName, Player player) {
@@ -90,12 +89,20 @@ public abstract class Enemy extends GameObject {
 	
 	protected void facePlayer() {
 		if (player.getX() < getX()) {
-			currentDirection = Direction.Left;
-			setTexture(leftTexture);
+			faceLeft();
 		} else if (player.getX() > getX()) {
-			currentDirection = Direction.Right;
-			setTexture(rightTexture);
+			faceRight();
 		}
+	}
+	
+	private void faceRight() {
+		currentDirection = Direction.Right;
+		setTexture(rightTexture);
+	}
+	
+	private void faceLeft() {
+		currentDirection = Direction.Left;
+		setTexture(leftTexture);
 	}
 	
 	public void render(SpriteBatch spriteBatch) {

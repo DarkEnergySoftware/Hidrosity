@@ -7,8 +7,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.des.hidrosity.bullets.StationaryEnemyBullet;
 import com.des.hidrosity.constants.EnemyConstants;
-import com.des.hidrosity.debug.Logger;
-import com.des.hidrosity.enemies.Enemy.Direction;
 import com.des.hidrosity.player.Player;
 import com.des.hidrosity.screens.PlayScreen;
 import com.des.hidrosity.ui.EnemyHealthBar;
@@ -27,24 +25,33 @@ public class StationaryEnemy extends Enemy {
 
 	public StationaryEnemy(Vector2 position, String textureName, Player player) {
 		super(position, textureName, player);
-
+		loadTextures();
+		
+		healthBar = new EnemyHealthBar(this);
+	}
+	
+	private void loadTextures() {
 		leftTexture = Utils.loadTexture("res/enemies/stationary enemy/left.png");
 		rightTexture = Utils.loadTexture("res/enemies/stationary enemy/right.png");
 		shootLeftTexture = Utils.loadTexture("res/enemies/stationary enemy/shootLeft.png");
 		shootRightTexture = Utils.loadTexture("res/enemies/stationary enemy/shootRight.png");
-		
-		healthBar = new EnemyHealthBar(this);
 	}
 
 	public void update(float delta) {
 		super.update(delta);
 
+		updateShooting();
+	}
+	
+	private void updateShooting() {
 		if (inRangeOfPlayer() && shouldShoot()) {
 			shoot();
-			shooting = true;
-			timeStartedShooting = TimeUtils.millis();
 		}
 		
+		checkIfShouldStopShooting();
+	}
+	
+	private void checkIfShouldStopShooting() {
 		if (TimeUtils.millis() - timeStartedShooting > EnemyConstants.SHOOT_TIME) {
 			shooting = false;
 		}
@@ -55,13 +62,7 @@ public class StationaryEnemy extends Enemy {
 			return;
 		}
 		
-		if (player.getX() < getX()) {
-			currentDirection = Direction.Left;
-			setTexture(leftTexture);
-		} else if (player.getX() > getX()) {
-			currentDirection = Direction.Right;
-			setTexture(rightTexture);
-		}
+		super.facePlayer();
 	}
 
 	private void shoot() {
@@ -71,7 +72,9 @@ public class StationaryEnemy extends Enemy {
 			shootBulletFromRight();
 		}
 
+		shooting = true;
 		lastTimeShot = TimeUtils.millis();
+		timeStartedShooting = TimeUtils.millis();
 	}
 
 	private boolean inRangeOfPlayer() {
@@ -130,7 +133,6 @@ public class StationaryEnemy extends Enemy {
 
 	public void hitByBullet() {
 		health -= 5;
-		Logger.log("Fuck! That hurt man. My health is now " + health);
 	}
 
 }
