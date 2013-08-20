@@ -23,6 +23,9 @@ public abstract class Enemy extends GameObject {
 	protected Texture leftTexture;
 	protected Texture rightTexture;
 	
+	protected Texture shootLeftTexture;
+	protected Texture shootRightTexture;
+	
 	protected Body physicsBody;
 	protected BodyDef bodyDef;
 	protected FixtureDef fixtureDef;
@@ -85,7 +88,7 @@ public abstract class Enemy extends GameObject {
 		}
 	}
 	
-	private void facePlayer() {
+	protected void facePlayer() {
 		if (player.getX() < getX()) {
 			currentDirection = Direction.Left;
 			setTexture(leftTexture);

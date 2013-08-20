@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.des.hidrosity.bullets.StationaryEnemyBullet;
 import com.des.hidrosity.constants.EnemyConstants;
 import com.des.hidrosity.debug.Logger;
+import com.des.hidrosity.enemies.Enemy.Direction;
 import com.des.hidrosity.player.Player;
 import com.des.hidrosity.screens.PlayScreen;
 import com.des.hidrosity.ui.EnemyHealthBar;
@@ -20,22 +21,46 @@ public class StationaryEnemy extends Enemy {
 	private Array<StationaryEnemyBullet> bullets = new Array<StationaryEnemyBullet>();
 	
 	private EnemyHealthBar healthBar;
+	
+	private boolean shooting = false;
+	private long timeStartedShooting;
 
 	public StationaryEnemy(Vector2 position, String textureName, Player player) {
 		super(position, textureName, player);
 
 		leftTexture = Utils.loadTexture("res/enemies/stationary enemy/left.png");
 		rightTexture = Utils.loadTexture("res/enemies/stationary enemy/right.png");
+		shootLeftTexture = Utils.loadTexture("res/enemies/stationary enemy/shootLeft.png");
+		shootRightTexture = Utils.loadTexture("res/enemies/stationary enemy/shootRight.png");
 		
 		healthBar = new EnemyHealthBar(this);
 	}
 
-	@Override
 	public void update(float delta) {
 		super.update(delta);
 
 		if (inRangeOfPlayer() && shouldShoot()) {
 			shoot();
+			shooting = true;
+			timeStartedShooting = TimeUtils.millis();
+		}
+		
+		if (TimeUtils.millis() - timeStartedShooting > EnemyConstants.SHOOT_TIME) {
+			shooting = false;
+		}
+	}
+	
+	protected void facePlayer() {
+		if (shooting) {
+			return;
+		}
+		
+		if (player.getX() < getX()) {
+			currentDirection = Direction.Left;
+			setTexture(leftTexture);
+		} else if (player.getX() > getX()) {
+			currentDirection = Direction.Right;
+			setTexture(rightTexture);
 		}
 	}
 
@@ -67,12 +92,14 @@ public class StationaryEnemy extends Enemy {
 		StationaryEnemyBullet b = new StationaryEnemyBullet(new Vector2(getX() + getWidth(), getY()),
 				"res/bullets/jettenBullet.png", 1, PlayScreen.physicsWorld);
 		bullets.add(b);
+		setTexture(shootRightTexture);
 	}
 
 	private void shootBulletFromLeft() {
 		StationaryEnemyBullet b = new StationaryEnemyBullet(new Vector2(getX() - getWidth(), getY() + 2),
 				"res/bullets/jettenBullet.png", -1, PlayScreen.physicsWorld);
 		bullets.add(b);
+		setTexture(shootLeftTexture);
 	}
 
 	private boolean shouldShoot() {
