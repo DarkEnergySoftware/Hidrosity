@@ -33,9 +33,7 @@ public class CollisionListener implements ContactListener {
 			if (notAlreadyRemoving((Bullet) contact.getFixtureA().getUserData())) {
 				GameScreen.bulletsToRemove.add((Bullet) contact.getFixtureA().getUserData());
 			}
-		}
-		
-		if (contact.getFixtureB().getUserData() instanceof StationaryEnemyBullet
+		} else if (contact.getFixtureB().getUserData() instanceof StationaryEnemyBullet
 				&& contact.getFixtureA().getUserData().toString().equals("level")) {
 			if (notAlreadyRemoving((Bullet) contact.getFixtureB().getUserData())) {
 				GameScreen.bulletsToRemove.add((Bullet) contact.getFixtureB().getUserData());
@@ -49,9 +47,7 @@ public class CollisionListener implements ContactListener {
 			if (notAlreadyRemoving((Bullet) contact.getFixtureA().getUserData())) {
 				GameScreen.bulletsToRemove.add((Bullet) contact.getFixtureA().getUserData());
 			}
-		}
-
-		if (contact.getFixtureA().getUserData().toString().equals("level")
+		} else if (contact.getFixtureA().getUserData().toString().equals("level")
 				&& contact.getFixtureB().getUserData() instanceof PlayerBullet) {
 			if (notAlreadyRemoving((Bullet) contact.getFixtureB().getUserData())) {
 				GameScreen.bulletsToRemove.add((Bullet) contact.getFixtureB().getUserData());
@@ -71,9 +67,7 @@ public class CollisionListener implements ContactListener {
 		if (contact.getFixtureA().getUserData() instanceof PlayerBullet
 				&& contact.getFixtureB().getUserData() instanceof Enemy) {
 			((Enemy) contact.getFixtureB().getUserData()).hitByBullet();
-		}
-
-		if (contact.getFixtureB().getUserData() instanceof PlayerBullet
+		} else if (contact.getFixtureB().getUserData() instanceof PlayerBullet
 				&& contact.getFixtureA().getUserData() instanceof Enemy) {
 			((Enemy) contact.getFixtureA().getUserData()).hitByBullet();
 		}
@@ -83,9 +77,7 @@ public class CollisionListener implements ContactListener {
 		if (contact.getFixtureA().getUserData() instanceof Player
 				&& contact.getFixtureB().getUserData() instanceof StationaryEnemyBullet) {
 			((Player) contact.getFixtureA().getUserData()).hitByBullet();
-		}
-
-		if (contact.getFixtureB().getUserData() instanceof Player
+		} else if (contact.getFixtureB().getUserData() instanceof Player
 				&& contact.getFixtureA().getUserData() instanceof StationaryEnemyBullet) {
 			((Player) contact.getFixtureB().getUserData()).hitByBullet();
 		}
@@ -99,9 +91,7 @@ public class CollisionListener implements ContactListener {
 			if (numPlayerCollisions > 0) {
 				((Player) contact.getFixtureB().getUserData()).setCanJump(true);
 			}
-		}
-
-		if (contact.getFixtureB().getUserData() instanceof Player
+		} else if (contact.getFixtureB().getUserData() instanceof Player
 				&& contact.getFixtureA().getUserData().toString().equals("level")) {
 			numPlayerCollisions++;
 
@@ -127,9 +117,7 @@ public class CollisionListener implements ContactListener {
 			if (numPlayerCollisions <= 0) {
 				((Player) contact.getFixtureA().getUserData()).setCanJump(false);
 			}
-		}
-
-		if (contact.getFixtureB().getUserData() instanceof Player
+		} else if (contact.getFixtureB().getUserData() instanceof Player
 				&& contact.getFixtureA().getUserData().toString().equals("level")) {
 			numPlayerCollisions--;
 
