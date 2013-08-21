@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
 
 <level>
+	<!-- Create Player -->
+	<player>
+		<x>-480</x>
+		<y>-190</y>
+	</player>
+
     <!-- First part -->
 	<body> 
 		<x>0</x>

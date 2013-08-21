@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -36,15 +35,15 @@ public class GameScreen implements Screen {
 	private LevelManager levelManager;
 
 	private Player player;
-	
+
 	private PlayerHealthBar playerHealthBar;
 	private PlayerEnergyBar playerEnergyBar;
 
 	public static Array<Bullet> bulletsToRemove = new Array<>();
 	public static Array<Enemy> enemies = new Array<Enemy>();
-	
+
 	private FPSLogger fpsLogger;
-	
+
 	public void show() {
 		setupRenderingStuff();
 		createPhysicsWorld();
@@ -52,10 +51,10 @@ public class GameScreen implements Screen {
 		createPlayer();
 		createEnemies();
 		createUi();
-		
+
 		fpsLogger = new FPSLogger();
 	}
-	
+
 	private void createUi() {
 		playerHealthBar = new PlayerHealthBar(player);
 		playerEnergyBar = new PlayerEnergyBar(player);
@@ -64,13 +63,14 @@ public class GameScreen implements Screen {
 	private void createEnemies() {
 		enemies.add(new StationaryEnemy(new Vector2(616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET),
 				"res/enemies/stationary enemy/left.png", player));
-		enemies.add(new StationaryEnemy(new Vector2(1616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET),
+		enemies.add(new StationaryEnemy(
+				new Vector2(1616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET),
 				"res/enemies/stationary enemy/left.png", player));
 	}
 
 	private void createPlayer() {
-		player = new Player(new Vector2(32 + GameConstants.X_OFFSET, 130 + GameConstants.Y_OFFSET),
-				"res/player/the hero/standing/right1.png", physicsWorld);
+		player = new Player(levelManager.getPlayerSpawnPosition(), "res/player/the hero/standing/right1.png",
+				physicsWorld);
 	}
 
 	private void createLevelManager() {
@@ -106,7 +106,7 @@ public class GameScreen implements Screen {
 			zoomOutCamera();
 		}
 	}
-	
+
 	private void zoomOutCamera() {
 		camera.zoom += 0.005f;
 		camera.update();
@@ -142,7 +142,7 @@ public class GameScreen implements Screen {
 		updatePhysicsWorld();
 		updateCameraPosition();
 	}
-	
+
 	private void removeDeadEnemies() {
 		for (Enemy enemy : enemies) {
 			if (enemy.dead) {
@@ -152,12 +152,12 @@ public class GameScreen implements Screen {
 			}
 		}
 	}
-	
+
 	private void removeBullets() {
 		for (Bullet bullet : bulletsToRemove) {
 			physicsWorld.destroyBody(bullet.getBody());
 		}
-		
+
 		bulletsToRemove.clear();
 	}
 
@@ -212,7 +212,7 @@ public class GameScreen implements Screen {
 		renderUi();
 
 		renderDebugWorld();
-		
+
 		fpsLogger.log();
 	}
 
@@ -224,7 +224,7 @@ public class GameScreen implements Screen {
 		}
 		uiBatch.end();
 	}
-	
+
 	private void renderEnergyBar() {
 		playerEnergyBar.render(uiBatch);
 	}

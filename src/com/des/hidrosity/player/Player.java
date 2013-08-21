@@ -21,6 +21,7 @@ import com.des.hidrosity.constants.CollisionConstants;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.PlayerConstants;
 import com.des.hidrosity.debug.Logger;
+import com.des.hidrosity.levels.LevelManager;
 import com.jakehorsfield.libld.GameObject;
 
 public class Player extends GameObject {
