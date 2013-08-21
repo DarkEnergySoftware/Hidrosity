@@ -13,7 +13,7 @@ import com.des.hidrosity.constants.CollisionConstants;
 import com.des.hidrosity.constants.EnemyConstants;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.player.Player;
-import com.des.hidrosity.screens.PlayScreen;
+import com.des.hidrosity.screens.GameScreen;
 import com.jakehorsfield.libld.GameObject;
 
 public abstract class Enemy extends GameObject {
@@ -67,7 +67,7 @@ public abstract class Enemy extends GameObject {
 		fixtureDef.filter.categoryBits = CollisionConstants.ENEMY;
 		fixtureDef.filter.maskBits = CollisionConstants.ENEMY_MASK;
 		
-		physicsBody = PlayScreen.physicsWorld.createBody(bodyDef);
+		physicsBody = GameScreen.physicsWorld.createBody(bodyDef);
 		physicsBody.setFixedRotation(true);
 		
 		fixture = physicsBody.createFixture(fixtureDef);

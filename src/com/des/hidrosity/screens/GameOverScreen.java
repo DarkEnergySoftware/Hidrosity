@@ -47,7 +47,7 @@ public class GameOverScreen implements Screen {
 		public boolean keyDown(int keycode) {
 			switch (keycode) {
 			case Keys.ENTER:
-				((Game) Gdx.app.getApplicationListener()).setScreen(new PlayScreen());
+				((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen());
 			}
 			
 			return false;

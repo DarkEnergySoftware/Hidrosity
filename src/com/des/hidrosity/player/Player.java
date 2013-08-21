@@ -63,7 +63,7 @@ public class Player extends GameObject {
 	
 	private long timeStartedHurting;
 	
-	private int health = 5;
+	private int health = 10;
 	private int energy = 10;
 
 	public Player(Vector2 position, String textureName, World gameWorld) {

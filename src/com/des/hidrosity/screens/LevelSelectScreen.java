@@ -74,7 +74,7 @@ public class LevelSelectScreen extends Menu implements Screen {
 
 	public void itemSelected() {
 		chosenLevel = currentMenuIndex;
-		changeScreen(new PlayScreen());
+		changeScreen(new GameScreen());
 	}
 
 	class LevelInputProcessor implements InputProcessor {

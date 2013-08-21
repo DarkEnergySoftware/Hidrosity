@@ -4,23 +4,49 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.des.hidrosity.bullets.Bullet;
 import com.des.hidrosity.bullets.PlayerBullet;
 import com.des.hidrosity.bullets.StationaryEnemyBullet;
 import com.des.hidrosity.enemies.Enemy;
 import com.des.hidrosity.player.Player;
+import com.des.hidrosity.screens.GameScreen;
 
 public class CollisionListener implements ContactListener {
 
 	private int numPlayerCollisions;
 
 	public void beginContact(Contact contact) {
-		if (contact.getFixtureA().getUserData() == null || contact.getFixtureB().getUserData() == null) {
+		if (contact.getFixtureA() == null
+				|| contact.getFixtureB() == null) {
 			return;
 		}
 
 		checkIfPlayerHitByBullet(contact);
 		checkIfPlayerTouchesGround(contact);
 		checkIfEnemyHitByBullet(contact);
+		checkIfBulletHitsLevel(contact);
+	}
+
+	private void checkIfBulletHitsLevel(Contact contact) {
+		if (contact.getFixtureA().getUserData() instanceof PlayerBullet && contact.getFixtureB().getUserData().toString().equals("level")) {
+			if (notAlreadyRemoving((Bullet) contact.getFixtureA().getUserData())) {
+				GameScreen.bulletsToRemove.add((Bullet) contact.getFixtureA().getUserData());
+			}
+		}
+		
+		if (contact.getFixtureA().getUserData().toString().equals("level") && contact.getFixtureB().getUserData() instanceof PlayerBullet) {
+			if (notAlreadyRemoving((Bullet) contact.getFixtureB().getUserData())) {
+				GameScreen.bulletsToRemove.add((Bullet) contact.getFixtureB().getUserData());
+			}
+		}
+	}
+	
+	private boolean notAlreadyRemoving(Bullet bullet) {
+		if (GameScreen.bulletsToRemove.contains(bullet, true)) {
+			return false;
+		}
+		
+		return true;
 	}
 
 	private void checkIfEnemyHitByBullet(Contact contact) {
@@ -49,7 +75,8 @@ public class CollisionListener implements ContactListener {
 
 	private void checkIfPlayerTouchesGround(Contact contact) {
 		if (contact.getFixtureA().getUserData() instanceof Player
-				&& contact.getFixtureB().getUserData().toString().equals("level")) {
+				&& contact.getFixtureB().getUserData().toString()
+						.equals("level")) {
 			numPlayerCollisions++;
 
 			if (numPlayerCollisions > 0) {
@@ -58,7 +85,8 @@ public class CollisionListener implements ContactListener {
 		}
 
 		if (contact.getFixtureB().getUserData() instanceof Player
-				&& contact.getFixtureA().getUserData().toString().equals("level")) {
+				&& contact.getFixtureA().getUserData().toString()
+						.equals("level")) {
 			numPlayerCollisions++;
 
 			if (numPlayerCollisions > 0) {
@@ -68,7 +96,8 @@ public class CollisionListener implements ContactListener {
 	}
 
 	public void endContact(Contact contact) {
-		if (contact.getFixtureA().getUserData() == null || contact.getFixtureB().getUserData() == null) {
+		if (contact.getFixtureA() == null
+				|| contact.getFixtureB() == null) {
 			return;
 		}
 
@@ -77,20 +106,24 @@ public class CollisionListener implements ContactListener {
 
 	private void checkIfPlayerLeavesGround(Contact contact) {
 		if (contact.getFixtureA().getUserData() instanceof Player
-				&& contact.getFixtureB().getUserData().toString().equals("level")) {
+				&& contact.getFixtureB().getUserData().toString()
+						.equals("level")) {
 			numPlayerCollisions--;
 
 			if (numPlayerCollisions <= 0) {
-				((Player) contact.getFixtureA().getUserData()).setCanJump(false);
+				((Player) contact.getFixtureA().getUserData())
+						.setCanJump(false);
 			}
 		}
 
 		if (contact.getFixtureB().getUserData() instanceof Player
-				&& contact.getFixtureA().getUserData().toString().equals("level")) {
+				&& contact.getFixtureA().getUserData().toString()
+						.equals("level")) {
 			numPlayerCollisions--;
 
 			if (numPlayerCollisions <= 0) {
-				((Player) contact.getFixtureB().getUserData()).setCanJump(false);
+				((Player) contact.getFixtureB().getUserData())
+						.setCanJump(false);
 			}
 		}
 	}
