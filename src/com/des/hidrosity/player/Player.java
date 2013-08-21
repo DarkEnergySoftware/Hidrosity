@@ -50,7 +50,6 @@ public class Player extends GameObject {
 
 	private long timeStartedWaiting;
 	private long timeStartedShooting;
-	private long timeStartedDying;
 	private long lastTimeShot;
 
 	private Array<PlayerBullet> bullets = new Array<>();
@@ -60,13 +59,11 @@ public class Player extends GameObject {
 	private boolean shooting = false;
 	private boolean hurt = false;
 	private boolean spawning = false;
-	private boolean dying = false;
-	private boolean dyingAnimationFinished = false;
 	public boolean dead = false;
 	
 	private long timeStartedHurting;
 	
-	private int health = 10;
+	private int health = 5;
 	private int energy = 10;
 
 	public Player(Vector2 position, String textureName, World gameWorld) {
@@ -143,27 +140,12 @@ public class Player extends GameObject {
 		updateNonPhysicsPosition();
 		updateStates();
 		checkIfDead();
-		System.out.println("Dying: " + dying + " Dead: " + dead);
 //		printDebug();
 	}
 	
 	private void checkIfDead() {
-		if (CharacterManager.getCharacter().hasDeathAnimation == false) {
-			return;
-		}
-		
 		if (health <= 0) {
-			dying = true;
-			setAnimationToDying();
-			timeStartedDying = TimeUtils.millis();
-		}
-	}
-	
-	private void setAnimationToDying() {
-		if (currentDirection == PlayerDirection.Left) {
-			currentAnimation = CharacterManager.getCharacter().animationDeathLeft;
-		} else {
-			currentAnimation = CharacterManager.getCharacter().animationDeathRight;
+			
 		}
 	}
 	
@@ -222,14 +204,6 @@ public class Player extends GameObject {
 		checkIfStateShouldBeWaiting();
 		checkIfStateShouldBeJumping();
 		checkIfStateShouldBeSpawning();
-		checkIfStateShouldBeDead();
-	}
-	
-	private void checkIfStateShouldBeDead() {
-		if (dying && TimeUtils.millis() - timeStartedDying > 500) {
-			System.out.println("Should be dead.");
-			dead = true;
-		}
 	}
 	
 	private void checkIfStateShouldBeSpawning() {
@@ -266,7 +240,6 @@ public class Player extends GameObject {
 	private void setStateToJumping() {
 		if (hurt) return;
 		if (spawning) return;
-		if (dying) return;
 		
 		currentState = PlayerState.Jumping;
 
@@ -306,7 +279,6 @@ public class Player extends GameObject {
 	private void setStateToWaiting() {
 		if (hurt) return;
 		if (spawning) return;
-		if (dying) return;
 		
 		currentState = PlayerState.Waiting;
 
@@ -326,7 +298,6 @@ public class Player extends GameObject {
 
 	private void checkIfStateShouldBeStanding() {
 		if (spawning) return;
-		if (dying) return;
 		
 		if (physicsBody.getLinearVelocity().x >= -1f && physicsBody.getLinearVelocity().x <= 1f) {
 			if (waitingAndAnimationNotFinished()) {
@@ -340,7 +311,6 @@ public class Player extends GameObject {
 	private void setStateToStanding() {
 		if (hurt) return;
 		if (spawning) return;
-		if (dying) return;
 		
 		currentState = PlayerState.Standing;
 

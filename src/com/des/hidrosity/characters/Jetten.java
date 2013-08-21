@@ -20,8 +20,8 @@ public class Jetten extends Character {
 	}
 	
 	private void loadDeathAnimation() {
-		animationDeathLeft = AnimationLoader.loadAnimation(1/5f, "res/player/jetten/death/left.txt");
-		animationDeathRight = AnimationLoader.loadAnimation(1/5f, "res/player/jetten/death/right.txt");
+		animationDeathLeft = AnimationLoader.loadAnimation(1f, "res/player/jetten/death/left.txt");
+		animationDeathRight = AnimationLoader.loadAnimation(1, "res/player/jetten/death/right.txt");
 		
 		animationDeathLeft.setPlayMode(Animation.NORMAL);
 		animationDeathRight.setPlayMode(Animation.NORMAL);
