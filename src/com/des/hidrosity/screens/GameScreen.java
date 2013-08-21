@@ -61,11 +61,16 @@ public class GameScreen implements Screen {
 	}
 
 	private void createEnemies() {
-		enemies.add(new StationaryEnemy(new Vector2(616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET),
+		/*enemies.add(new StationaryEnemy(new Vector2(616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET),
 				"res/enemies/stationary enemy/left.png", player));
 		enemies.add(new StationaryEnemy(
 				new Vector2(1616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET),
-				"res/enemies/stationary enemy/left.png", player));
+				"res/enemies/stationary enemy/left.png", player));*/
+		
+		System.out.println(new Vector2(616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET));
+		System.out.println(new Vector2(1616 * 2 + GameConstants.X_OFFSET, 94 * 2 + GameConstants.Y_OFFSET));
+		
+		enemies = levelManager.getEnemiesInLevel(player);
 	}
 
 	private void createPlayer() {

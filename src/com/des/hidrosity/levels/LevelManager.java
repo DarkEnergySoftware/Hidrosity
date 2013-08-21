@@ -18,6 +18,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+import com.des.hidrosity.enemies.Enemy;
+import com.des.hidrosity.enemies.EnemyType;
+import com.des.hidrosity.enemies.StationaryEnemy;
+import com.des.hidrosity.player.Player;
 
 public class LevelManager {
 
@@ -90,6 +95,52 @@ public class LevelManager {
 		}
 		
 		return playerSpawnPosition;
+	}
+	
+	public Array<Enemy> getEnemiesInLevel(Player player) {
+		Array<Enemy> enemies = new Array<Enemy>();
+		
+		try {
+			DocumentBuilder docBuilder = createDocumentBuilder();
+
+			Document xmlDocument = docBuilder.parse(new File("res/levels/data/" + "level" + currentLevelNumber + ".xml"));
+			xmlDocument.getDocumentElement().normalize();
+
+			NodeList nodeList = xmlDocument.getElementsByTagName("enemy");
+
+			for (int i = 0; i < nodeList.getLength(); ++i) {
+				Node currentNode = nodeList.item(i);
+
+				if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element currentElement = (Element) currentNode;
+
+					EnemyType enemyType;
+					float tempX;
+					float tempY;
+
+					tempX = Float.parseFloat(currentElement.getElementsByTagName("x").item(0).getTextContent());
+					tempY = Float.parseFloat(currentElement.getElementsByTagName("y").item(0).getTextContent());
+					enemyType = EnemyType.valueOf(currentElement.getElementsByTagName("type").item(0).getTextContent());
+					
+					switch (enemyType) {
+					case StationaryEnemy:
+						enemies.add(new StationaryEnemy(new Vector2(tempX, tempY), "res/enemies/stationary enemy/left.png", player));
+						break;
+					default:
+						break;
+					}
+				}
+			}
+
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		}
+		
+		return enemies;
 	}
 	
 	private DocumentBuilder createDocumentBuilder() throws ParserConfigurationException {
