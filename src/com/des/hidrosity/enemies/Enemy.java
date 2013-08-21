@@ -118,4 +118,5 @@ public abstract class Enemy extends GameObject {
 	}
 	
 	public abstract void hitByBullet();
+	public abstract void prepareForRemoval();
 }

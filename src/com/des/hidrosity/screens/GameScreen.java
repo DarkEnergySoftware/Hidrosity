@@ -36,13 +36,12 @@ public class GameScreen implements Screen {
 	private LevelManager levelManager;
 
 	private Player player;
-
-	private Array<Enemy> enemies = new Array<Enemy>();
 	
 	private PlayerHealthBar playerHealthBar;
 	private PlayerEnergyBar playerEnergyBar;
 
 	public static Array<Bullet> bulletsToRemove = new Array<>();
+	public static Array<Enemy> enemies = new Array<Enemy>();
 	
 	private FPSLogger fpsLogger;
 	
@@ -138,14 +137,25 @@ public class GameScreen implements Screen {
 		updatePlayer();
 		checkIfPlayerDead();
 		updateEnemies();
+		removeDeadEnemies();
 		removeBullets();
 		updatePhysicsWorld();
 		updateCameraPosition();
 	}
 	
+	private void removeDeadEnemies() {
+		for (Enemy enemy : enemies) {
+			if (enemy.dead) {
+				physicsWorld.destroyBody(enemy.getBody());
+				enemy.prepareForRemoval();
+				enemies.removeValue(enemy, true);
+			}
+		}
+	}
+	
 	private void removeBullets() {
-		for (Bullet b : bulletsToRemove) {
-			physicsWorld.destroyBody(b.getBody());
+		for (Bullet bullet : bulletsToRemove) {
+			physicsWorld.destroyBody(bullet.getBody());
 		}
 		
 		bulletsToRemove.clear();
@@ -160,11 +170,6 @@ public class GameScreen implements Screen {
 	private void updateEnemies() {
 		for (Enemy e : enemies) {
 			e.update(Gdx.graphics.getDeltaTime());
-			
-			if (e.dead) {
-				enemies.removeValue(e, true);
-				break;
-			}
 		}
 	}
 

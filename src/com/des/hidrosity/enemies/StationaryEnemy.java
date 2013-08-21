@@ -113,7 +113,6 @@ public class StationaryEnemy extends Enemy {
 		return false;
 	}
 
-	@Override
 	public void render(SpriteBatch spriteBatch) {
 		super.render(spriteBatch);
 		
@@ -135,4 +134,11 @@ public class StationaryEnemy extends Enemy {
 		health -= 5;
 	}
 
+	public void prepareForRemoval() {
+		for (StationaryEnemyBullet seb : bullets) {
+			GameScreen.physicsWorld.destroyBody(seb.getBody());
+		}
+		
+		bullets.clear();
+	}
 }
