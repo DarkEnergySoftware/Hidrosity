@@ -142,7 +142,7 @@ public class PlayScreen implements Screen {
 	}
 
 	private void checkIfPlayerDead() {
-		if (player.getHealth() <= 0) {
+		if (player.dead) {
 			((Game) Gdx.app.getApplicationListener()).setScreen(new GameOverScreen());
 		}
 	}

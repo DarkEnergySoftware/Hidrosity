@@ -1,0 +1,5 @@
+res/player/jetten/death/right1.png
+res/player/jetten/death/right2.png
+res/player/jetten/death/right3.png
+res/player/jetten/death/right4.png
+res/player/jetten/death/right5.png

@@ -23,10 +23,14 @@ public abstract class Character {
 
 	public Animation animationHurtLeft;
 	public Animation animationHurtRight;
+	
+	public Animation animationDeathLeft;
+	public Animation animationDeathRight;
 
 	public Animation currentAnimation;	
 	
 	public boolean hasSpawnAnimation = false;
+	public boolean hasDeathAnimation = false;
 	
 	public Character() {
 		loadStandingAnimations();

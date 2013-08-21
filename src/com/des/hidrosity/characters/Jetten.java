@@ -1,6 +1,7 @@
 package com.des.hidrosity.characters;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationDesc;
 import com.des.hidrosity.animation.AnimationLoader;
 import com.des.hidrosity.constants.PlayerConstants;
 
@@ -12,8 +13,18 @@ public class Jetten extends Character {
 		super();
 		
 		hasSpawnAnimation = true;
+		hasDeathAnimation = true;
 		
 		loadAppearAnimation();
+		loadDeathAnimation();
+	}
+	
+	private void loadDeathAnimation() {
+		animationDeathLeft = AnimationLoader.loadAnimation(1/5f, "res/player/jetten/death/left.txt");
+		animationDeathRight = AnimationLoader.loadAnimation(1/5f, "res/player/jetten/death/right.txt");
+		
+		animationDeathLeft.setPlayMode(Animation.NORMAL);
+		animationDeathRight.setPlayMode(Animation.NORMAL);
 	}
 	
 	private void loadAppearAnimation() {
