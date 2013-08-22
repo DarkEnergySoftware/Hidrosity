@@ -1,26 +1,6 @@
 <?xml version="1.0"?>
 
 <level>
-	<!-- Create Player -->
-	<player>
-		<x>-480</x>
-		<y>-190</y>
-	</player>
-	
-	<!-- First Enemy -->
-	<enemy>
-		<x>720</x>
-		<y>-132</y>
-		<type>StationaryEnemy</type>
-	</enemy>
-	
-	<!-- Second Enemy -->
-	<enemy>
-		<x>2720</x>
-		<y>-132</y>
-		<type>StationaryEnemy</type>
-	</enemy>
-
     <!-- First part -->
 	<body> 
 		<x>0</x>

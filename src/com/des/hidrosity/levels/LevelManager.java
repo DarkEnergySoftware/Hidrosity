@@ -65,10 +65,10 @@ public class LevelManager {
 		try {
 			DocumentBuilder docBuilder = createDocumentBuilder();
 
-			Document xmlDocument = docBuilder.parse(new File("res/levels/data/" + "level" + currentLevelNumber + ".xml"));
+			Document xmlDocument = docBuilder.parse(new File("res/levels/data/" + "player" + currentLevelNumber + ".xml"));
 			xmlDocument.getDocumentElement().normalize();
 
-			NodeList nodeList = xmlDocument.getElementsByTagName("player");
+			NodeList nodeList = xmlDocument.getElementsByTagName("spawn");
 
 			for (int i = 0; i < nodeList.getLength(); ++i) {
 				Node currentNode = nodeList.item(i);
@@ -103,7 +103,7 @@ public class LevelManager {
 		try {
 			DocumentBuilder docBuilder = createDocumentBuilder();
 
-			Document xmlDocument = docBuilder.parse(new File("res/levels/data/" + "level" + currentLevelNumber + ".xml"));
+			Document xmlDocument = docBuilder.parse(new File("res/levels/data/" + "enemies" + currentLevelNumber + ".xml"));
 			xmlDocument.getDocumentElement().normalize();
 
 			NodeList nodeList = xmlDocument.getElementsByTagName("enemy");
