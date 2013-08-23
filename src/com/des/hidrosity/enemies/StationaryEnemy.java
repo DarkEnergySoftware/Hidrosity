@@ -18,16 +18,12 @@ public class StationaryEnemy extends Enemy {
 
 	private Array<StationaryEnemyBullet> bullets = new Array<StationaryEnemyBullet>();
 	
-	private EnemyHealthBar healthBar;
-	
 	private boolean shooting = false;
 	private long timeStartedShooting;
 
 	public StationaryEnemy(Vector2 position, String textureName, Player player) {
 		super(position, textureName, player);
 		loadTextures();
-		
-		healthBar = new EnemyHealthBar(this);
 	}
 	
 	private void loadTextures() {
@@ -117,13 +113,8 @@ public class StationaryEnemy extends Enemy {
 		super.render(spriteBatch);
 		
 		renderBullets(spriteBatch);
-		renderHealthBar(spriteBatch);
 	}
 	
-	private void renderHealthBar(SpriteBatch spriteBatch) {
-		healthBar.render(spriteBatch);
-	}
-
 	private void renderBullets(SpriteBatch spriteBatch) {
 		for (StationaryEnemyBullet b : bullets) {
 			b.render(spriteBatch);

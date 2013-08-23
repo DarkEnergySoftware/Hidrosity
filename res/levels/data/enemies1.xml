@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<enemies>
+	<enemy>
+		<x>720</x>
+		<y>-132</y>
+		<type>StationaryEnemy</type>
+	</enemy>
+	
+	<enemy>
+		<x>2720</x>
+		<y>-132</y>
+		<type>StationaryEnemy</type>
+	</enemy>
+</enemies>
+	

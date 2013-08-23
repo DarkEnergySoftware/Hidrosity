@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+
+<level>
+    <!-- First part -->
+	<body> 
+		<x>0</x>
+		<y>0</y>
+		<width>144</width>
+		<height>63</height>
+	</body>
+	
+	<body> 
+		<x>209</x>
+		<y>49</y>
+		<width>37</width>
+		<height>13</height>
+	</body>
+	
+	<body> 
+		<x>309</x>
+		<y>49</y>
+		<width>37</width>
+		<height>13</height>
+	</body>
+	
+	<body>
+	    <x>411</x>
+	    <y>0</y>
+	    <width>144</width>
+	    <height>63</height>
+	</body>
+	
+	<body>
+	    <x>555</x>
+	    <y>0</y>
+	    <width>144</width>
+	    <height>94</height>
+	</body>
+	
+	<body>
+	    <x>747</x>
+	    <y>0</y>
+	    <width>143</width>
+	    <height>31</height>
+	</body>
+	
+	<body>
+	    <x>955</x>
+	    <y>14</y>
+	    <width>37</width>
+	    <height>15</height>
+	</body>
+	
+	<!-- Second part -->
+	<body> 
+		<x>1000</x>
+		<y>0</y>
+		<width>144</width>
+		<height>63</height>
+	</body>
+	
+	<body> 
+		<x>1209</x>
+		<y>49</y>
+		<width>37</width>
+		<height>13</height>
+	</body>
+	
+	<body> 
+		<x>1309</x>
+		<y>49</y>
+		<width>37</width>
+		<height>13</height>
+	</body>
+	
+	<body>
+	    <x>1411</x>
+	    <y>0</y>
+	    <width>144</width>
+	    <height>63</height>
+	</body>
+	
+	<body>
+	    <x>1555</x>
+	    <y>0</y>
+	    <width>144</width>
+	    <height>94</height>
+	</body>
+	
+	<body>
+	    <x>1747</x>
+	    <y>0</y>
+	    <width>143</width>
+	    <height>31</height>
+	</body>
+	
+	<body>
+	    <x>1955</x>
+	    <y>14</y>
+	    <width>37</width>
+	    <height>15</height>
+	</body>
+	
+	<!-- Left boundary -->
+	<body>
+	    <x>0</x>
+	    <y>0</y>
+	    <width>1</width>
+	    <height>224</height>
+	</body>
+
+	<!-- Right boundary -->
+	<body>
+	    <x>2000</x>
+	    <y>0</y>
+	    <width>1</width>
+	    <height>224</height>
+	</body>
+	
+	<!-- Top boundary -->
+	<body>
+	    <x>0</x>
+	    <y>224</y>
+	    <width>2000</width>
+	    <height>1</height>
+	</body>
+	
+	<!-- Bottom boundary -->
+	<body>
+	    <x>0</x>
+	    <y>0</y>
+	    <width>2000</width>
+	    <height>1</height>
+	</body>
+</level>
