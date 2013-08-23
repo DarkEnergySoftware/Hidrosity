@@ -512,6 +512,16 @@ public class Player extends GameObject {
 		setAnimationToHurt();
 		hurt = true;
 		timeStartedHurting = TimeUtils.millis();
+		
+		knockBack();
+	}
+	
+	private void knockBack() {
+		if (currentDirection == PlayerDirection.Left) {
+			physicsBody.applyForceToCenter(new Vector2(PlayerConstants.KNOCKBACK_FORCE, 0), true);
+		} else if (currentDirection == PlayerDirection.Right) {
+			physicsBody.applyForceToCenter(new Vector2(-PlayerConstants.KNOCKBACK_FORCE, 0), true);
+		}
 	}
 	
 	private void setAnimationToHurt() {

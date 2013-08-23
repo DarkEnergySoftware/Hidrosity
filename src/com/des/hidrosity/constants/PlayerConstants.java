@@ -14,4 +14,5 @@ public class PlayerConstants {
 	public static final long SHOOTING_TIME = 250;
 	public static final long HURT_TIME = 400;
 	public static final int HEALTH_DECREASE = 1;
+	public static final float KNOCKBACK_FORCE = 20;
 }
