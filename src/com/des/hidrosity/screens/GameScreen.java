@@ -2,6 +2,7 @@ package com.des.hidrosity.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -53,6 +54,7 @@ public class GameScreen implements Screen {
 		createUi();
 
 		fpsLogger = new FPSLogger();
+		Gdx.input.setInputProcessor(new Input());
 	}
 
 	private void createUi() {
@@ -118,10 +120,6 @@ public class GameScreen implements Screen {
 			player.moveLeft();
 		} else if (Gdx.input.isKeyPressed(KeyConstants.PLAYER_RIGHT)) {
 			player.moveRight();
-		}
-
-		if (Gdx.input.isKeyPressed(KeyConstants.PLAYER_JUMP)) {
-			player.jump();
 		}
 
 		if (Gdx.input.isKeyPressed(KeyConstants.PLAYER_SHOOT)) {
@@ -256,6 +254,50 @@ public class GameScreen implements Screen {
 
 	private void renderLevel() {
 		levelManager.renderLevel(spriteBatch);
+	}
+	
+	class Input implements InputProcessor {
+
+		public boolean keyDown(int keycode) {
+			switch (keycode) {
+			case KeyConstants.PLAYER_JUMP:
+				player.jump();
+				break;
+			default:
+				break;
+			}
+			
+			return false;
+		}
+
+		public boolean keyUp(int keycode) {
+			return false;
+		}
+
+		public boolean keyTyped(char character) {
+			return false;
+		}
+
+		public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+			return false;
+		}
+
+		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+			return false;
+		}
+
+		public boolean touchDragged(int screenX, int screenY, int pointer) {
+			return false;
+		}
+
+		public boolean mouseMoved(int screenX, int screenY) {
+			return false;
+		}
+
+		public boolean scrolled(int amount) {
+			return false;
+		}
+		
 	}
 
 	public void resize(int width, int height) {
