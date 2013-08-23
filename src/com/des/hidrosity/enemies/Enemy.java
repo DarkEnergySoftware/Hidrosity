@@ -54,7 +54,7 @@ public abstract class Enemy extends GameObject {
 		
 		bodyDef.position.set((getX() + (getWidth() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE,
 				(getY() + (getHeight() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE);
-		bodyDef.type = BodyType.StaticBody;
+		bodyDef.type = BodyType.DynamicBody;
 		
 		PolygonShape polygonShape = new PolygonShape();
 		polygonShape.setAsBox(((getWidth() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE,
