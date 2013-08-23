@@ -130,11 +130,22 @@ public class GameScreen implements Screen {
 	private void update() {
 		updatePlayer();
 		checkIfPlayerDead();
+		checkIfShouldResetPlayerPos();
 		updateEnemies();
 		removeDeadEnemies();
 		removeBullets();
 		updatePhysicsWorld();
 		updateCameraPosition();
+	}
+	
+	private void checkIfShouldResetPlayerPos() {
+		if (player.getPhysicsBody().getPosition().y <= -2.9150002) {
+			Vector2 spawnPosition = new Vector2();
+			spawnPosition.x = levelManager.getPlayerSpawnPosition().x * GameConstants.UNIT_SCALE;
+			spawnPosition.y = levelManager.getPlayerSpawnPosition().y * GameConstants.UNIT_SCALE;
+			
+			player.getPhysicsBody().setTransform(spawnPosition, 0f);
+		}
 	}
 
 	private void removeDeadEnemies() {
