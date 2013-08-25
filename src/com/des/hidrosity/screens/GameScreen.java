@@ -50,6 +50,7 @@ public class GameScreen implements Screen {
 		createPhysicsWorld();
 		createLevelManager();
 		createPlayer();
+		physicsWorld.setContactListener(new CollisionListener(player));
 		createEnemies();
 		createUi();
 
@@ -67,17 +68,15 @@ public class GameScreen implements Screen {
 	}
 
 	private void createPlayer() {
-		player = new Player(levelManager.getPlayerSpawnPosition(), "res/player/the hero/standing/right1.png",
-				physicsWorld);
+		player = new Player(levelManager.getPlayerSpawnPosition(), "res/player/the hero/standing/right1.png");
 	}
 
 	private void createLevelManager() {
-		levelManager = new LevelManager(physicsWorld, LevelSelectScreen.chosenLevel);
+		levelManager = new LevelManager(LevelSelectScreen.chosenLevel);
 	}
 
 	private void createPhysicsWorld() {
 		physicsWorld = new World(GameConstants.GRAVITY, true);
-		physicsWorld.setContactListener(new CollisionListener());
 	}
 
 	private void setupRenderingStuff() {

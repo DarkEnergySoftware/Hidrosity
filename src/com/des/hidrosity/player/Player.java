@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.des.hidrosity.bullets.PlayerBullet;
@@ -21,7 +20,7 @@ import com.des.hidrosity.constants.CollisionConstants;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.PlayerConstants;
 import com.des.hidrosity.debug.Logger;
-import com.des.hidrosity.levels.LevelManager;
+import com.des.hidrosity.screens.GameScreen;
 import com.jakehorsfield.libld.GameObject;
 
 public class Player extends GameObject {
@@ -42,8 +41,6 @@ public class Player extends GameObject {
 
 	private PlayerState currentState;
 	private PlayerDirection currentDirection;
-
-	private World gameWorld;
 
 	private boolean canJump = true;
 
@@ -68,9 +65,8 @@ public class Player extends GameObject {
 	private int health = 10;
 	private int energy = 10;
 
-	public Player(Vector2 position, String textureName, World gameWorld) {
+	public Player(Vector2 position, String textureName) {
 		super(position, textureName);
-		this.gameWorld = gameWorld;
 
 		setInitialStateAndDirection();
 		loadAnimations();
@@ -102,7 +98,7 @@ public class Player extends GameObject {
 		fixtureDef.filter.categoryBits = CollisionConstants.PLAYER;
 		fixtureDef.filter.maskBits = CollisionConstants.PLAYER_MASK;
 
-		physicsBody = gameWorld.createBody(bodyDef);
+		physicsBody = GameScreen.physicsWorld.createBody(bodyDef);
 		physicsBody.setFixedRotation(true);
 		physicsBody.setLinearDamping(1f);
 
@@ -122,7 +118,7 @@ public class Player extends GameObject {
 		feetFixtureDef.shape = feetShape;
 
 		Fixture feetFixture = physicsBody.createFixture(feetFixtureDef);
-		feetFixture.setUserData(this);
+		feetFixture.setUserData("feet");
 
 		feetShape.dispose();
 	}
@@ -451,12 +447,12 @@ public class Player extends GameObject {
 	}
 
 	private void createBulletFromRight() {
-		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()), "res/bullets/heroBullet.png", 1, gameWorld);
+		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()), "res/bullets/heroBullet.png", 1, GameScreen.physicsWorld);
 		bullets.add(b);
 	}
 
 	private void createBulletFromLeft() {
-		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()), "res/bullets/heroBullet.png", -1, gameWorld);
+		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()), "res/bullets/heroBullet.png", -1, GameScreen.physicsWorld);
 		bullets.add(b);
 	}
 

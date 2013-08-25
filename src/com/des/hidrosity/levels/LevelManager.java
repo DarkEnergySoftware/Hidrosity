@@ -17,17 +17,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.des.hidrosity.enemies.Enemy;
 import com.des.hidrosity.enemies.EnemyType;
 import com.des.hidrosity.enemies.StationaryEnemy;
 import com.des.hidrosity.player.Player;
+import com.des.hidrosity.screens.GameScreen;
 
 public class LevelManager {
-
-	@SuppressWarnings("unused")
-	private final World gameWorld;
 
 	private Texture currentLevelTexture;
 	private int currentLevelNumber;
@@ -35,11 +32,9 @@ public class LevelManager {
 	private LevelImageLoader levelImageLoader;
 	private LevelCreator levelCreator;
 
-	public LevelManager(World gameWorld, int startingLevel) {
-		this.gameWorld = gameWorld;
-
+	public LevelManager(int startingLevel) {
 		levelImageLoader = new LevelImageLoader();
-		levelCreator = new LevelCreator(gameWorld);
+		levelCreator = new LevelCreator(GameScreen.physicsWorld);
 
 		setLevel(startingLevel);
 	}
