@@ -39,7 +39,7 @@ public class GameScreen implements Screen {
 
 	private PlayerHealthBar playerHealthBar;
 	private PlayerEnergyBar playerEnergyBar;
-	
+
 	private LifeCounter lifeCounter;
 
 	public static Array<Bullet> bulletsToRemove = new Array<Bullet>();
@@ -63,7 +63,7 @@ public class GameScreen implements Screen {
 	private void createUi() {
 		playerHealthBar = new PlayerHealthBar(player);
 		playerEnergyBar = new PlayerEnergyBar(player);
-		
+
 		lifeCounter = new LifeCounter(player);
 	}
 
@@ -143,12 +143,23 @@ public class GameScreen implements Screen {
 
 	private void checkIfShouldResetPlayerPos() {
 		if (player.getPhysicsBody().getPosition().y <= GameConstants.GROUND_Y) {
-			Vector2 spawnPosition = new Vector2();
-			spawnPosition.x = levelManager.getPlayerSpawnPosition().x * GameConstants.UNIT_SCALE;
-			spawnPosition.y = levelManager.getPlayerSpawnPosition().y * GameConstants.UNIT_SCALE;
-			player.getPhysicsBody().setTransform(spawnPosition, 0f);
-			player.updateNonPhysicsPosition();
+			resetPlayerPosition();
+			resetCameraPosition();
 		}
+	}
+
+	private void resetPlayerPosition() {
+		Vector2 spawnPosition = new Vector2();
+		spawnPosition.x = levelManager.getPlayerSpawnPosition().x * GameConstants.UNIT_SCALE;
+		spawnPosition.y = levelManager.getPlayerSpawnPosition().y * GameConstants.UNIT_SCALE;
+		player.getPhysicsBody().setTransform(spawnPosition, 0f);
+		player.updateNonPhysicsPosition();
+	}
+
+	private void resetCameraPosition() {
+		camera.position.x = 0;
+		camera.position.y = 0;
+		camera.update();
 	}
 
 	private void removeDeadEnemies() {
