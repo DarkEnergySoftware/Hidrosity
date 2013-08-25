@@ -64,6 +64,7 @@ public class Player extends GameObject {
 	
 	private long timeStartedHurting;
 	
+	private int lives = 3;
 	private int health = 10;
 	private int energy = 10;
 
@@ -146,7 +147,13 @@ public class Player extends GameObject {
 	
 	private void checkIfDead() {
 		if (health <= 0) {
+			if (lives <= 0) {
+				dead = true;
+				return;
+			}
 			
+			lives--;
+			health = 10;
 		}
 	}
 	
