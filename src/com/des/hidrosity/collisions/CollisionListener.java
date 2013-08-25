@@ -22,8 +22,6 @@ public class CollisionListener implements ContactListener {
 
 	public CollisionListener(Player player) {
 		this.player = player;
-
-		System.out.println(player);
 	}
 
 	public void beginContact(Contact contact) {
@@ -33,6 +31,8 @@ public class CollisionListener implements ContactListener {
 
 		userDataA = contact.getFixtureA().getUserData();
 		userDataB = contact.getFixtureB().getUserData();
+
+		System.out.println("[Begin Contact] " + userDataA + ", " + userDataB);
 
 		checkIfPlayerHitByBullet(contact);
 		checkIfPlayerTouchesGround(contact);
@@ -96,8 +96,8 @@ public class CollisionListener implements ContactListener {
 			if (numPlayerCollisions > 0) {
 				player.setCanJump(true);
 			}
-			
-		} else if (userDataB instanceof Player && userDataA.toString().equals("level")) {
+
+		} else if (userDataB.toString().equals("feet") && userDataA.toString().equals("level")) {
 			numPlayerCollisions++;
 
 			if (numPlayerCollisions > 0) {
@@ -115,14 +115,14 @@ public class CollisionListener implements ContactListener {
 	}
 
 	private void checkIfPlayerLeavesGround(Contact contact) {
-		if (contact.getFixtureA().getUserData() instanceof Player
+		if (contact.getFixtureA().getUserData().toString().equals("feet")
 				&& contact.getFixtureB().getUserData().toString().equals("level")) {
 			numPlayerCollisions--;
 
 			if (numPlayerCollisions <= 0) {
 				player.setCanJump(false);
 			}
-		} else if (contact.getFixtureB().getUserData() instanceof Player
+		} else if (contact.getFixtureB().getUserData().toString().equals("feet")
 				&& contact.getFixtureA().getUserData().toString().equals("level")) {
 			numPlayerCollisions--;
 
