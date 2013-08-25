@@ -14,6 +14,7 @@ public class StationaryEnemyBullet extends Bullet {
 		filterData.categoryBits = CollisionConstants.ENEMY_BULLET;
 		filterData.maskBits = CollisionConstants.ENEMY_BULLET_MASK;
 		
+		fixture.setFilterData(filterData);
 		fixture.setUserData(this);
 		physicsBody.setBullet(true);
 	}
