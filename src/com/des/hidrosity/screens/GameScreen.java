@@ -142,7 +142,7 @@ public class GameScreen implements Screen {
 	}
 
 	private void checkIfShouldResetPlayerPos() {
-		if (player.getPhysicsBody().getPosition().y <= -2.9150002) {
+		if (player.getPhysicsBody().getPosition().y <= GameConstants.GROUND_Y) {
 			Vector2 spawnPosition = new Vector2();
 			spawnPosition.x = levelManager.getPlayerSpawnPosition().x * GameConstants.UNIT_SCALE;
 			spawnPosition.y = levelManager.getPlayerSpawnPosition().y * GameConstants.UNIT_SCALE;
