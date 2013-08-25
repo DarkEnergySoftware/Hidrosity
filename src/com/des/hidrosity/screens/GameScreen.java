@@ -41,6 +41,8 @@ public class GameScreen implements Screen {
 	private PlayerEnergyBar playerEnergyBar;
 
 	private LifeCounter lifeCounter;
+	
+	private InventoryScreen inventoryScreen;
 
 	public static Array<Bullet> bulletsToRemove = new Array<Bullet>();
 	public static Array<Enemy> enemies = new Array<Enemy>();
@@ -55,6 +57,8 @@ public class GameScreen implements Screen {
 		createEnemies();
 		createUi();
 
+		inventoryScreen = new InventoryScreen();
+		
 		fpsLogger = new FPSLogger();
 		Gdx.input.setInputProcessor(new Input());
 		physicsWorld.setContactListener(new CollisionListener(player));
@@ -241,8 +245,13 @@ public class GameScreen implements Screen {
 			renderHealthBar();
 			renderEnergyBar();
 			renderLifeCounter();
+			renderInventoryScreen();
 		}
 		uiBatch.end();
+	}
+
+	private void renderInventoryScreen() {
+		inventoryScreen.render(uiBatch);
 	}
 
 	private void renderLifeCounter() {
@@ -293,6 +302,9 @@ public class GameScreen implements Screen {
 			case KeyConstants.PLAYER_JUMP:
 				player.jump();
 				break;
+			case Keys.ENTER:
+				inventoryScreen.show();
+				break;
 			default:
 				break;
 			}
@@ -301,6 +313,13 @@ public class GameScreen implements Screen {
 		}
 
 		public boolean keyUp(int keycode) {
+			switch (keycode) {
+			case Keys.ENTER:
+				inventoryScreen.hide();
+				break;
+			default:
+				break;
+			}
 			return false;
 		}
 
