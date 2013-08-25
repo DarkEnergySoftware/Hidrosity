@@ -21,16 +21,17 @@ public class AnimationLoader {
 	}
 	
 	private static Array<String> loadFramePathsFromFile(String filePath) {
-		Array<String> filePaths = new Array<>();
+		Array<String> filePaths = new Array<String>();
 		
-		try (BufferedReader in = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get(filePath))))) {
-			
+		try {
+			BufferedReader in = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get(filePath))));
 			String currentLine = null;
 			
 			while ((currentLine = in.readLine()) != null) {
 				filePaths.add(currentLine);
 			}
 			
+			in.close();
 		} catch (IOException e) {
 			System.err.println("There was an error opening the animation " + filePath);
 		}
@@ -39,7 +40,7 @@ public class AnimationLoader {
 	}
 	
 	private static Array<TextureRegion> loadFramesFromPaths(Array<String> framePaths) {
-		Array<TextureRegion> loadedFrames = new Array<>();
+		Array<TextureRegion> loadedFrames = new Array<TextureRegion>();
 		
 		for (String filePath : framePaths) {
 			loadedFrames.add(new TextureRegion(Utils.loadTexture(filePath)));

@@ -1,3 +1,4 @@
 res/player/jetten/running/left1.png
 res/player/jetten/running/left2.png
 res/player/jetten/running/left3.png
+res/player/jetten/running/left2.png

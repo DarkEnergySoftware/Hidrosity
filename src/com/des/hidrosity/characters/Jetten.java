@@ -48,8 +48,8 @@ public class Jetten extends Character {
 		animationRunningRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/running/right.txt");
 
-		animationRunningLeft.setPlayMode(Animation.LOOP_PINGPONG);
-		animationRunningRight.setPlayMode(Animation.LOOP_PINGPONG);
+		animationRunningLeft.setPlayMode(Animation.LOOP);
+		animationRunningRight.setPlayMode(Animation.LOOP);
 	}
 
 	public void loadJumpingAnimations() {

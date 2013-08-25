@@ -26,8 +26,8 @@ public class TheHero extends Character {
 		animationRunningRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
 				"res/player/the hero/running/right.txt");
 
-		animationRunningLeft.setPlayMode(Animation.LOOP_PINGPONG);
-		animationRunningRight.setPlayMode(Animation.LOOP_PINGPONG);
+		animationRunningLeft.setPlayMode(Animation.LOOP);
+		animationRunningRight.setPlayMode(Animation.LOOP);
 	}
 
 	public void loadJumpingAnimations() {

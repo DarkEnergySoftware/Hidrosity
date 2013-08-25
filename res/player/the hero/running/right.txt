@@ -1,3 +1,4 @@
 res/player/the hero/running/right1.png
 res/player/the hero/running/right2.png
 res/player/the hero/running/right3.png
+res/player/the hero/running/right2.png

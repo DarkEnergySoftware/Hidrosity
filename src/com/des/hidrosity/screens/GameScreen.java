@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
 	private PlayerHealthBar playerHealthBar;
 	private PlayerEnergyBar playerEnergyBar;
 
-	public static Array<Bullet> bulletsToRemove = new Array<>();
+	public static Array<Bullet> bulletsToRemove = new Array<Bullet>();
 	public static Array<Enemy> enemies = new Array<Enemy>();
 
 	private FPSLogger fpsLogger;
@@ -143,8 +143,8 @@ public class GameScreen implements Screen {
 			Vector2 spawnPosition = new Vector2();
 			spawnPosition.x = levelManager.getPlayerSpawnPosition().x * GameConstants.UNIT_SCALE;
 			spawnPosition.y = levelManager.getPlayerSpawnPosition().y * GameConstants.UNIT_SCALE;
-			
 			player.getPhysicsBody().setTransform(spawnPosition, 0f);
+			player.updateNonPhysicsPosition();
 		}
 	}
 

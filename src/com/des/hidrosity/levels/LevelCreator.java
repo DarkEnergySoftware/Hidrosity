@@ -121,7 +121,7 @@ public class LevelCreator {
 	}
 
 	private Array<LevelBody> loadBodiesFromFile(File levelXMLFile) {
-		Array<LevelBody> levelBodies = new Array<>();
+		Array<LevelBody> levelBodies = new Array<LevelBody>();
 
 		try {
 			DocumentBuilder docBuilder = createDocumentBuilder();

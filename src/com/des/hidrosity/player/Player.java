@@ -53,7 +53,7 @@ public class Player extends GameObject {
 	private long timeStartedShooting;
 	private long lastTimeShot;
 
-	private Array<PlayerBullet> bullets = new Array<>();
+	private Array<PlayerBullet> bullets = new Array<PlayerBullet>();
 	
 	private long timePlayerCreated;
 	
@@ -292,7 +292,7 @@ public class Player extends GameObject {
 		timeStartedWaiting = TimeUtils.millis();
 	}
 
-	private void updateNonPhysicsPosition() {
+	public void updateNonPhysicsPosition() {
 		setX(physicsBody.getPosition().x / GameConstants.UNIT_SCALE);
 		setY(physicsBody.getPosition().y / GameConstants.UNIT_SCALE);
 	}
