@@ -2,8 +2,8 @@ package com.des.hidrosity.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,9 +18,9 @@ import com.des.hidrosity.collisions.CollisionListener;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.KeyConstants;
 import com.des.hidrosity.enemies.Enemy;
-import com.des.hidrosity.enemies.StationaryEnemy;
 import com.des.hidrosity.levels.LevelManager;
 import com.des.hidrosity.player.Player;
+import com.des.hidrosity.ui.LifeCounter;
 import com.des.hidrosity.ui.PlayerEnergyBar;
 import com.des.hidrosity.ui.PlayerHealthBar;
 
@@ -39,6 +39,8 @@ public class GameScreen implements Screen {
 
 	private PlayerHealthBar playerHealthBar;
 	private PlayerEnergyBar playerEnergyBar;
+	
+	private LifeCounter lifeCounter;
 
 	public static Array<Bullet> bulletsToRemove = new Array<Bullet>();
 	public static Array<Enemy> enemies = new Array<Enemy>();
@@ -50,17 +52,19 @@ public class GameScreen implements Screen {
 		createPhysicsWorld();
 		createLevelManager();
 		createPlayer();
-		physicsWorld.setContactListener(new CollisionListener(player));
 		createEnemies();
 		createUi();
 
 		fpsLogger = new FPSLogger();
 		Gdx.input.setInputProcessor(new Input());
+		physicsWorld.setContactListener(new CollisionListener(player));
 	}
 
 	private void createUi() {
 		playerHealthBar = new PlayerHealthBar(player);
 		playerEnergyBar = new PlayerEnergyBar(player);
+		
+		lifeCounter = new LifeCounter(player);
 	}
 
 	private void createEnemies() {
@@ -136,7 +140,7 @@ public class GameScreen implements Screen {
 		updatePhysicsWorld();
 		updateCameraPosition();
 	}
-	
+
 	private void checkIfShouldResetPlayerPos() {
 		if (player.getPhysicsBody().getPosition().y <= -2.9150002) {
 			Vector2 spawnPosition = new Vector2();
@@ -225,8 +229,13 @@ public class GameScreen implements Screen {
 		{
 			renderHealthBar();
 			renderEnergyBar();
+			renderLifeCounter();
 		}
 		uiBatch.end();
+	}
+
+	private void renderLifeCounter() {
+		lifeCounter.render(uiBatch);
 	}
 
 	private void renderEnergyBar() {
@@ -265,7 +274,7 @@ public class GameScreen implements Screen {
 	private void renderLevel() {
 		levelManager.renderLevel(spriteBatch);
 	}
-	
+
 	class Input implements InputProcessor {
 
 		public boolean keyDown(int keycode) {
@@ -276,7 +285,7 @@ public class GameScreen implements Screen {
 			default:
 				break;
 			}
-			
+
 			return false;
 		}
 
@@ -307,7 +316,7 @@ public class GameScreen implements Screen {
 		public boolean scrolled(int amount) {
 			return false;
 		}
-		
+
 	}
 
 	public void resize(int width, int height) {

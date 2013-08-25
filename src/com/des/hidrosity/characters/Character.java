@@ -1,5 +1,6 @@
 package com.des.hidrosity.characters;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 
 public abstract class Character {
@@ -28,6 +29,8 @@ public abstract class Character {
 	public Animation animationDeathRight;
 
 	public Animation currentAnimation;	
+	
+	public Texture lifeCounterTexture;
 	
 	public boolean hasSpawnAnimation = false;
 	public boolean hasDeathAnimation = false;

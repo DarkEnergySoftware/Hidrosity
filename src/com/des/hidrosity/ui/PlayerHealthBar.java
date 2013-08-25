@@ -32,6 +32,8 @@ public class PlayerHealthBar {
 		healthBarShellRect.x = 10;
 		healthBarShellRect.y = Gdx.graphics.getHeight() - healthBarShellRect.height - 10;
 
+		System.out.println(healthBarShellRect);
+		
 		healthBarRect = new Rectangle();
 		healthBarRect.x = healthBarShellRect.x + 8;
 		healthBarRect.y = healthBarShellRect.y + 40;

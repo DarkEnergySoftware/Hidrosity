@@ -3,6 +3,7 @@ package com.des.hidrosity.characters;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.des.hidrosity.animation.AnimationLoader;
 import com.des.hidrosity.constants.PlayerConstants;
+import com.jakehorsfield.libld.Utils;
 
 public class TheHero extends Character {
 
@@ -18,6 +19,8 @@ public class TheHero extends Character {
 
 		animationStandingLeft.setPlayMode(Animation.LOOP);
 		animationStandingRight.setPlayMode(Animation.LOOP);
+		
+		lifeCounterTexture = Utils.loadTexture("res/ui/heroLifeCounter.png");
 	}
 
 	public void loadRunningAnimations() {

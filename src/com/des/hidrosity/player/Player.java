@@ -539,6 +539,10 @@ public class Player extends GameObject {
 		return physicsBody;
 	}
 	
+	public int getLives() {
+		 return lives;
+	}
+	
 	public int getHealth() {
 		return health;
 	}
