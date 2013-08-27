@@ -88,23 +88,23 @@ public class CollisionListener implements ContactListener {
 	private void checkIfEnemyHitByBullet(Contact contact) {
 		if (beginUserDataA instanceof PlayerBullet
 				&& beginUserDataB instanceof Enemy) {
-			((Enemy) beginUserDataB).hitByBullet();
+			((Enemy) ((Bullet) beginUserDataB).getParent()).hitByBullet();
 		} else if (beginUserDataB instanceof PlayerBullet
 				&& beginUserDataA instanceof Enemy) {
-			((Enemy) beginUserDataA).hitByBullet();
+			((Enemy) ((Bullet) beginUserDataA).getParent()).hitByBullet();
 		}
 	}
 
 	private void checkIfPlayerHitByBullet(Contact contact) {
 		if (beginUserDataA instanceof Player
 				&& beginUserDataB instanceof StationaryEnemyBullet) {
-			player.hitByBullet();
+			player.hitByBullet((Enemy) ((Bullet) beginUserDataB).getParent());
 			if (notAlreadyRemoving((Bullet) beginUserDataB)) {
 				GameScreen.bulletsToRemove.add((Bullet) beginUserDataB);
 			}
 		} else if (beginUserDataB instanceof Player
 				&& beginUserDataA instanceof StationaryEnemyBullet) {
-			player.hitByBullet();
+			player.hitByBullet((Enemy) ((Bullet) beginUserDataA).getParent());
 			if (notAlreadyRemoving((Bullet) beginUserDataA)) {
 				GameScreen.bulletsToRemove.add((Bullet) beginUserDataA);
 			}

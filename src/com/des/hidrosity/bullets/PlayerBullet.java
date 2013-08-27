@@ -9,8 +9,8 @@ import com.des.hidrosity.constants.CollisionConstants;
 public class PlayerBullet extends Bullet {
 
 	public PlayerBullet(Vector2 position, String textureName, int direction,
-			World gameWorld) {
-		super(position, textureName, direction, gameWorld);
+			World gameWorld, Object parent) {
+		super(position, textureName, direction, gameWorld, parent);
 
 		Filter filterData = new Filter();
 		filterData.categoryBits = CollisionConstants.PLAYER_BULLET;

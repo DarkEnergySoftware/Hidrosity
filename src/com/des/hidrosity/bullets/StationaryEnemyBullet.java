@@ -8,8 +8,8 @@ import com.des.hidrosity.constants.CollisionConstants;
 public class StationaryEnemyBullet extends Bullet {
 
 	public StationaryEnemyBullet(Vector2 position, String textureName,
-			int direction, World gameWorld) {
-		super(position, textureName, direction, gameWorld);
+			int direction, World gameWorld, Object parent) {
+		super(position, textureName, direction, gameWorld, parent);
 
 		Filter filterData = new Filter();
 		filterData.categoryBits = CollisionConstants.ENEMY_BULLET;

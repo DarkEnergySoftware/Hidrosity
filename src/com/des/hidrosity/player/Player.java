@@ -20,6 +20,7 @@ import com.des.hidrosity.constants.CollisionConstants;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.PlayerConstants;
 import com.des.hidrosity.debug.Logger;
+import com.des.hidrosity.enemies.Enemy;
 import com.des.hidrosity.screens.GameScreen;
 import com.jakehorsfield.libld.GameObject;
 
@@ -563,13 +564,13 @@ public class Player extends GameObject {
 
 	private void createBulletFromRight() {
 		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()),
-				"res/bullets/heroBullet.png", 1, GameScreen.physicsWorld);
+				"res/bullets/heroBullet.png", 1, GameScreen.physicsWorld, this);
 		bullets.add(b);
 	}
 
 	private void createBulletFromLeft() {
 		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()),
-				"res/bullets/heroBullet.png", -1, GameScreen.physicsWorld);
+				"res/bullets/heroBullet.png", -1, GameScreen.physicsWorld, this);
 		bullets.add(b);
 	}
 
@@ -627,24 +628,28 @@ public class Player extends GameObject {
 		this.canJump = canJump;
 	}
 
-	public void hitByBullet() {
+	public void hitByBullet(Enemy bulletParent) {
 		health -= PlayerConstants.HEALTH_DECREASE;
 		currentState = PlayerState.Hurt;
 		setAnimationToHurt();
 		hurt = true;
 		timeStartedHurting = TimeUtils.millis();
 
-		knockBack();
+		if (bulletParent.getX() > getX()) {
+			knockBack(-1);
+		} else {
+			knockBack(1);
+		}
 	}
 
-	private void knockBack() {
+	private void knockBack(int direction) {
 		if (currentDirection == PlayerDirection.Left) {
 			physicsBody.applyLinearImpulse(new Vector2(
-					PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody
+					direction * PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody
 					.getWorldCenter(), true);
 		} else if (currentDirection == PlayerDirection.Right) {
 			physicsBody.applyLinearImpulse(new Vector2(
-					-PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody
+					direction * PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody
 					.getWorldCenter(), true);
 		}
 	}

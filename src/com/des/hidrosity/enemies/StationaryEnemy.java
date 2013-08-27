@@ -96,7 +96,7 @@ public class StationaryEnemy extends Enemy {
 	private void shootBulletFromRight() {
 		StationaryEnemyBullet b = new StationaryEnemyBullet(new Vector2(getX()
 				+ getWidth(), getY() + getHeight()),
-				"res/bullets/jettenBullet.png", 1, GameScreen.physicsWorld);
+				"res/bullets/jettenBullet.png", 1, GameScreen.physicsWorld, this);
 		bullets.add(b);
 		setTexture(shootRightTexture);
 	}
@@ -104,7 +104,7 @@ public class StationaryEnemy extends Enemy {
 	private void shootBulletFromLeft() {
 		StationaryEnemyBullet b = new StationaryEnemyBullet(new Vector2(getX()
 				- getWidth(), getY() + getHeight()),
-				"res/bullets/jettenBullet.png", -1, GameScreen.physicsWorld);
+				"res/bullets/jettenBullet.png", -1, GameScreen.physicsWorld, this);
 		bullets.add(b);
 		setTexture(shootLeftTexture);
 	}

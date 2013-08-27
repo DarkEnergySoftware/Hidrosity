@@ -23,9 +23,11 @@ public abstract class Bullet extends GameObject {
 	protected BodyDef bodyDef;
 	protected FixtureDef fixtureDef;
 	protected Fixture fixture;
+	
+	private Object parent;
 
 	public Bullet(Vector2 position, String textureName, int direction,
-			World gameWorld) {
+			World gameWorld, Object parent) {
 		super(position, textureName);
 
 		if (direction < -1 || direction > 1) {
@@ -34,6 +36,7 @@ public abstract class Bullet extends GameObject {
 
 		this.gameWorld = gameWorld;
 		this.direction = direction;
+		this.parent = parent;
 
 		createPhysicsBody();
 		applyInitialImpulse();
@@ -90,5 +93,9 @@ public abstract class Bullet extends GameObject {
 
 	public Body getBody() {
 		return physicsBody;
+	}
+	
+	public Object getParent() {
+		return parent;
 	}
 }
