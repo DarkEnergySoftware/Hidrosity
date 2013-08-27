@@ -88,10 +88,10 @@ public class CollisionListener implements ContactListener {
 	private void checkIfEnemyHitByBullet(Contact contact) {
 		if (beginUserDataA instanceof PlayerBullet
 				&& beginUserDataB instanceof Enemy) {
-			((Enemy) ((Bullet) beginUserDataB).getParent()).hitByBullet();
+			((Enemy) beginUserDataB).hitByBullet();
 		} else if (beginUserDataB instanceof PlayerBullet
 				&& beginUserDataA instanceof Enemy) {
-			((Enemy) ((Bullet) beginUserDataA).getParent()).hitByBullet();
+			((Enemy) beginUserDataA).hitByBullet();
 		}
 	}
 
