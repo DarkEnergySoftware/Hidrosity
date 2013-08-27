@@ -8,17 +8,19 @@ import com.des.hidrosity.constants.CollisionConstants;
 
 public class PlayerBullet extends Bullet {
 
-	public PlayerBullet(Vector2 position, String textureName, int direction, World gameWorld) {
+	public PlayerBullet(Vector2 position, String textureName, int direction,
+			World gameWorld) {
 		super(position, textureName, direction, gameWorld);
-		
+
 		Filter filterData = new Filter();
 		filterData.categoryBits = CollisionConstants.PLAYER_BULLET;
 		filterData.maskBits = CollisionConstants.PLAYER_BULLET_MASK;
-		
+
 		fixture.setFilterData(filterData);
 		fixture.setUserData(this);
 	}
 
+	@Override
 	public Body getBody() {
 		return physicsBody;
 	}

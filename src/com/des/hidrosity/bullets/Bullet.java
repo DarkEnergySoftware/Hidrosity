@@ -17,14 +17,15 @@ public abstract class Bullet extends GameObject {
 	public boolean shouldBeRemoved = false;
 
 	private int direction;
-	
+
 	protected World gameWorld;
 	protected Body physicsBody;
 	protected BodyDef bodyDef;
 	protected FixtureDef fixtureDef;
 	protected Fixture fixture;
-	
-	public Bullet(Vector2 position, String textureName, int direction, World gameWorld) {
+
+	public Bullet(Vector2 position, String textureName, int direction,
+			World gameWorld) {
 		super(position, textureName);
 
 		if (direction < -1 || direction > 1) {
@@ -39,19 +40,25 @@ public abstract class Bullet extends GameObject {
 	}
 
 	private void applyInitialImpulse() {
-		physicsBody.applyLinearImpulse(new Vector2(direction * BulletConstants.SPEED, 0f),
-				physicsBody.getWorldCenter(), true);
+		physicsBody.applyLinearImpulse(new Vector2(direction
+				* BulletConstants.SPEED, 0f), physicsBody.getWorldCenter(),
+				true);
 	}
 
 	private void createPhysicsBody() {
 		bodyDef = new BodyDef();
-		bodyDef.position.set((getX() + (getWidth() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE,
-				(getY() + (getHeight() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE);
+		bodyDef.position.set(
+				(getX() + (getWidth() * GameConstants.IMAGE_SCALE) / 2)
+						* GameConstants.UNIT_SCALE,
+				(getY() + (getHeight() * GameConstants.IMAGE_SCALE) / 2)
+						* GameConstants.UNIT_SCALE);
 		bodyDef.type = BodyType.DynamicBody;
 
 		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(((getWidth() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE,
-				((getHeight() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE);
+		polygonShape.setAsBox(((getWidth() * GameConstants.IMAGE_SCALE) / 2)
+				* GameConstants.UNIT_SCALE,
+				((getHeight() * GameConstants.IMAGE_SCALE) / 2)
+						* GameConstants.UNIT_SCALE);
 
 		fixtureDef = new FixtureDef();
 		fixtureDef.friction = BulletConstants.FRICTION;
@@ -66,16 +73,21 @@ public abstract class Bullet extends GameObject {
 		fixture = physicsBody.createFixture(fixtureDef);
 	}
 
+	@Override
 	public void update(float delta) {
 
 	}
 
+	@Override
 	public void render(SpriteBatch spriteBatch) {
-		spriteBatch.draw(getTexture(), physicsBody.getPosition().x / GameConstants.UNIT_SCALE - getWidth(),
-				physicsBody.getPosition().y / GameConstants.UNIT_SCALE - getHeight(), getTexture().getWidth()
-						* GameConstants.IMAGE_SCALE, getTexture().getHeight() * GameConstants.IMAGE_SCALE);
+		spriteBatch.draw(getTexture(), physicsBody.getPosition().x
+				/ GameConstants.UNIT_SCALE - getWidth(),
+				physicsBody.getPosition().y / GameConstants.UNIT_SCALE
+						- getHeight(), getTexture().getWidth()
+						* GameConstants.IMAGE_SCALE, getTexture().getHeight()
+						* GameConstants.IMAGE_SCALE);
 	}
-	
+
 	public Body getBody() {
 		return physicsBody;
 	}

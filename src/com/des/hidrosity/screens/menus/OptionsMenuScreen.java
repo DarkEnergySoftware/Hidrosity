@@ -22,20 +22,25 @@ public class OptionsMenuScreen extends Menu implements Screen {
 
 	private void createFadeInTween() {
 		Tween.registerAccessor(Sprite.class, new SpriteTweenAccessor());
-		Tween.set(startingSprite, SpriteTweenAccessor.ALPHA).target(0f).start(tweenManager);
-		Tween.to(startingSprite, SpriteTweenAccessor.ALPHA, 0.8f).target(1).start(tweenManager);
+		Tween.set(startingSprite, SpriteTweenAccessor.ALPHA).target(0f)
+				.start(tweenManager);
+		Tween.to(startingSprite, SpriteTweenAccessor.ALPHA, 0.8f).target(1)
+				.start(tweenManager);
 	}
 
 	private static Texture[] loadTextures() {
-		return new Texture[] { Utils.loadTexture("res/menus/options menu/controls.png"),
+		return new Texture[] {
+				Utils.loadTexture("res/menus/options menu/controls.png"),
 				Utils.loadTexture("res/menus/options menu/soundtest.png"),
 				Utils.loadTexture("res/menus/options menu/back.png") };
 	}
 
+	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(new OptionsInputProcessor());
 	}
 
+	@Override
 	public void render(float delta) {
 		spriteBatch.begin();
 		{
@@ -45,22 +50,28 @@ public class OptionsMenuScreen extends Menu implements Screen {
 		spriteBatch.end();
 	}
 
+	@Override
 	public void hide() {
 		Gdx.input.setInputProcessor(null);
 	}
 
+	@Override
 	public void resize(int width, int height) {
 	}
 
+	@Override
 	public void pause() {
 	}
 
+	@Override
 	public void resume() {
 	}
 
+	@Override
 	public void dispose() {
 	}
 
+	@Override
 	public void itemSelected() {
 		if (backTextureSelected()) {
 			changeScreen(new MainMenuScreen());
@@ -77,6 +88,7 @@ public class OptionsMenuScreen extends Menu implements Screen {
 
 	class OptionsInputProcessor implements InputProcessor {
 
+		@Override
 		public boolean keyDown(int keycode) {
 			switch (keycode) {
 			case KeyConstants.MENU_UP:
@@ -92,30 +104,38 @@ public class OptionsMenuScreen extends Menu implements Screen {
 			return false;
 		}
 
+		@Override
 		public boolean keyUp(int keycode) {
 			return false;
 		}
 
+		@Override
 		public boolean keyTyped(char character) {
 			return false;
 		}
 
-		public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		@Override
+		public boolean touchDown(int screenX, int screenY, int pointer,
+				int button) {
 			return false;
 		}
 
+		@Override
 		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 			return false;
 		}
 
+		@Override
 		public boolean touchDragged(int screenX, int screenY, int pointer) {
 			return false;
 		}
 
+		@Override
 		public boolean mouseMoved(int screenX, int screenY) {
 			return false;
 		}
 
+		@Override
 		public boolean scrolled(int amount) {
 			return false;
 		}

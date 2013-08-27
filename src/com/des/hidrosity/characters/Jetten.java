@@ -8,95 +8,120 @@ import com.jakehorsfield.libld.Utils;
 public class Jetten extends Character {
 
 	public Animation animationAppear;
-	
+
 	public Jetten() {
 		super();
-		
+
 		hasSpawnAnimation = true;
 		hasDeathAnimation = true;
-		
+
 		loadAppearAnimation();
 		loadDeathAnimation();
-		
+
 		lifeCounterTexture = Utils.loadTexture("res/ui/jettenLifeCounter.png");
 		inventoryScreen = Utils.loadTexture("res/ui/jettenInventoryScreen.png");
 	}
-	
+
 	private void loadDeathAnimation() {
-		animationDeathLeft = AnimationLoader.loadAnimation(1 / 5f, "res/player/jetten/death/left.txt");
-		animationDeathRight = AnimationLoader.loadAnimation(1 / 5f, "res/player/jetten/death/right.txt");
-		
-		animationDeathLeft.setPlayMode(Animation.LOOP);
-		animationDeathRight.setPlayMode(Animation.LOOP);
+		animationDeathLeft = AnimationLoader.loadAnimation(1 / 5f,
+				"res/player/jetten/death/left.txt");
+		animationDeathRight = AnimationLoader.loadAnimation(1 / 5f,
+				"res/player/jetten/death/right.txt");
+
+		animationDeathLeft.setPlayMode(Animation.NORMAL);
+		animationDeathRight.setPlayMode(Animation.NORMAL);
 	}
-	
+
 	private void loadAppearAnimation() {
-		animationAppear = AnimationLoader.loadAnimation(1/8f, "res/player/jetten/appear/appear.txt");
+		animationAppear = AnimationLoader.loadAnimation(1 / 8f,
+				"res/player/jetten/appear/appear.txt");
 		animationAppear.setPlayMode(Animation.NORMAL);
 	}
-	
+
+	@Override
 	public void loadStandingAnimations() {
-		animationStandingLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationStandingLeft = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/standing/left.txt");
-		animationStandingRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationStandingRight = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/standing/right.txt");
 
 		animationStandingLeft.setPlayMode(Animation.LOOP);
 		animationStandingRight.setPlayMode(Animation.LOOP);
 	}
 
+	@Override
 	public void loadRunningAnimations() {
-		animationRunningLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationRunningLeft = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/running/left.txt");
-		animationRunningRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationRunningRight = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/running/right.txt");
 
 		animationRunningLeft.setPlayMode(Animation.LOOP);
 		animationRunningRight.setPlayMode(Animation.LOOP);
 	}
 
+	@Override
 	public void loadJumpingAnimations() {
-		animationJumpingLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationJumpingLeft = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/jumping/left.txt");
-		animationJumpingRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationJumpingRight = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/jumping/right.txt");
 
 		animationJumpingLeft.setPlayMode(Animation.LOOP);
 		animationJumpingRight.setPlayMode(Animation.LOOP);
 	}
 
+	@Override
 	public void loadHurtAnimations() {
-		animationHurtLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationHurtLeft = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/hurt/left.txt");
-		animationHurtRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationHurtRight = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/hurt/right.txt");
 
 		animationHurtLeft.setPlayMode(Animation.LOOP);
 		animationHurtRight.setPlayMode(Animation.LOOP);
 	}
 
+	@Override
 	public void loadWaitingAnimations() {
-		animationWaitingLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationWaitingLeft = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/waiting/left.txt");
-		animationWaitingRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationWaitingRight = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/waiting/right.txt");
 
 		animationWaitingLeft.setPlayMode(Animation.LOOP);
 		animationWaitingRight.setPlayMode(Animation.LOOP);
 	}
 
+	@Override
 	public void loadShootingAnimations() {
-		animationStandingShootingLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationStandingShootingLeft = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/shooting/left.txt");
-		animationStandingShootingRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationStandingShootingRight = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/shooting/right.txt");
-		animationRunningShootingLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationRunningShootingLeft = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/shooting/runLeft.txt");
-		animationRunningShootingRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationRunningShootingRight = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/shooting/runRight.txt");
-		animationJumpingShootingLeft = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationJumpingShootingLeft = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/shooting/jumpLeft.txt");
-		animationJumpingShootingRight = AnimationLoader.loadAnimation(PlayerConstants.FRAME_DURATION,
+		animationJumpingShootingRight = AnimationLoader.loadAnimation(
+				PlayerConstants.FRAME_DURATION,
 				"res/player/jetten/shooting/jumpRight.txt");
 
 		animationStandingShootingLeft.setPlayMode(Animation.LOOP);

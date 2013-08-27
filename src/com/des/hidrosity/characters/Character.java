@@ -24,18 +24,18 @@ public abstract class Character {
 
 	public Animation animationHurtLeft;
 	public Animation animationHurtRight;
-	
+
 	public Animation animationDeathLeft;
 	public Animation animationDeathRight;
 
-	public Animation currentAnimation;	
-	
+	public Animation currentAnimation;
+
 	public Texture lifeCounterTexture;
 	public Texture inventoryScreen;
-	
+
 	public boolean hasSpawnAnimation = false;
 	public boolean hasDeathAnimation = false;
-	
+
 	public Character() {
 		loadStandingAnimations();
 		loadWaitingAnimations();
@@ -44,11 +44,16 @@ public abstract class Character {
 		loadShootingAnimations();
 		loadHurtAnimations();
 	}
-	
+
 	public abstract void loadStandingAnimations();
+
 	public abstract void loadWaitingAnimations();
+
 	public abstract void loadRunningAnimations();
+
 	public abstract void loadJumpingAnimations();
+
 	public abstract void loadShootingAnimations();
+
 	public abstract void loadHurtAnimations();
 }

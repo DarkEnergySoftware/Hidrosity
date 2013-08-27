@@ -5,6 +5,7 @@ import com.jakehorsfield.libld.Utils;
 
 public class SoundManager {
 
-	public static final Sound MENU_BEEP_SOUND = Utils.loadSound("res/sounds/menuBeepSound.wav");
-	
+	public static final Sound MENU_BEEP_SOUND = Utils
+			.loadSound("res/sounds/menuBeepSound.wav");
+
 }

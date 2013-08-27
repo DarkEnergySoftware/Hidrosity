@@ -30,7 +30,8 @@ public class PlayerEnergyBar {
 		energyBarShellRect.width = energyBarShellTexture.getWidth() * 2;
 		energyBarShellRect.height = energyBarShellTexture.getHeight() * 2;
 		energyBarShellRect.x = 50;
-		energyBarShellRect.y = Gdx.graphics.getHeight() - energyBarShellRect.height - 10;
+		energyBarShellRect.y = Gdx.graphics.getHeight()
+				- energyBarShellRect.height - 10;
 
 		energyBarRect = new Rectangle();
 		energyBarRect.x = energyBarShellRect.x + 8;
@@ -46,13 +47,15 @@ public class PlayerEnergyBar {
 
 	private void renderBar(SpriteBatch spriteBatch) {
 		for (int i = 0; i < player.getEnergy(); i++) {
-			spriteBatch.draw(energyBarTexture, energyBarRect.x, energyBarRect.y + i * energyBarRect.height * 2,
-					energyBarRect.width, energyBarRect.height);
+			spriteBatch.draw(energyBarTexture, energyBarRect.x, energyBarRect.y
+					+ i * energyBarRect.height * 2, energyBarRect.width,
+					energyBarRect.height);
 		}
 	}
 
 	private void renderShell(SpriteBatch spriteBatch) {
-		spriteBatch.draw(energyBarShellTexture, energyBarShellRect.x, energyBarShellRect.y, energyBarShellRect.width,
+		spriteBatch.draw(energyBarShellTexture, energyBarShellRect.x,
+				energyBarShellRect.y, energyBarShellRect.width,
 				energyBarShellRect.height);
 	}
 }

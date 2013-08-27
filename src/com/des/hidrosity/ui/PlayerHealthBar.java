@@ -30,10 +30,11 @@ public class PlayerHealthBar {
 		healthBarShellRect.width = healthBarShellTexture.getWidth() * 2;
 		healthBarShellRect.height = healthBarShellTexture.getHeight() * 2;
 		healthBarShellRect.x = 10;
-		healthBarShellRect.y = Gdx.graphics.getHeight() - healthBarShellRect.height - 10;
+		healthBarShellRect.y = Gdx.graphics.getHeight()
+				- healthBarShellRect.height - 10;
 
 		System.out.println(healthBarShellRect);
-		
+
 		healthBarRect = new Rectangle();
 		healthBarRect.x = healthBarShellRect.x + 8;
 		healthBarRect.y = healthBarShellRect.y + 40;
@@ -48,13 +49,15 @@ public class PlayerHealthBar {
 
 	private void renderBar(SpriteBatch spriteBatch) {
 		for (int i = 0; i < player.getHealth(); i++) {
-			spriteBatch.draw(healthBarTexture, healthBarRect.x, healthBarRect.y + i * healthBarRect.height * 2,
-					healthBarRect.width, healthBarRect.height);
+			spriteBatch.draw(healthBarTexture, healthBarRect.x, healthBarRect.y
+					+ i * healthBarRect.height * 2, healthBarRect.width,
+					healthBarRect.height);
 		}
 	}
 
 	private void renderShell(SpriteBatch spriteBatch) {
-		spriteBatch.draw(healthBarShellTexture, healthBarShellRect.x, healthBarShellRect.y, healthBarShellRect.width,
+		spriteBatch.draw(healthBarShellTexture, healthBarShellRect.x,
+				healthBarShellRect.y, healthBarShellRect.width,
 				healthBarShellRect.height);
 	}
 }

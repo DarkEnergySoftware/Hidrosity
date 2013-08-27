@@ -36,8 +36,10 @@ public abstract class Menu {
 		this.tweenManager = new TweenManager();
 
 		startingSprite = new Sprite(menuTextures[0]);
-		startingSprite.setBounds(Gdx.graphics.getWidth() / 2f - GameConstants.WIDTH / 2f, Gdx.graphics.getHeight() / 2f
-				- GameConstants.HEIGHT / 2f, GameConstants.WIDTH, GameConstants.HEIGHT);
+		startingSprite.setBounds(Gdx.graphics.getWidth() / 2f
+				- GameConstants.WIDTH / 2f, Gdx.graphics.getHeight() / 2f
+				- GameConstants.HEIGHT / 2f, GameConstants.WIDTH,
+				GameConstants.HEIGHT);
 	}
 
 	protected void moveUp() {
@@ -78,11 +80,13 @@ public abstract class Menu {
 		if (atStartTexture()) {
 			startingSprite.draw(spriteBatch);
 		} else {
-			spriteBatch.draw(currentTexture, Gdx.graphics.getWidth() / 2 - GameConstants.WIDTH / 2,
-					Gdx.graphics.getHeight() / 2 - GameConstants.HEIGHT / 2, GameConstants.WIDTH, GameConstants.HEIGHT);
+			spriteBatch.draw(currentTexture, Gdx.graphics.getWidth() / 2
+					- GameConstants.WIDTH / 2, Gdx.graphics.getHeight() / 2
+					- GameConstants.HEIGHT / 2, GameConstants.WIDTH,
+					GameConstants.HEIGHT);
 		}
 	}
-	
+
 	private boolean atStartTexture() {
 		return currentTexture == menuTextures[0];
 	}

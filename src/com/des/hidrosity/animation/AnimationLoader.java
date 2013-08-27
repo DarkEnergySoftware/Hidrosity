@@ -13,39 +13,43 @@ import com.jakehorsfield.libld.Utils;
 
 public class AnimationLoader {
 
-	public static Animation loadAnimation(float frameDuration, String animationFilePath) {
+	public static Animation loadAnimation(float frameDuration,
+			String animationFilePath) {
 		Array<String> framePaths = loadFramePathsFromFile(animationFilePath);
 		Array<TextureRegion> animationFrames = loadFramesFromPaths(framePaths);
-		
+
 		return new Animation(frameDuration, animationFrames);
 	}
-	
+
 	private static Array<String> loadFramePathsFromFile(String filePath) {
 		Array<String> filePaths = new Array<String>();
-		
+
 		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get(filePath))));
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					Files.newInputStream(Paths.get(filePath))));
 			String currentLine = null;
-			
+
 			while ((currentLine = in.readLine()) != null) {
 				filePaths.add(currentLine);
 			}
-			
+
 			in.close();
 		} catch (IOException e) {
-			System.err.println("There was an error opening the animation " + filePath);
+			System.err.println("There was an error opening the animation "
+					+ filePath);
 		}
-		
+
 		return filePaths;
 	}
-	
-	private static Array<TextureRegion> loadFramesFromPaths(Array<String> framePaths) {
+
+	private static Array<TextureRegion> loadFramesFromPaths(
+			Array<String> framePaths) {
 		Array<TextureRegion> loadedFrames = new Array<TextureRegion>();
-		
+
 		for (String filePath : framePaths) {
 			loadedFrames.add(new TextureRegion(Utils.loadTexture(filePath)));
 		}
-		
+
 		return loadedFrames;
 	}
 }
