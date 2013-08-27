@@ -122,11 +122,13 @@ public class CollisionListener implements ContactListener {
 
 		endUserDataA = contact.getFixtureA().getUserData();
 		endUserDataB = contact.getFixtureB().getUserData();
+
+		System.out.println("[End Contact] " + endUserDataA + ", " + endUserDataB);
 		
-		checkIfPlayerLeavesGround(contact);
+		checkIfPlayerLeavesGround();
 	}
 
-	private void checkIfPlayerLeavesGround(Contact contact) {
+	private void checkIfPlayerLeavesGround() {
 		if (endUserDataA.toString().equals("feet") && endUserDataB.toString().equals("level")) {
 			numPlayerCollisions--;
 
@@ -134,7 +136,7 @@ public class CollisionListener implements ContactListener {
 				player.setCanJump(false);
 			}
 			
-		} else if (endUserDataA.toString().equals("feet") && endUserDataB.toString().equals("level")) {
+		} else if (endUserDataB.toString().equals("feet") && endUserDataA.toString().equals("level")) {
 			numPlayerCollisions--;
 
 			if (numPlayerCollisions <= 0) {

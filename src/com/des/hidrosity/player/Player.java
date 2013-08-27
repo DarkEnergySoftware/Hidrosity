@@ -135,6 +135,8 @@ public class Player extends GameObject {
 		updateNonPhysicsPosition();
 		updateStates();
 		checkIfDead();
+		
+//		System.out.println(currentState + " - " + canJump);
 	}
 	
 	private void checkIfDead() {
