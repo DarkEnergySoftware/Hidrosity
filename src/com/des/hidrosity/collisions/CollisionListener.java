@@ -35,13 +35,15 @@ public class CollisionListener implements ContactListener {
 		beginUserDataA = contact.getFixtureA().getUserData();
 		beginUserDataB = contact.getFixtureB().getUserData();
 
-		System.out.println("[Begin Contact] " + beginUserDataA + ", " + beginUserDataB);
-
 		checkIfPlayerHitByBullet(contact);
 		checkIfPlayerTouchesGround(contact);
 		checkIfEnemyHitByBullet(contact);
 		checkIfBulletHitsLevel(contact);
 		checkIfEnemyBulletHitsLevel(contact);
+	}
+
+	private void printDebugBeginContact() {
+		System.out.println("[Begin Contact] " + beginUserDataA + ", " + beginUserDataB);		
 	}
 
 	private void checkIfEnemyBulletHitsLevel(Contact contact) {
@@ -123,9 +125,11 @@ public class CollisionListener implements ContactListener {
 		endUserDataA = contact.getFixtureA().getUserData();
 		endUserDataB = contact.getFixtureB().getUserData();
 
-		System.out.println("[End Contact] " + endUserDataA + ", " + endUserDataB);
-		
 		checkIfPlayerLeavesGround();
+	}
+
+	private void printDebugEndContact() {
+		System.out.println("[End Contact] " + endUserDataA + ", " + endUserDataB);		
 	}
 
 	private void checkIfPlayerLeavesGround() {
