@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.des.hidrosity.bullets.Bullet;
+import com.des.hidrosity.characters.CharacterManager;
 import com.des.hidrosity.collisions.CollisionListener;
 import com.des.hidrosity.constants.GameConstants;
 import com.des.hidrosity.constants.KeyConstants;
@@ -41,11 +42,11 @@ public class GameScreen implements Screen {
 	private PlayerEnergyBar playerEnergyBar;
 
 	private LifeCounter lifeCounter;
-	
-	private InventoryScreen inventoryScreen;
 
 	public static Array<Bullet> bulletsToRemove = new Array<Bullet>();
 	public static Array<Enemy> enemies = new Array<Enemy>();
+
+	private boolean showInventoryScreen = false;
 
 	private FPSLogger fpsLogger;
 
@@ -57,8 +58,6 @@ public class GameScreen implements Screen {
 		createEnemies();
 		createUi();
 
-		inventoryScreen = new InventoryScreen();
-		
 		fpsLogger = new FPSLogger();
 		Gdx.input.setInputProcessor(new Input());
 		physicsWorld.setContactListener(new CollisionListener(player));
@@ -251,7 +250,13 @@ public class GameScreen implements Screen {
 	}
 
 	private void renderInventoryScreen() {
-		inventoryScreen.render(uiBatch);
+		if (showInventoryScreen) {
+			uiBatch.draw(CharacterManager.getCharacter().inventoryScreen, Gdx.graphics.getWidth() / 2
+					- CharacterManager.getCharacter().inventoryScreen.getWidth(), Gdx.graphics.getHeight() / 2
+					- CharacterManager.getCharacter().inventoryScreen.getHeight(),
+					CharacterManager.getCharacter().inventoryScreen.getWidth() * 2,
+					CharacterManager.getCharacter().inventoryScreen.getHeight() * 2);
+		}
 	}
 
 	private void renderLifeCounter() {
@@ -303,7 +308,7 @@ public class GameScreen implements Screen {
 				player.jump();
 				break;
 			case Keys.ENTER:
-				inventoryScreen.show();
+				showInventoryScreen = true;
 				break;
 			default:
 				break;
@@ -315,7 +320,7 @@ public class GameScreen implements Screen {
 		public boolean keyUp(int keycode) {
 			switch (keycode) {
 			case Keys.ENTER:
-				inventoryScreen.hide();
+				showInventoryScreen = false;
 				break;
 			default:
 				break;

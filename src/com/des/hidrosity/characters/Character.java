@@ -31,6 +31,7 @@ public abstract class Character {
 	public Animation currentAnimation;	
 	
 	public Texture lifeCounterTexture;
+	public Texture inventoryScreen;
 	
 	public boolean hasSpawnAnimation = false;
 	public boolean hasDeathAnimation = false;

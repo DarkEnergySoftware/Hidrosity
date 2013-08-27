@@ -9,7 +9,6 @@ import com.des.hidrosity.bullets.StationaryEnemyBullet;
 import com.des.hidrosity.constants.EnemyConstants;
 import com.des.hidrosity.player.Player;
 import com.des.hidrosity.screens.GameScreen;
-import com.des.hidrosity.ui.EnemyHealthBar;
 import com.jakehorsfield.libld.Utils;
 
 public class StationaryEnemy extends Enemy {

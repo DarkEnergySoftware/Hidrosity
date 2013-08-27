@@ -268,6 +268,7 @@ public class Player extends GameObject {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void printDebug() {
 		Logger.log(currentState + " " + currentDirection + " at " + physicsBody.getPosition() + " = ("
 				+ physicsBody.getPosition().x / GameConstants.UNIT_SCALE + ", " + physicsBody.getPosition().y
@@ -456,6 +457,7 @@ public class Player extends GameObject {
 		bullets.add(b);
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	private void setShootingStateAndAnimation() {
 		switch (currentState) {
 		case Running:

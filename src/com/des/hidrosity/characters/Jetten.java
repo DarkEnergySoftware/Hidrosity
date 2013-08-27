@@ -1,7 +1,6 @@
 package com.des.hidrosity.characters;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationDesc;
 import com.des.hidrosity.animation.AnimationLoader;
 import com.des.hidrosity.constants.PlayerConstants;
 import com.jakehorsfield.libld.Utils;
@@ -20,6 +19,7 @@ public class Jetten extends Character {
 		loadDeathAnimation();
 		
 		lifeCounterTexture = Utils.loadTexture("res/ui/jettenLifeCounter.png");
+		inventoryScreen = Utils.loadTexture("res/ui/jettenInventoryScreen.png");
 	}
 	
 	private void loadDeathAnimation() {

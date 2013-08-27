@@ -17,9 +17,12 @@ public class CollisionListener implements ContactListener {
 
 	private Player player;
 
-	private Object userDataA;
-	private Object userDataB;
+	private Object beginUserDataA;
+	private Object beginUserDataB;
 
+	private Object endUserDataA;
+	private Object endUserDataB;
+	
 	public CollisionListener(Player player) {
 		this.player = player;
 	}
@@ -29,10 +32,10 @@ public class CollisionListener implements ContactListener {
 			return;
 		}
 
-		userDataA = contact.getFixtureA().getUserData();
-		userDataB = contact.getFixtureB().getUserData();
+		beginUserDataA = contact.getFixtureA().getUserData();
+		beginUserDataB = contact.getFixtureB().getUserData();
 
-		System.out.println("[Begin Contact] " + userDataA + ", " + userDataB);
+		System.out.println("[Begin Contact] " + beginUserDataA + ", " + beginUserDataB);
 
 		checkIfPlayerHitByBullet(contact);
 		checkIfPlayerTouchesGround(contact);
@@ -42,25 +45,25 @@ public class CollisionListener implements ContactListener {
 	}
 
 	private void checkIfEnemyBulletHitsLevel(Contact contact) {
-		if (userDataA instanceof StationaryEnemyBullet && userDataB.toString().equals("level")) {
-			if (notAlreadyRemoving((Bullet) userDataA)) {
-				GameScreen.bulletsToRemove.add((Bullet) userDataA);
+		if (beginUserDataA instanceof StationaryEnemyBullet && beginUserDataB.toString().equals("level")) {
+			if (notAlreadyRemoving((Bullet) beginUserDataA)) {
+				GameScreen.bulletsToRemove.add((Bullet) beginUserDataA);
 			}
-		} else if (userDataB instanceof StationaryEnemyBullet && userDataA.toString().equals("level")) {
-			if (notAlreadyRemoving((Bullet) userDataB)) {
-				GameScreen.bulletsToRemove.add((Bullet) userDataB);
+		} else if (beginUserDataB instanceof StationaryEnemyBullet && beginUserDataA.toString().equals("level")) {
+			if (notAlreadyRemoving((Bullet) beginUserDataB)) {
+				GameScreen.bulletsToRemove.add((Bullet) beginUserDataB);
 			}
 		}
 	}
 
 	private void checkIfBulletHitsLevel(Contact contact) {
-		if (userDataA instanceof PlayerBullet && userDataB.toString().equals("level")) {
-			if (notAlreadyRemoving((Bullet) userDataA)) {
-				GameScreen.bulletsToRemove.add((Bullet) userDataA);
+		if (beginUserDataA instanceof PlayerBullet && beginUserDataB.toString().equals("level")) {
+			if (notAlreadyRemoving((Bullet) beginUserDataA)) {
+				GameScreen.bulletsToRemove.add((Bullet) beginUserDataA);
 			}
-		} else if (userDataA.toString().equals("level") && userDataB instanceof PlayerBullet) {
-			if (notAlreadyRemoving((Bullet) userDataB)) {
-				GameScreen.bulletsToRemove.add((Bullet) userDataB);
+		} else if (beginUserDataA.toString().equals("level") && beginUserDataB instanceof PlayerBullet) {
+			if (notAlreadyRemoving((Bullet) beginUserDataB)) {
+				GameScreen.bulletsToRemove.add((Bullet) beginUserDataB);
 			}
 		}
 	}
@@ -74,36 +77,36 @@ public class CollisionListener implements ContactListener {
 	}
 
 	private void checkIfEnemyHitByBullet(Contact contact) {
-		if (userDataA instanceof PlayerBullet && userDataB instanceof Enemy) {
-			((Enemy) userDataB).hitByBullet();
-		} else if (userDataB instanceof PlayerBullet && userDataA instanceof Enemy) {
-			((Enemy) userDataA).hitByBullet();
+		if (beginUserDataA instanceof PlayerBullet && beginUserDataB instanceof Enemy) {
+			((Enemy) beginUserDataB).hitByBullet();
+		} else if (beginUserDataB instanceof PlayerBullet && beginUserDataA instanceof Enemy) {
+			((Enemy) beginUserDataA).hitByBullet();
 		}
 	}
 
 	private void checkIfPlayerHitByBullet(Contact contact) {
-		if (userDataA instanceof Player && userDataB instanceof StationaryEnemyBullet) {
+		if (beginUserDataA instanceof Player && beginUserDataB instanceof StationaryEnemyBullet) {
 			player.hitByBullet();
-			if (notAlreadyRemoving((Bullet) userDataB)) {
-				GameScreen.bulletsToRemove.add((Bullet) userDataB);
+			if (notAlreadyRemoving((Bullet) beginUserDataB)) {
+				GameScreen.bulletsToRemove.add((Bullet) beginUserDataB);
 			}
-		} else if (userDataB instanceof Player && userDataA instanceof StationaryEnemyBullet) {
+		} else if (beginUserDataB instanceof Player && beginUserDataA instanceof StationaryEnemyBullet) {
 			player.hitByBullet();
-			if (notAlreadyRemoving((Bullet) userDataA)) {
-				GameScreen.bulletsToRemove.add((Bullet) userDataA);
+			if (notAlreadyRemoving((Bullet) beginUserDataA)) {
+				GameScreen.bulletsToRemove.add((Bullet) beginUserDataA);
 			}
 		}
 	}
 
 	private void checkIfPlayerTouchesGround(Contact contact) {
-		if (userDataA.toString().equals("feet") && userDataB.toString().equals("level")) {
+		if (beginUserDataA.toString().equals("feet") && beginUserDataB.toString().equals("level")) {
 			numPlayerCollisions++;
 
 			if (numPlayerCollisions > 0) {
 				player.setCanJump(true);
 			}
 
-		} else if (userDataB.toString().equals("feet") && userDataA.toString().equals("level")) {
+		} else if (beginUserDataB.toString().equals("feet") && beginUserDataA.toString().equals("level")) {
 			numPlayerCollisions++;
 
 			if (numPlayerCollisions > 0) {
@@ -117,19 +120,21 @@ public class CollisionListener implements ContactListener {
 			return;
 		}
 
+		endUserDataA = contact.getFixtureA().getUserData();
+		endUserDataB = contact.getFixtureB().getUserData();
+		
 		checkIfPlayerLeavesGround(contact);
 	}
 
 	private void checkIfPlayerLeavesGround(Contact contact) {
-		if (contact.getFixtureA().getUserData().toString().equals("feet")
-				&& contact.getFixtureB().getUserData().toString().equals("level")) {
+		if (endUserDataA.toString().equals("feet") && endUserDataB.toString().equals("level")) {
 			numPlayerCollisions--;
 
 			if (numPlayerCollisions <= 0) {
 				player.setCanJump(false);
 			}
-		} else if (contact.getFixtureB().getUserData().toString().equals("feet")
-				&& contact.getFixtureA().getUserData().toString().equals("level")) {
+			
+		} else if (endUserDataA.toString().equals("feet") && endUserDataB.toString().equals("level")) {
 			numPlayerCollisions--;
 
 			if (numPlayerCollisions <= 0) {

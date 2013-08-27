@@ -21,6 +21,7 @@ public class TheHero extends Character {
 		animationStandingRight.setPlayMode(Animation.LOOP);
 		
 		lifeCounterTexture = Utils.loadTexture("res/ui/heroLifeCounter.png");
+		inventoryScreen = Utils.loadTexture("res/ui/heroInventoryScreen.png");
 	}
 
 	public void loadRunningAnimations() {
