@@ -28,22 +28,19 @@ public class Player extends GameObject {
 	private enum PlayerState {
 		Standing, Waiting, Running, Jumping, ShootingStanding, ShootingRunning, ShootingJumping, Spawning, Hurt
 	};
+	private PlayerState currentState;
 
 	private enum PlayerDirection {
 		Left, Right
 	};
+	private PlayerDirection currentDirection;
 	
 	private Body physicsBody;
 
 	private Animation currentAnimation;
 	private TextureRegion currentFrame;
+
 	private float animationStateTime;
-
-	private PlayerState currentState;
-	private PlayerDirection currentDirection;
-
-	private boolean canJump = true;
-
 	private float timeSpentStanding;
 
 	private long timeStartedWaiting;
@@ -52,13 +49,13 @@ public class Player extends GameObject {
 
 	private Array<PlayerBullet> bullets = new Array<PlayerBullet>();
 	
-	private long timePlayerCreated;
-	
 	private boolean shooting = false;
 	private boolean hurt = false;
 	private boolean spawning = false;
-	public boolean dead = false;
+	private boolean dead = false;
+	private boolean canJump = true;
 	
+	private long timePlayerCreated;
 	private long timeStartedHurting;
 	
 	private int lives = 3;
@@ -138,7 +135,6 @@ public class Player extends GameObject {
 		updateNonPhysicsPosition();
 		updateStates();
 		checkIfDead();
-//		printDebug();
 	}
 	
 	private void checkIfDead() {
@@ -551,5 +547,9 @@ public class Player extends GameObject {
 	
 	public int getEnergy() {
 		return energy;
+	}
+	
+	public boolean isDead() {
+		return dead;
 	}
 }

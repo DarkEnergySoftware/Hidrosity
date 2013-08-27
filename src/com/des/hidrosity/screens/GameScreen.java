@@ -89,13 +89,15 @@ public class GameScreen implements Screen {
 	private void setupRenderingStuff() {
 		spriteBatch = new SpriteBatch();
 		uiBatch = new SpriteBatch();
+		setupCamera();
+		debugRenderer = new Box2DDebugRenderer();
+	}
 
+	private void setupCamera() {
 		camera = new OrthographicCamera();
 		camera.viewportWidth = Gdx.graphics.getWidth();
 		camera.viewportHeight = Gdx.graphics.getHeight();
 		camera.update();
-
-		debugRenderer = new Box2DDebugRenderer();
 	}
 
 	private void handleInput() {
@@ -184,7 +186,7 @@ public class GameScreen implements Screen {
 	}
 
 	private void checkIfPlayerDead() {
-		if (player.dead) {
+		if (player.isDead()) {
 			((Game) Gdx.app.getApplicationListener()).setScreen(new GameOverScreen());
 		}
 	}
@@ -197,11 +199,11 @@ public class GameScreen implements Screen {
 
 	private void updateCameraPosition() {
 		if (playerWithinCameraBounds()) {
-			cameraFollowPlayer();
+			makeCameraFollowPlayer();
 		}
 	}
 
-	private void cameraFollowPlayer() {
+	private void makeCameraFollowPlayer() {
 		camera.position.x = player.getX();
 		camera.update();
 	}
@@ -232,8 +234,6 @@ public class GameScreen implements Screen {
 
 		renderGame();
 		renderUi();
-
-		renderDebugWorld();
 
 		fpsLogger.log();
 	}
@@ -282,6 +282,7 @@ public class GameScreen implements Screen {
 		spriteBatch.end();
 	}
 
+	@SuppressWarnings("unused")
 	private void renderDebugWorld() {
 		debugRenderer.render(physicsWorld, camera.projection);
 	}
@@ -308,7 +309,7 @@ public class GameScreen implements Screen {
 				player.jump();
 				break;
 			case Keys.ENTER:
-				showInventoryScreen = true;
+				showInventoryScreen = !showInventoryScreen;
 				break;
 			default:
 				break;
@@ -318,13 +319,6 @@ public class GameScreen implements Screen {
 		}
 
 		public boolean keyUp(int keycode) {
-			switch (keycode) {
-			case Keys.ENTER:
-				showInventoryScreen = false;
-				break;
-			default:
-				break;
-			}
 			return false;
 		}
 
