@@ -61,10 +61,9 @@ public class Player extends GameObject {
 
 	private long timePlayerCreated;
 	private long timeStartedHurting;
-	private long timeStartedDying;
 
-	private int lives = 0;
-	private int health = 5;
+	private int lives = 3;
+	private int health = 10;
 	private int energy = 10;
 
 	public Player(Vector2 position, String textureName) {
@@ -158,10 +157,6 @@ public class Player extends GameObject {
 		if (health <= 0) {
 			if (lives <= 0) {
 				if (CharacterManager.getCharacter().hasDeathAnimation) {
-					if (!dying) {
-						timeStartedDying = TimeUtils.millis();
-					}
-
 					startDying();
 					return;
 				} else {
