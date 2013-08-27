@@ -19,21 +19,15 @@ public class GameOverScreen implements Screen {
 
 	private SpriteBatch spriteBatch;
 	private Texture texture;
-<<<<<<< HEAD
 	
 	private Sprite sprite;
 	
 	private TweenManager tweenManager;
 
-=======
-
-	@Override
->>>>>>> death_animation
 	public void show() {
 		spriteBatch = new SpriteBatch();
 		texture = Utils.loadTexture("res/menus/game over/texture.png");
 
-<<<<<<< HEAD
 		sprite = new Sprite(texture);
 		sprite.setBounds(0, 0, texture.getWidth(), texture.getHeight());
 		
@@ -52,12 +46,6 @@ public class GameOverScreen implements Screen {
 				.start(tweenManager);
 	}
 
-=======
-		Gdx.input.setInputProcessor(new Input());
-	}
-
-	@Override
->>>>>>> death_animation
 	public void render(float delta) {
 		updateTween();
 		
@@ -71,43 +59,14 @@ public class GameOverScreen implements Screen {
 		spriteBatch.end();
 	}
 
-<<<<<<< HEAD
 	private void updateTween() {
 		tweenManager.update(Gdx.graphics.getDeltaTime());
 	}
 
-=======
-	@Override
->>>>>>> death_animation
 	public void hide() {
 		Gdx.input.setInputProcessor(null);
 	}
 
-<<<<<<< HEAD
-	public void resize(int width, int height) {
-	}
-
-	public void pause() {
-	}
-
-	public void resume() {
-	}
-
-=======
-	@Override
-	public void resize(int width, int height) {
-	}
-
-	@Override
-	public void pause() {
-	}
-
-	@Override
-	public void resume() {
-	}
-
-	@Override
->>>>>>> death_animation
 	public void dispose() {
 	}
 
@@ -134,10 +93,6 @@ public class GameOverScreen implements Screen {
 			return false;
 		}
 
-<<<<<<< HEAD
-=======
-		@Override
->>>>>>> death_animation
 		public boolean touchDown(int screenX, int screenY, int pointer,
 				int button) {
 			return false;
@@ -163,5 +118,17 @@ public class GameOverScreen implements Screen {
 			return false;
 		}
 
+	}
+
+	public void resize(int width, int height) {
+		
+	}
+
+	public void pause() {
+		
+	}
+
+	public void resume() {
+		
 	}
 }
