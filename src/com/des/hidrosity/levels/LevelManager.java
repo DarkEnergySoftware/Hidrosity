@@ -47,20 +47,22 @@ public class LevelManager {
 	}
 
 	private void loadLevelImage() {
-		currentLevelTexture = levelImageLoader.loadLevelImage(currentLevelNumber);
+		currentLevelTexture = levelImageLoader
+				.loadLevelImage(currentLevelNumber);
 	}
 
 	private void loadLevelData() {
 		levelCreator.createLevelFromXMLData(currentLevelNumber);
 	}
-	
+
 	public Vector2 getPlayerSpawnPosition() {
 		Vector2 playerSpawnPosition = new Vector2();
-		
+
 		try {
 			DocumentBuilder docBuilder = createDocumentBuilder();
 
-			Document xmlDocument = docBuilder.parse(new File("res/levels/data/" + "player" + currentLevelNumber + ".xml"));
+			Document xmlDocument = docBuilder.parse(new File("res/levels/data/"
+					+ "player" + currentLevelNumber + ".xml"));
 			xmlDocument.getDocumentElement().normalize();
 
 			NodeList nodeList = xmlDocument.getElementsByTagName("spawn");
@@ -74,9 +76,15 @@ public class LevelManager {
 					float tempX;
 					float tempY;
 
-					tempX = Float.parseFloat(currentElement.getElementsByTagName("x").item(0).getTextContent());
-					tempY = Float.parseFloat(currentElement.getElementsByTagName("y").item(0).getTextContent());
-					
+					tempX = Float
+							.parseFloat(currentElement
+									.getElementsByTagName("x").item(0)
+									.getTextContent());
+					tempY = Float
+							.parseFloat(currentElement
+									.getElementsByTagName("y").item(0)
+									.getTextContent());
+
 					playerSpawnPosition = new Vector2(tempX, tempY);
 				}
 			}
@@ -88,17 +96,18 @@ public class LevelManager {
 		} catch (SAXException e) {
 			e.printStackTrace();
 		}
-		
+
 		return playerSpawnPosition;
 	}
-	
+
 	public Array<Enemy> getEnemiesInLevel(Player player) {
 		Array<Enemy> enemies = new Array<Enemy>();
-		
+
 		try {
 			DocumentBuilder docBuilder = createDocumentBuilder();
 
-			Document xmlDocument = docBuilder.parse(new File("res/levels/data/" + "enemies" + currentLevelNumber + ".xml"));
+			Document xmlDocument = docBuilder.parse(new File("res/levels/data/"
+					+ "enemies" + currentLevelNumber + ".xml"));
 			xmlDocument.getDocumentElement().normalize();
 
 			NodeList nodeList = xmlDocument.getElementsByTagName("enemy");
@@ -113,13 +122,23 @@ public class LevelManager {
 					float tempX;
 					float tempY;
 
-					tempX = Float.parseFloat(currentElement.getElementsByTagName("x").item(0).getTextContent());
-					tempY = Float.parseFloat(currentElement.getElementsByTagName("y").item(0).getTextContent());
-					enemyType = EnemyType.valueOf(currentElement.getElementsByTagName("type").item(0).getTextContent());
-					
+					tempX = Float
+							.parseFloat(currentElement
+									.getElementsByTagName("x").item(0)
+									.getTextContent());
+					tempY = Float
+							.parseFloat(currentElement
+									.getElementsByTagName("y").item(0)
+									.getTextContent());
+					enemyType = EnemyType.valueOf(currentElement
+							.getElementsByTagName("type").item(0)
+							.getTextContent());
+
 					switch (enemyType) {
 					case StationaryEnemy:
-						enemies.add(new StationaryEnemy(new Vector2(tempX, tempY), "res/enemies/stationary enemy/left.png", player));
+						enemies.add(new StationaryEnemy(new Vector2(tempX,
+								tempY),
+								"res/enemies/stationary enemy/left.png", player));
 						break;
 					default:
 						break;
@@ -134,24 +153,28 @@ public class LevelManager {
 		} catch (SAXException e) {
 			e.printStackTrace();
 		}
-		
+
 		return enemies;
 	}
-	
-	private DocumentBuilder createDocumentBuilder() throws ParserConfigurationException {
-		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+
+	private DocumentBuilder createDocumentBuilder()
+			throws ParserConfigurationException {
+		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
+				.newInstance();
 		return docBuilderFactory.newDocumentBuilder();
 	}
 
 	public void renderLevel(SpriteBatch spriteBatch) {
-		spriteBatch.draw(currentLevelTexture, -Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2,
-				currentLevelTexture.getWidth() * 2, currentLevelTexture.getHeight() * 2);
+		spriteBatch.draw(currentLevelTexture, -Gdx.graphics.getWidth() / 2,
+				-Gdx.graphics.getHeight() / 2,
+				currentLevelTexture.getWidth() * 2,
+				currentLevelTexture.getHeight() * 2);
 	}
-	
+
 	public int getLevelWidth() {
 		return currentLevelTexture.getWidth();
 	}
-	
+
 	public int getLevelHeight() {
 		return currentLevelTexture.getHeight();
 	}

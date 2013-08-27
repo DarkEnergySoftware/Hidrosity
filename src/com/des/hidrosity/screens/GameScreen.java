@@ -50,6 +50,7 @@ public class GameScreen implements Screen {
 
 	private FPSLogger fpsLogger;
 
+	@Override
 	public void show() {
 		setupRenderingStuff();
 		createPhysicsWorld();
@@ -75,7 +76,8 @@ public class GameScreen implements Screen {
 	}
 
 	private void createPlayer() {
-		player = new Player(levelManager.getPlayerSpawnPosition(), "res/player/the hero/standing/right1.png");
+		player = new Player(levelManager.getPlayerSpawnPosition(),
+				"res/player/the hero/standing/right1.png");
 	}
 
 	private void createLevelManager() {
@@ -155,8 +157,10 @@ public class GameScreen implements Screen {
 
 	private void resetPlayerPosition() {
 		Vector2 spawnPosition = new Vector2();
-		spawnPosition.x = levelManager.getPlayerSpawnPosition().x * GameConstants.UNIT_SCALE;
-		spawnPosition.y = levelManager.getPlayerSpawnPosition().y * GameConstants.UNIT_SCALE;
+		spawnPosition.x = levelManager.getPlayerSpawnPosition().x
+				* GameConstants.UNIT_SCALE;
+		spawnPosition.y = levelManager.getPlayerSpawnPosition().y
+				* GameConstants.UNIT_SCALE;
 		player.getPhysicsBody().setTransform(spawnPosition, 0f);
 		player.updateNonPhysicsPosition();
 	}
@@ -187,7 +191,8 @@ public class GameScreen implements Screen {
 
 	private void checkIfPlayerDead() {
 		if (player.isDead()) {
-			((Game) Gdx.app.getApplicationListener()).setScreen(new GameOverScreen());
+			((Game) Gdx.app.getApplicationListener())
+					.setScreen(new GameOverScreen());
 		}
 	}
 
@@ -210,7 +215,8 @@ public class GameScreen implements Screen {
 
 	private boolean playerWithinCameraBounds() {
 		if (player.getX() > 0f
-				&& player.getX() < levelManager.getLevelWidth() - player.getWidth() * 2 - GameConstants.X_OFFSET * 2) {
+				&& player.getX() < levelManager.getLevelWidth()
+						- player.getWidth() * 2 - GameConstants.X_OFFSET * 2) {
 			return true;
 		}
 
@@ -225,6 +231,7 @@ public class GameScreen implements Screen {
 		player.update(Gdx.graphics.getDeltaTime());
 	}
 
+	@Override
 	public void render(float delta) {
 		handleInput();
 		update();
@@ -251,9 +258,16 @@ public class GameScreen implements Screen {
 
 	private void renderInventoryScreen() {
 		if (showInventoryScreen) {
-			uiBatch.draw(CharacterManager.getCharacter().inventoryScreen, Gdx.graphics.getWidth() / 2
-					- CharacterManager.getCharacter().inventoryScreen.getWidth(), Gdx.graphics.getHeight() / 2
-					- CharacterManager.getCharacter().inventoryScreen.getHeight(),
+			uiBatch.draw(
+					CharacterManager.getCharacter().inventoryScreen,
+					Gdx.graphics.getWidth()
+							/ 2
+							- CharacterManager.getCharacter().inventoryScreen
+									.getWidth(),
+					Gdx.graphics.getHeight()
+							/ 2
+							- CharacterManager.getCharacter().inventoryScreen
+									.getHeight(),
 					CharacterManager.getCharacter().inventoryScreen.getWidth() * 2,
 					CharacterManager.getCharacter().inventoryScreen.getHeight() * 2);
 		}
@@ -303,6 +317,7 @@ public class GameScreen implements Screen {
 
 	class Input implements InputProcessor {
 
+		@Override
 		public boolean keyDown(int keycode) {
 			switch (keycode) {
 			case KeyConstants.PLAYER_JUMP:
@@ -318,48 +333,61 @@ public class GameScreen implements Screen {
 			return false;
 		}
 
+		@Override
 		public boolean keyUp(int keycode) {
 			return false;
 		}
 
+		@Override
 		public boolean keyTyped(char character) {
 			return false;
 		}
 
-		public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		@Override
+		public boolean touchDown(int screenX, int screenY, int pointer,
+				int button) {
 			return false;
 		}
 
+		@Override
 		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 			return false;
 		}
 
+		@Override
 		public boolean touchDragged(int screenX, int screenY, int pointer) {
 			return false;
 		}
 
+		@Override
 		public boolean mouseMoved(int screenX, int screenY) {
 			return false;
 		}
 
+		@Override
 		public boolean scrolled(int amount) {
 			return false;
 		}
 
 	}
 
+	@Override
 	public void resize(int width, int height) {
 	}
 
+	@Override
 	public void hide() {
 	}
 
+	@Override
 	public void pause() {
 	}
 
+	@Override
 	public void resume() {
 	}
 
+	@Override
 	public void dispose() {
 	}
 }

@@ -18,7 +18,8 @@ public class EnemyHealthBar {
 	}
 
 	public void render(SpriteBatch spriteBatch) {
-		spriteBatch.draw(texture, enemy.getX(), enemy.getY() + enemy.getHeight() * 2, enemy.getHealth(),
+		spriteBatch.draw(texture, enemy.getX(),
+				enemy.getY() + enemy.getHeight() * 2, enemy.getHealth(),
 				texture.getHeight() / 4);
 	}
 }

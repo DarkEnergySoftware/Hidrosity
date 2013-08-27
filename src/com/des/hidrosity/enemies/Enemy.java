@@ -19,74 +19,82 @@ import com.jakehorsfield.libld.GameObject;
 public abstract class Enemy extends GameObject {
 
 	protected Player player;
-	
+
 	protected Texture leftTexture;
 	protected Texture rightTexture;
-	
+
 	protected Texture shootLeftTexture;
 	protected Texture shootRightTexture;
-	
+
 	protected Body physicsBody;
 	protected BodyDef bodyDef;
 	protected FixtureDef fixtureDef;
 	protected Fixture fixture;
-	
+
 	protected int health = 100;
-	
+
 	public boolean dead = false;
-	
+
 	protected enum Direction {
 		Left, Right
 	}
+
 	protected Direction currentDirection;
-	
+
 	public Enemy(Vector2 position, String textureName, Player player) {
 		super(position, textureName);
-		
+
 		this.player = player;
-		
+
 		createPhysicsBody();
 	}
-	
+
 	private void createPhysicsBody() {
 		bodyDef = new BodyDef();
 		fixtureDef = new FixtureDef();
-		
-		bodyDef.position.set((getX() + (getWidth() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE,
-				(getY() + (getHeight() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE);
+
+		bodyDef.position.set(
+				(getX() + (getWidth() * GameConstants.IMAGE_SCALE) / 2)
+						* GameConstants.UNIT_SCALE,
+				(getY() + (getHeight() * GameConstants.IMAGE_SCALE) / 2)
+						* GameConstants.UNIT_SCALE);
 		bodyDef.type = BodyType.DynamicBody;
-		
+
 		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(((getWidth() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE,
-				(((getHeight() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE));
-		
+		polygonShape
+				.setAsBox(
+						((getWidth() * GameConstants.IMAGE_SCALE) / 2)
+								* GameConstants.UNIT_SCALE,
+						(((getHeight() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE));
+
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = polygonShape;
 		fixtureDef.density = EnemyConstants.DENSITY;
 		fixtureDef.restitution = EnemyConstants.RESTITUTION;
 		fixtureDef.filter.categoryBits = CollisionConstants.ENEMY;
 		fixtureDef.filter.maskBits = CollisionConstants.ENEMY_MASK;
-		
+
 		physicsBody = GameScreen.physicsWorld.createBody(bodyDef);
 		physicsBody.setFixedRotation(true);
-		
+
 		fixture = physicsBody.createFixture(fixtureDef);
 		fixture.setUserData(this);
-		
+
 		polygonShape.dispose();
 	}
 
+	@Override
 	public void update(float delta) {
 		facePlayer();
 		checkIfDead();
 	}
-	
+
 	private void checkIfDead() {
 		if (health <= 0) {
 			dead = true;
 		}
 	}
-	
+
 	protected void facePlayer() {
 		if (player.getX() < getX()) {
 			faceLeft();
@@ -94,29 +102,33 @@ public abstract class Enemy extends GameObject {
 			faceRight();
 		}
 	}
-	
+
 	private void faceRight() {
 		currentDirection = Direction.Right;
 		setTexture(rightTexture);
 	}
-	
+
 	private void faceLeft() {
 		currentDirection = Direction.Left;
 		setTexture(leftTexture);
 	}
-	
+
+	@Override
 	public void render(SpriteBatch spriteBatch) {
-		spriteBatch.draw(getTexture(), getX(), getY(), getWidth() * GameConstants.IMAGE_SCALE, getHeight() * GameConstants.IMAGE_SCALE);
+		spriteBatch.draw(getTexture(), getX(), getY(), getWidth()
+				* GameConstants.IMAGE_SCALE, getHeight()
+				* GameConstants.IMAGE_SCALE);
 	}
-	
+
 	public int getHealth() {
 		return health;
 	}
-	
+
 	public Body getBody() {
 		return physicsBody;
 	}
-	
+
 	public abstract void hitByBullet();
+
 	public abstract void prepareForRemoval();
 }

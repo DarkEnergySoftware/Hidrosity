@@ -24,7 +24,8 @@ public class SpriteTweenAccessor implements TweenAccessor<Sprite> {
 	public void setValues(Sprite target, int tweenType, float[] newValues) {
 		switch (tweenType) {
 		case ALPHA:
-			target.setColor(target.getColor().r, target.getColor().g, target.getColor().b, newValues[0]);
+			target.setColor(target.getColor().r, target.getColor().g,
+					target.getColor().b, newValues[0]);
 			break;
 		default:
 			assert false;

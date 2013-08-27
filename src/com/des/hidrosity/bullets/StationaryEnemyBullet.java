@@ -7,13 +7,14 @@ import com.des.hidrosity.constants.CollisionConstants;
 
 public class StationaryEnemyBullet extends Bullet {
 
-	public StationaryEnemyBullet(Vector2 position, String textureName, int direction, World gameWorld) {
+	public StationaryEnemyBullet(Vector2 position, String textureName,
+			int direction, World gameWorld) {
 		super(position, textureName, direction, gameWorld);
-		
+
 		Filter filterData = new Filter();
 		filterData.categoryBits = CollisionConstants.ENEMY_BULLET;
 		filterData.maskBits = CollisionConstants.ENEMY_BULLET_MASK;
-		
+
 		fixture.setFilterData(filterData);
 		fixture.setUserData(this);
 		physicsBody.setBullet(true);

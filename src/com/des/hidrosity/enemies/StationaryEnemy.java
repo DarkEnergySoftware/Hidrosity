@@ -16,7 +16,7 @@ public class StationaryEnemy extends Enemy {
 	private long lastTimeShot;
 
 	private Array<StationaryEnemyBullet> bullets = new Array<StationaryEnemyBullet>();
-	
+
 	private boolean shooting = false;
 	private long timeStartedShooting;
 
@@ -24,39 +24,45 @@ public class StationaryEnemy extends Enemy {
 		super(position, textureName, player);
 		loadTextures();
 	}
-	
+
 	private void loadTextures() {
-		leftTexture = Utils.loadTexture("res/enemies/stationary enemy/left.png");
-		rightTexture = Utils.loadTexture("res/enemies/stationary enemy/right.png");
-		shootLeftTexture = Utils.loadTexture("res/enemies/stationary enemy/shootLeft.png");
-		shootRightTexture = Utils.loadTexture("res/enemies/stationary enemy/shootRight.png");
+		leftTexture = Utils
+				.loadTexture("res/enemies/stationary enemy/left.png");
+		rightTexture = Utils
+				.loadTexture("res/enemies/stationary enemy/right.png");
+		shootLeftTexture = Utils
+				.loadTexture("res/enemies/stationary enemy/shootLeft.png");
+		shootRightTexture = Utils
+				.loadTexture("res/enemies/stationary enemy/shootRight.png");
 	}
 
+	@Override
 	public void update(float delta) {
 		super.update(delta);
 
 		updateShooting();
 	}
-	
+
 	private void updateShooting() {
 		if (inRangeOfPlayer() && shouldShoot()) {
 			shoot();
 		}
-		
+
 		checkIfShouldStopShooting();
 	}
-	
+
 	private void checkIfShouldStopShooting() {
 		if (TimeUtils.millis() - timeStartedShooting > EnemyConstants.SHOOT_TIME) {
 			shooting = false;
 		}
 	}
-	
+
+	@Override
 	protected void facePlayer() {
 		if (shooting) {
 			return;
 		}
-		
+
 		super.facePlayer();
 	}
 
@@ -83,52 +89,59 @@ public class StationaryEnemy extends Enemy {
 	}
 
 	private float getDistanceToPlayer() {
-		return (float) Math.sqrt(Math.pow(getX() - player.getX(), 2) + Math.pow(getY() - player.getY(), 2));
+		return (float) Math.sqrt(Math.pow(getX() - player.getX(), 2)
+				+ Math.pow(getY() - player.getY(), 2));
 	}
 
 	private void shootBulletFromRight() {
-		StationaryEnemyBullet b = new StationaryEnemyBullet(new Vector2(getX() + getWidth(), getY() + getHeight()),
+		StationaryEnemyBullet b = new StationaryEnemyBullet(new Vector2(getX()
+				+ getWidth(), getY() + getHeight()),
 				"res/bullets/jettenBullet.png", 1, GameScreen.physicsWorld);
 		bullets.add(b);
 		setTexture(shootRightTexture);
 	}
 
 	private void shootBulletFromLeft() {
-		StationaryEnemyBullet b = new StationaryEnemyBullet(new Vector2(getX() - getWidth(), getY() + getHeight()),
+		StationaryEnemyBullet b = new StationaryEnemyBullet(new Vector2(getX()
+				- getWidth(), getY() + getHeight()),
 				"res/bullets/jettenBullet.png", -1, GameScreen.physicsWorld);
 		bullets.add(b);
 		setTexture(shootLeftTexture);
 	}
 
 	private boolean shouldShoot() {
-		if (TimeUtils.millis() - lastTimeShot > EnemyConstants.SHOOT_DELAY + MathUtils.random(-1000, 1000)) {
+		if (TimeUtils.millis() - lastTimeShot > EnemyConstants.SHOOT_DELAY
+				+ MathUtils.random(-1000, 1000)) {
 			return true;
 		}
 
 		return false;
 	}
 
+	@Override
 	public void render(SpriteBatch spriteBatch) {
 		super.render(spriteBatch);
-		
+
 		renderBullets(spriteBatch);
 	}
-	
+
 	private void renderBullets(SpriteBatch spriteBatch) {
 		for (StationaryEnemyBullet b : bullets) {
 			b.render(spriteBatch);
 		}
 	}
 
+	@Override
 	public void hitByBullet() {
 		health -= 5;
 	}
 
+	@Override
 	public void prepareForRemoval() {
 		for (StationaryEnemyBullet seb : bullets) {
 			GameScreen.physicsWorld.destroyBody(seb.getBody());
 		}
-		
+
 		bullets.clear();
 	}
 }

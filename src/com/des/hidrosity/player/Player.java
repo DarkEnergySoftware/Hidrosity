@@ -28,13 +28,15 @@ public class Player extends GameObject {
 	private enum PlayerState {
 		Standing, Waiting, Running, Jumping, ShootingStanding, ShootingRunning, ShootingJumping, Spawning, Hurt
 	};
+
 	private PlayerState currentState;
 
 	private enum PlayerDirection {
 		Left, Right
 	};
+
 	private PlayerDirection currentDirection;
-	
+
 	private Body physicsBody;
 
 	private Animation currentAnimation;
@@ -42,24 +44,25 @@ public class Player extends GameObject {
 
 	private float animationStateTime;
 	private float timeSpentStanding;
+	private float timeSpentDying;
 
 	private long timeStartedWaiting;
 	private long timeStartedShooting;
 	private long lastTimeShot;
 
 	private Array<PlayerBullet> bullets = new Array<PlayerBullet>();
-	
+
 	private boolean shooting = false;
 	private boolean hurt = false;
 	private boolean spawning = false;
 	private boolean dead = false;
 	private boolean dying = false;
 	private boolean canJump = true;
-	
+
 	private long timePlayerCreated;
 	private long timeStartedHurting;
 	private long timeStartedDying;
-	
+
 	private int lives = 0;
 	private int health = 5;
 	private int energy = 10;
@@ -70,7 +73,7 @@ public class Player extends GameObject {
 		setInitialStateAndDirection();
 		loadAnimations();
 		createPhysicsBody();
-		
+
 		timePlayerCreated = TimeUtils.millis();
 	}
 
@@ -78,16 +81,22 @@ public class Player extends GameObject {
 		createMainFixture();
 		createFeetFixture();
 	}
-	
+
 	private void createMainFixture() {
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.position.set((getX() + (getWidth() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE,
-				(getY() + (getHeight() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE);
+		bodyDef.position.set(
+				(getX() + (getWidth() * GameConstants.IMAGE_SCALE) / 2)
+						* GameConstants.UNIT_SCALE,
+				(getY() + (getHeight() * GameConstants.IMAGE_SCALE) / 2)
+						* GameConstants.UNIT_SCALE);
 		bodyDef.type = BodyType.DynamicBody;
 
 		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(((getWidth() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE,
-				(((getHeight() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE));
+		polygonShape
+				.setAsBox(
+						((getWidth() * GameConstants.IMAGE_SCALE) / 2)
+								* GameConstants.UNIT_SCALE,
+						(((getHeight() * GameConstants.IMAGE_SCALE) / 2) * GameConstants.UNIT_SCALE));
 
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = polygonShape;
@@ -103,14 +112,16 @@ public class Player extends GameObject {
 
 		Fixture mainFixture = physicsBody.createFixture(fixtureDef);
 		mainFixture.setUserData(this);
-		
+
 		polygonShape.dispose();
 	}
-	
+
 	private void createFeetFixture() {
 		PolygonShape feetShape = new PolygonShape();
-		feetShape.setAsBox((getWidth() - 5) * GameConstants.UNIT_SCALE, (getHeight() / 3) * GameConstants.UNIT_SCALE,
-				new Vector2(0, (-getHeight() - getHeight() / 3) * GameConstants.UNIT_SCALE), 0f);
+		feetShape.setAsBox((getWidth() - 5) * GameConstants.UNIT_SCALE,
+				(getHeight() / 3) * GameConstants.UNIT_SCALE, new Vector2(0,
+						(-getHeight() - getHeight() / 3)
+								* GameConstants.UNIT_SCALE), 0f);
 
 		FixtureDef feetFixtureDef = new FixtureDef();
 		feetFixtureDef.isSensor = true;
@@ -131,23 +142,26 @@ public class Player extends GameObject {
 		currentDirection = PlayerDirection.Right;
 	}
 
+	@Override
 	public void update(float delta) {
-		System.out.println("Dying: " + dying + " Dead: " + dead + " " + timeStartedDying);
-		
+		System.out.println("Dying: " + dying + " Dead: " + dead + " "
+				+ timeSpentDying);
+
 		updateTimes();
 		updateAnimations();
 		updateNonPhysicsPosition();
 		updateStates();
 		checkIfDead();
 	}
-	
+
 	private void checkIfDead() {
 		if (health <= 0) {
 			if (lives <= 0) {
 				if (CharacterManager.getCharacter().hasDeathAnimation) {
-					if (!dying)
+					if (!dying) {
 						timeStartedDying = TimeUtils.millis();
-					
+					}
+
 					startDying();
 					return;
 				} else {
@@ -155,12 +169,12 @@ public class Player extends GameObject {
 				}
 				return;
 			}
-			
+
 			lives--;
 			health = 10;
 		}
 	}
-	
+
 	private void startDying() {
 		System.out.println("startDying()");
 		dying = true;
@@ -169,9 +183,11 @@ public class Player extends GameObject {
 
 	private void setAnimationToDying() {
 		System.out.println("setAnimationToDying()");
-		
-		if (CharacterManager.getCharacter().hasDeathAnimation == false) return;
-		
+
+		if (CharacterManager.getCharacter().hasDeathAnimation == false) {
+			return;
+		}
+
 		if (currentDirection == PlayerDirection.Left) {
 			currentAnimation = CharacterManager.getCharacter().animationDeathLeft;
 		} else {
@@ -180,11 +196,20 @@ public class Player extends GameObject {
 	}
 
 	private void updateTimes() {
+		updateDyingTime();
 		updateShootingTime();
 		updateStandingTime();
 		updateAnimationStateTime();
 	}
-	
+
+	private void updateDyingTime() {
+		if (dying) {
+			timeSpentDying += Gdx.graphics.getDeltaTime();
+		} else {
+			timeSpentDying = 0f;
+		}
+	}
+
 	private void updateShootingTime() {
 		if (TimeUtils.millis() - timeStartedShooting < PlayerConstants.SHOOTING_TIME) {
 			shooting = true;
@@ -192,12 +217,12 @@ public class Player extends GameObject {
 			shooting = false;
 		}
 	}
-	
+
 	private void updateAnimations() {
 		updateWaitingAnimation();
 		updateHurtAnimation();
 	}
-	
+
 	private void updateHurtAnimation() {
 		if (hurt) {
 			if (hurtAnimationFinished()) {
@@ -206,19 +231,19 @@ public class Player extends GameObject {
 				setAnimationToStanding();
 				return;
 			}
-			
+
 			setAnimationToHurt();
 		}
 	}
-	
+
 	private boolean hurtAnimationFinished() {
 		if (TimeUtils.millis() - timeStartedHurting > PlayerConstants.HURT_TIME) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	private void setAnimationToStanding() {
 		if (currentDirection == PlayerDirection.Left) {
 			currentAnimation = CharacterManager.getCharacter().animationStandingLeft;
@@ -226,66 +251,84 @@ public class Player extends GameObject {
 			currentAnimation = CharacterManager.getCharacter().animationStandingRight;
 		}
 	}
-	
+
 	private void updateStates() {
-		if (shooting) return;
-		
+		if (shooting) {
+			return;
+		}
+
 		checkIfStateShouldBeStanding();
 		checkIfStateShouldBeWaiting();
 		checkIfStateShouldBeJumping();
 		checkIfStateShouldBeSpawning();
 		checkIfStateShouldBeDead();
 	}
-	
+
 	private void checkIfStateShouldBeDead() {
-		if (!CharacterManager.getCharacter().hasDeathAnimation) return;
-		
-		if (dying && TimeUtils.millis() - timeStartedDying > PlayerConstants.DYING_TIME) {
+		if (!CharacterManager.getCharacter().hasDeathAnimation) {
+			return;
+		}
+
+		if (dying && timeSpentDying >= PlayerConstants.DYING_TIME) {
 			dead = true;
 		}
 	}
 
 	private void checkIfStateShouldBeSpawning() {
-		if (CharacterManager.getCharacter().hasSpawnAnimation == false) return;
-		if (dying) return;
-		
+		if (CharacterManager.getCharacter().hasSpawnAnimation == false) {
+			return;
+		}
+		if (dying) {
+			return;
+		}
+
 		if (notFinishedSpawning()) {
 			setStateToSpawning();
 		} else {
 			spawning = false;
 		}
 	}
-	
+
 	private void setStateToSpawning() {
-		if (dying) return;
-		
+		if (dying) {
+			return;
+		}
+
 		currentState = PlayerState.Spawning;
 		currentAnimation = ((Jetten) CharacterManager.getCharacter()).animationAppear;
 		currentDirection = PlayerDirection.Right;
 		spawning = true;
 	}
-	
+
 	private boolean notFinishedSpawning() {
 		if (TimeUtils.millis() - timePlayerCreated < PlayerConstants.SPAWN_TIME) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	private void checkIfStateShouldBeJumping() {
-		if (dying) return;
-		
+		if (dying) {
+			return;
+		}
+
 		if (!canJump) {
 			setStateToJumping();
 		}
 	}
-	
+
 	private void setStateToJumping() {
-		if (hurt) return;
-		if (spawning) return;
-		if (dying) return;
-		
+		if (hurt) {
+			return;
+		}
+		if (spawning) {
+			return;
+		}
+		if (dying) {
+			return;
+		}
+
 		currentState = PlayerState.Jumping;
 
 		if (currentDirection == PlayerDirection.Left) {
@@ -296,16 +339,20 @@ public class Player extends GameObject {
 	}
 
 	private void updateWaitingAnimation() {
-		if (dying) return;
-		
+		if (dying) {
+			return;
+		}
+
 		if (currentState != PlayerState.Waiting) {
 			return;
 		}
 	}
 
 	private void updateStandingTime() {
-		if (dying) return;
-		
+		if (dying) {
+			return;
+		}
+
 		if (currentState == PlayerState.Standing) {
 			timeSpentStanding += Gdx.graphics.getDeltaTime();
 		} else {
@@ -315,9 +362,11 @@ public class Player extends GameObject {
 
 	@SuppressWarnings("unused")
 	private void printDebug() {
-		Logger.log(currentState + " " + currentDirection + " at " + physicsBody.getPosition() + " = ("
-				+ physicsBody.getPosition().x / GameConstants.UNIT_SCALE + ", " + physicsBody.getPosition().y
-				/ GameConstants.UNIT_SCALE + ")" + " spawning????" + spawning);
+		Logger.log(currentState + " " + currentDirection + " at "
+				+ physicsBody.getPosition() + " = ("
+				+ physicsBody.getPosition().x / GameConstants.UNIT_SCALE + ", "
+				+ physicsBody.getPosition().y / GameConstants.UNIT_SCALE + ")"
+				+ " spawning????" + spawning);
 	}
 
 	private void checkIfStateShouldBeWaiting() {
@@ -325,11 +374,15 @@ public class Player extends GameObject {
 			setStateToWaiting();
 		}
 	}
-	
+
 	private void setStateToWaiting() {
-		if (hurt) return;
-		if (spawning) return;
-		
+		if (hurt) {
+			return;
+		}
+		if (spawning) {
+			return;
+		}
+
 		currentState = PlayerState.Waiting;
 
 		if (currentDirection == PlayerDirection.Left) {
@@ -347,9 +400,12 @@ public class Player extends GameObject {
 	}
 
 	private void checkIfStateShouldBeStanding() {
-		if (spawning) return;
-		
-		if (physicsBody.getLinearVelocity().x >= -1f && physicsBody.getLinearVelocity().x <= 1f) {
+		if (spawning) {
+			return;
+		}
+
+		if (physicsBody.getLinearVelocity().x >= -1f
+				&& physicsBody.getLinearVelocity().x <= 1f) {
 			if (waitingAndAnimationNotFinished()) {
 				return;
 			}
@@ -357,11 +413,15 @@ public class Player extends GameObject {
 			setStateToStanding();
 		}
 	}
-	
+
 	private void setStateToStanding() {
-		if (hurt) return;
-		if (spawning) return;
-		
+		if (hurt) {
+			return;
+		}
+		if (spawning) {
+			return;
+		}
+
 		currentState = PlayerState.Standing;
 
 		if (currentDirection == PlayerDirection.Left) {
@@ -372,34 +432,43 @@ public class Player extends GameObject {
 	}
 
 	private boolean waitingAndAnimationNotFinished() {
-		return currentState == PlayerState.Waiting && TimeUtils.millis() - timeStartedWaiting < 1000f;
+		return currentState == PlayerState.Waiting
+				&& TimeUtils.millis() - timeStartedWaiting < 1000f;
 	}
 
 	private void updateAnimationStateTime() {
 		animationStateTime += Gdx.graphics.getDeltaTime();
 	}
 
+	@Override
 	public void render(SpriteBatch spriteBatch) {
 		setCurrentFrame();
 
 		renderPlayer(spriteBatch);
 		renderBullets(spriteBatch);
 	}
-	
+
 	private void renderBullets(SpriteBatch spriteBatch) {
 		for (PlayerBullet b : bullets) {
 			b.render(spriteBatch);
 		}
 	}
-	
+
 	private void renderPlayer(SpriteBatch spriteBatch) {
-		spriteBatch.draw(currentFrame, physicsBody.getPosition().x / GameConstants.UNIT_SCALE - getWidth(),
-				physicsBody.getPosition().y / GameConstants.UNIT_SCALE - getHeight(), currentFrame.getRegionWidth()
-						* GameConstants.IMAGE_SCALE, currentFrame.getRegionHeight() * GameConstants.IMAGE_SCALE);
+		spriteBatch.draw(currentFrame, physicsBody.getPosition().x
+				/ GameConstants.UNIT_SCALE - getWidth(),
+				physicsBody.getPosition().y / GameConstants.UNIT_SCALE
+						- getHeight(), currentFrame.getRegionWidth()
+						* GameConstants.IMAGE_SCALE,
+				currentFrame.getRegionHeight() * GameConstants.IMAGE_SCALE);
 	}
 
 	private void setCurrentFrame() {
-		currentFrame = currentAnimation.getKeyFrame(animationStateTime, false);
+		if (dying) {
+			currentFrame = currentAnimation.getKeyFrame(timeSpentDying, false);
+		} else {
+			currentFrame = currentAnimation.getKeyFrame(animationStateTime, false);
+		}
 	}
 
 	public void moveLeft() {
@@ -409,15 +478,16 @@ public class Player extends GameObject {
 			} else {
 				currentAnimation = CharacterManager.getCharacter().animationRunningLeft;
 				currentDirection = PlayerDirection.Left;
-				currentState = PlayerState.Running;	
+				currentState = PlayerState.Running;
 			}
 		}
-		
+
 		if (movingTooFastLeft() == false) {
-			physicsBody.applyLinearImpulse(new Vector2(-PlayerConstants.SPEED, 0f), physicsBody.getWorldCenter(), true);
+			physicsBody.applyLinearImpulse(new Vector2(-PlayerConstants.SPEED,
+					0f), physicsBody.getWorldCenter(), true);
 		}
 	}
-	
+
 	private void moveLeftShooting() {
 		currentAnimation = CharacterManager.getCharacter().animationRunningShootingLeft;
 		currentDirection = PlayerDirection.Left;
@@ -444,10 +514,11 @@ public class Player extends GameObject {
 		}
 
 		if (movingTooFastRight() == false) {
-			physicsBody.applyLinearImpulse(new Vector2(PlayerConstants.SPEED, 0f), physicsBody.getWorldCenter(), true);
+			physicsBody.applyLinearImpulse(new Vector2(PlayerConstants.SPEED,
+					0f), physicsBody.getWorldCenter(), true);
 		}
 	}
-	
+
 	private void moveRightShooting() {
 		currentAnimation = CharacterManager.getCharacter().animationRunningShootingRight;
 		currentDirection = PlayerDirection.Right;
@@ -467,7 +538,10 @@ public class Player extends GameObject {
 			return;
 		}
 
-		physicsBody.applyLinearImpulse(new Vector2(0f, PlayerConstants.JUMP_FORCE), physicsBody.getWorldCenter(), true);
+		physicsBody
+				.applyLinearImpulse(
+						new Vector2(0f, PlayerConstants.JUMP_FORCE),
+						physicsBody.getWorldCenter(), true);
 	}
 
 	public void shoot() {
@@ -477,28 +551,30 @@ public class Player extends GameObject {
 
 		setShootingStateAndAnimation();
 		createBullet();
-		
+
 		shooting = true;
 		timeStartedShooting = TimeUtils.millis();
 	}
-	
+
 	private void createBullet() {
 		if (currentDirection == PlayerDirection.Left) {
 			createBulletFromLeft();
 		} else {
 			createBulletFromRight();
 		}
-		
+
 		lastTimeShot = TimeUtils.millis();
 	}
 
 	private void createBulletFromRight() {
-		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()), "res/bullets/heroBullet.png", 1, GameScreen.physicsWorld);
+		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()),
+				"res/bullets/heroBullet.png", 1, GameScreen.physicsWorld);
 		bullets.add(b);
 	}
 
 	private void createBulletFromLeft() {
-		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()), "res/bullets/heroBullet.png", -1, GameScreen.physicsWorld);
+		PlayerBullet b = new PlayerBullet(new Vector2(getX(), getY()),
+				"res/bullets/heroBullet.png", -1, GameScreen.physicsWorld);
 		bullets.add(b);
 	}
 
@@ -555,25 +631,29 @@ public class Player extends GameObject {
 	public void setCanJump(boolean canJump) {
 		this.canJump = canJump;
 	}
-	
+
 	public void hitByBullet() {
 		health -= PlayerConstants.HEALTH_DECREASE;
 		currentState = PlayerState.Hurt;
 		setAnimationToHurt();
 		hurt = true;
 		timeStartedHurting = TimeUtils.millis();
-		
+
 		knockBack();
 	}
-	
+
 	private void knockBack() {
 		if (currentDirection == PlayerDirection.Left) {
-			physicsBody.applyLinearImpulse(new Vector2(PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody.getWorldCenter(), true);
+			physicsBody.applyLinearImpulse(new Vector2(
+					PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody
+					.getWorldCenter(), true);
 		} else if (currentDirection == PlayerDirection.Right) {
-			physicsBody.applyLinearImpulse(new Vector2(-PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody.getWorldCenter(), true);
+			physicsBody.applyLinearImpulse(new Vector2(
+					-PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody
+					.getWorldCenter(), true);
 		}
 	}
-	
+
 	private void setAnimationToHurt() {
 		if (currentDirection == PlayerDirection.Left) {
 			currentAnimation = CharacterManager.getCharacter().animationHurtLeft;
@@ -585,19 +665,19 @@ public class Player extends GameObject {
 	public Body getPhysicsBody() {
 		return physicsBody;
 	}
-	
+
 	public int getLives() {
-		 return lives;
+		return lives;
 	}
-	
+
 	public int getHealth() {
 		return health;
 	}
-	
+
 	public int getEnergy() {
 		return energy;
 	}
-	
+
 	public boolean isDead() {
 		return dead;
 	}

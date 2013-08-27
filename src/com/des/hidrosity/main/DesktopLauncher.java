@@ -14,5 +14,5 @@ public class DesktopLauncher {
 		config.useGL20 = true;
 		new LwjglApplication(new HidrosityGame(), config);
 	}
-	
+
 }

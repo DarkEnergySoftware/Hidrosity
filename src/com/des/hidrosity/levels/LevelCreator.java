@@ -32,7 +32,7 @@ public class LevelCreator {
 	private final String DATA_PREFIX = "level";
 
 	private World gameWorld;
-	
+
 	private Body currentBody;
 
 	public LevelCreator(World gameWorld) {
@@ -42,7 +42,8 @@ public class LevelCreator {
 	public void createLevelFromXMLData(int levelNumber) {
 		destroyAllExistingBodies();
 
-		File levelXMLFile = new File(LEVEL_DATA_DIR + DATA_PREFIX + levelNumber + ".xml");
+		File levelXMLFile = new File(LEVEL_DATA_DIR + DATA_PREFIX + levelNumber
+				+ ".xml");
 		Array<LevelBody> levelBodies = loadBodiesFromFile(levelXMLFile);
 
 		for (LevelBody levelBody : levelBodies) {
@@ -57,51 +58,46 @@ public class LevelCreator {
 		createLeftSideFixture(levelBody);
 		createRightSideFixture(levelBody);
 	}
-	
+
 	private void createRightSideFixture(LevelBody levelBody) {
 		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(
-				0.5f * GameConstants.UNIT_SCALE,
+		polygonShape.setAsBox(0.5f * GameConstants.UNIT_SCALE,
 				(levelBody.height - (5 * GameConstants.UNIT_SCALE)) / 2,
-				new Vector2(levelBody.width / 2, 0f),
-				0f
-				);
-		
+				new Vector2(levelBody.width / 2, 0f), 0f);
+
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.friction = 0f;
 		fixtureDef.shape = polygonShape;
 		fixtureDef.restitution = 0f;
 		fixtureDef.filter.categoryBits = CollisionConstants.LEVEL;
 		fixtureDef.filter.maskBits = CollisionConstants.LEVEL_MASK;
-		
+
 		Fixture fixture = currentBody.createFixture(fixtureDef);
 		fixture.setUserData("level");
 	}
-	
+
 	private void createLeftSideFixture(LevelBody levelBody) {
 		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(
-				0.5f * GameConstants.UNIT_SCALE,
+		polygonShape.setAsBox(0.5f * GameConstants.UNIT_SCALE,
 				(levelBody.height - (5 * GameConstants.UNIT_SCALE)) / 2,
-				new Vector2(-levelBody.width / 2, 0f),
-				0f
-				);
-		
+				new Vector2(-levelBody.width / 2, 0f), 0f);
+
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.friction = 0f;
 		fixtureDef.shape = polygonShape;
 		fixtureDef.filter.categoryBits = CollisionConstants.LEVEL;
 		fixtureDef.filter.maskBits = CollisionConstants.LEVEL_MASK;
-		
+
 		Fixture fixture = currentBody.createFixture(fixtureDef);
 		fixture.setUserData("level");
 	}
-	
+
 	private void createMainFixture(LevelBody levelBody) {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
-		bodyDef.position.set(levelBody.x + levelBody.width / 2, levelBody.y + levelBody.height / 2);
-		
+		bodyDef.position.set(levelBody.x + levelBody.width / 2, levelBody.y
+				+ levelBody.height / 2);
+
 		PolygonShape polygonShape = new PolygonShape();
 		polygonShape.setAsBox(levelBody.width / 2, levelBody.height / 2);
 
@@ -114,9 +110,9 @@ public class LevelCreator {
 		Body body = gameWorld.createBody(bodyDef);
 		Fixture fixture = body.createFixture(fixtureDef);
 		fixture.setUserData("level");
-		
+
 		polygonShape.dispose();
-		
+
 		currentBody = body;
 	}
 
@@ -142,13 +138,23 @@ public class LevelCreator {
 					float tempWidth;
 					float tempHeight;
 
-					tempX = Float.parseFloat(currentElement.getElementsByTagName("x").item(0).getTextContent());
-					tempY = Float.parseFloat(currentElement.getElementsByTagName("y").item(0).getTextContent());
-					tempWidth = Float.parseFloat(currentElement.getElementsByTagName("width").item(0).getTextContent());
-					tempHeight = Float.parseFloat(currentElement.getElementsByTagName("height").item(0)
+					tempX = Float
+							.parseFloat(currentElement
+									.getElementsByTagName("x").item(0)
+									.getTextContent());
+					tempY = Float
+							.parseFloat(currentElement
+									.getElementsByTagName("y").item(0)
+									.getTextContent());
+					tempWidth = Float.parseFloat(currentElement
+							.getElementsByTagName("width").item(0)
+							.getTextContent());
+					tempHeight = Float.parseFloat(currentElement
+							.getElementsByTagName("height").item(0)
 							.getTextContent());
 
-					LevelBody newLevelBody = new LevelBody(tempX, tempY, tempWidth, tempHeight);
+					LevelBody newLevelBody = new LevelBody(tempX, tempY,
+							tempWidth, tempHeight);
 					levelBodies.add(newLevelBody);
 				}
 			}
@@ -164,8 +170,10 @@ public class LevelCreator {
 		return levelBodies;
 	}
 
-	private DocumentBuilder createDocumentBuilder() throws ParserConfigurationException {
-		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+	private DocumentBuilder createDocumentBuilder()
+			throws ParserConfigurationException {
+		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
+				.newInstance();
 		return docBuilderFactory.newDocumentBuilder();
 	}
 
