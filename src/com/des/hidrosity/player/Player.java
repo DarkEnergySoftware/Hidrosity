@@ -53,13 +53,15 @@ public class Player extends GameObject {
 	private boolean hurt = false;
 	private boolean spawning = false;
 	private boolean dead = false;
+	private boolean dying = false;
 	private boolean canJump = true;
 	
 	private long timePlayerCreated;
 	private long timeStartedHurting;
+	private long timeStartedDying;
 	
-	private int lives = 3;
-	private int health = 10;
+	private int lives = 0;
+	private int health = 5;
 	private int energy = 10;
 
 	public Player(Vector2 position, String textureName) {
@@ -130,19 +132,27 @@ public class Player extends GameObject {
 	}
 
 	public void update(float delta) {
+		System.out.println("Dying: " + dying + " Dead: " + dead + " " + timeStartedDying);
+		
 		updateTimes();
 		updateAnimations();
 		updateNonPhysicsPosition();
 		updateStates();
 		checkIfDead();
-		
-//		System.out.println(currentState + " - " + canJump);
 	}
 	
 	private void checkIfDead() {
 		if (health <= 0) {
 			if (lives <= 0) {
-				dead = true;
+				if (CharacterManager.getCharacter().hasDeathAnimation) {
+					if (!dying)
+						timeStartedDying = TimeUtils.millis();
+					
+					startDying();
+					return;
+				} else {
+					dead = true;
+				}
 				return;
 			}
 			
@@ -151,6 +161,24 @@ public class Player extends GameObject {
 		}
 	}
 	
+	private void startDying() {
+		System.out.println("startDying()");
+		dying = true;
+		setAnimationToDying();
+	}
+
+	private void setAnimationToDying() {
+		System.out.println("setAnimationToDying()");
+		
+		if (CharacterManager.getCharacter().hasDeathAnimation == false) return;
+		
+		if (currentDirection == PlayerDirection.Left) {
+			currentAnimation = CharacterManager.getCharacter().animationDeathLeft;
+		} else {
+			currentAnimation = CharacterManager.getCharacter().animationDeathRight;
+		}
+	}
+
 	private void updateTimes() {
 		updateShootingTime();
 		updateStandingTime();
@@ -206,10 +234,20 @@ public class Player extends GameObject {
 		checkIfStateShouldBeWaiting();
 		checkIfStateShouldBeJumping();
 		checkIfStateShouldBeSpawning();
+		checkIfStateShouldBeDead();
 	}
 	
+	private void checkIfStateShouldBeDead() {
+		if (!CharacterManager.getCharacter().hasDeathAnimation) return;
+		
+		if (dying && TimeUtils.millis() - timeStartedDying > PlayerConstants.DYING_TIME) {
+			dead = true;
+		}
+	}
+
 	private void checkIfStateShouldBeSpawning() {
 		if (CharacterManager.getCharacter().hasSpawnAnimation == false) return;
+		if (dying) return;
 		
 		if (notFinishedSpawning()) {
 			setStateToSpawning();
@@ -219,6 +257,8 @@ public class Player extends GameObject {
 	}
 	
 	private void setStateToSpawning() {
+		if (dying) return;
+		
 		currentState = PlayerState.Spawning;
 		currentAnimation = ((Jetten) CharacterManager.getCharacter()).animationAppear;
 		currentDirection = PlayerDirection.Right;
@@ -234,6 +274,8 @@ public class Player extends GameObject {
 	}
 	
 	private void checkIfStateShouldBeJumping() {
+		if (dying) return;
+		
 		if (!canJump) {
 			setStateToJumping();
 		}
@@ -242,6 +284,7 @@ public class Player extends GameObject {
 	private void setStateToJumping() {
 		if (hurt) return;
 		if (spawning) return;
+		if (dying) return;
 		
 		currentState = PlayerState.Jumping;
 
@@ -253,12 +296,16 @@ public class Player extends GameObject {
 	}
 
 	private void updateWaitingAnimation() {
+		if (dying) return;
+		
 		if (currentState != PlayerState.Waiting) {
 			return;
 		}
 	}
 
 	private void updateStandingTime() {
+		if (dying) return;
+		
 		if (currentState == PlayerState.Standing) {
 			timeSpentStanding += Gdx.graphics.getDeltaTime();
 		} else {
@@ -521,9 +568,9 @@ public class Player extends GameObject {
 	
 	private void knockBack() {
 		if (currentDirection == PlayerDirection.Left) {
-			physicsBody.applyForceToCenter(new Vector2(PlayerConstants.KNOCKBACK_FORCE, 0), true);
+			physicsBody.applyLinearImpulse(new Vector2(PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody.getWorldCenter(), true);
 		} else if (currentDirection == PlayerDirection.Right) {
-			physicsBody.applyForceToCenter(new Vector2(-PlayerConstants.KNOCKBACK_FORCE, 0), true);
+			physicsBody.applyLinearImpulse(new Vector2(-PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody.getWorldCenter(), true);
 		}
 	}
 	
