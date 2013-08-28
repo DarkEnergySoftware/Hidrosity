@@ -394,8 +394,8 @@ public class Player extends GameObject {
 			return;
 		}
 
-		if (physicsBody.getLinearVelocity().x >= -1f
-				&& physicsBody.getLinearVelocity().x <= 1f) {
+		if (physicsBody.getLinearVelocity().x >= -0.5f
+				&& physicsBody.getLinearVelocity().x <= 0.5f) {
 			if (waitingAndAnimationNotFinished()) {
 				return;
 			}
