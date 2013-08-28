@@ -144,9 +144,6 @@ public class Player extends GameObject {
 
 	@Override
 	public void update(float delta) {
-		System.out.println("Dying: " + dying + " Dead: " + dead + " "
-				+ timeSpentDying);
-
 		updateTimes();
 		updateAnimations();
 		updateNonPhysicsPosition();
@@ -172,14 +169,11 @@ public class Player extends GameObject {
 	}
 
 	private void startDying() {
-		System.out.println("startDying()");
 		dying = true;
 		setAnimationToDying();
 	}
 
 	private void setAnimationToDying() {
-		System.out.println("setAnimationToDying()");
-
 		if (CharacterManager.getCharacter().hasDeathAnimation == false) {
 			return;
 		}
