@@ -3,19 +3,19 @@ package com.des.hidrosity.screens;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.des.hidrosity.constants.KeyConstants;
+import com.des.hidrosity.interfaces.Menu;
 import com.des.hidrosity.tweens.SpriteTweenAccessor;
 import com.jakehorsfield.libld.Utils;
 
-public class GameOverScreen implements Screen {
+public class GameOverScreen extends Menu implements Screen {
 
 	private SpriteBatch spriteBatch;
 	private Texture texture;
@@ -23,6 +23,17 @@ public class GameOverScreen implements Screen {
 	private Sprite sprite;
 	
 	private TweenManager tweenManager;
+	
+	public GameOverScreen() {
+		super(loadTextures());
+	}
+	
+	private static Texture[] loadTextures() {
+		return new Texture[] {
+				Utils.loadTexture("res/ui/gameOver1.png"),
+				Utils.loadTexture("res/ui/gameOver2.png")
+		};
+	}
 
 	public void show() {
 		spriteBatch = new SpriteBatch();
@@ -54,7 +65,8 @@ public class GameOverScreen implements Screen {
 
 		spriteBatch.begin();
 		{
-			sprite.draw(spriteBatch);
+			renderBorder(spriteBatch);
+			renderCurrentMenu(spriteBatch);
 		}
 		spriteBatch.end();
 	}
@@ -69,15 +81,37 @@ public class GameOverScreen implements Screen {
 
 	public void dispose() {
 	}
+	
+	public void itemSelected() {
+		if (continueTextureSelected()) {
+			changeScreen(new GameScreen());
+		} else if (resetTextureSelected()) {
+			changeScreen(new SplashScreen());
+		}
+	}
+	
+	private boolean resetTextureSelected() {
+		return currentTexture == menuTextures[1];
+	}
+
+	private boolean continueTextureSelected() {
+		return currentTexture == menuTextures[0];
+	}
 
 	class Input implements InputProcessor {
 
 		@Override
 		public boolean keyDown(int keycode) {
 			switch (keycode) {
-			case Keys.ENTER:
-				((Game) Gdx.app.getApplicationListener())
-						.setScreen(new GameScreen());
+			case KeyConstants.MENU_CONFIRM:
+				itemSelected();
+				break;
+			case KeyConstants.MENU_UP:
+				moveUp();
+				break;
+			case KeyConstants.MENU_DOWN:
+				moveDown();
+				break;
 			}
 
 			return false;

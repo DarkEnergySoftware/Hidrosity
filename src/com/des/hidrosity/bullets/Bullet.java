@@ -72,13 +72,14 @@ public abstract class Bullet extends GameObject {
 		physicsBody = gameWorld.createBody(bodyDef);
 		physicsBody.setFixedRotation(true);
 		physicsBody.setGravityScale(0f);
+		physicsBody.setBullet(true);
 
 		fixture = physicsBody.createFixture(fixtureDef);
 	}
 
 	@Override
 	public void update(float delta) {
-
+		
 	}
 
 	@Override

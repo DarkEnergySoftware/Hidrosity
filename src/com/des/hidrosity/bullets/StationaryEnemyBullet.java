@@ -17,6 +17,5 @@ public class StationaryEnemyBullet extends Bullet {
 
 		fixture.setFilterData(filterData);
 		fixture.setUserData(this);
-		physicsBody.setBullet(true);
 	}
 }
