@@ -1,0 +1,2 @@
+res/ui/notFocused1.png
+res/ui/notFocused2.png

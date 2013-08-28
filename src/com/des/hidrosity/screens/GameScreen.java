@@ -8,11 +8,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.des.hidrosity.animation.AnimationLoader;
 import com.des.hidrosity.bullets.Bullet;
 import com.des.hidrosity.characters.CharacterManager;
 import com.des.hidrosity.collisions.CollisionListener;
@@ -47,8 +50,13 @@ public class GameScreen implements Screen {
 	public static Array<Enemy> enemies = new Array<Enemy>();
 
 	private boolean showInventoryScreen = false;
+	private boolean windowFocused = true;
 
 	private FPSLogger fpsLogger;
+
+	private Animation notFocusedAnimation;
+	private TextureRegion notFocusedTexture;
+	private float animationStateTime;
 
 	@Override
 	public void show() {
@@ -58,6 +66,9 @@ public class GameScreen implements Screen {
 		createPlayer();
 		createEnemies();
 		createUi();
+
+		notFocusedAnimation = AnimationLoader.loadAnimation(0.5f,
+				"res/ui/notFocusedAnimation.txt");
 
 		fpsLogger = new FPSLogger();
 		Gdx.input.setInputProcessor(new Input());
@@ -233,16 +244,38 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		handleInput();
-		update();
+		if (windowFocused) {
+			handleInput();
+			update();
 
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		renderGame();
-		renderUi();
+			renderGame();
+			renderUi();
 
-		fpsLogger.log();
+			fpsLogger.log();
+		} else {
+			renderNotFocused();
+		}
+	}
+
+	private void renderNotFocused() {
+		animationStateTime += Gdx.graphics.getDeltaTime();
+
+		notFocusedTexture = notFocusedAnimation.getKeyFrame(animationStateTime,
+				true);
+
+		uiBatch.begin();
+		{
+			uiBatch.draw(
+					notFocusedTexture,
+					Gdx.graphics.getWidth() / 2
+							- notFocusedTexture.getRegionWidth() / 2,
+					Gdx.graphics.getHeight() / 2
+							- notFocusedTexture.getRegionHeight() / 2);
+		}
+		uiBatch.end();
 	}
 
 	private void renderUi() {
@@ -326,6 +359,8 @@ public class GameScreen implements Screen {
 			case Keys.ENTER:
 				showInventoryScreen = !showInventoryScreen;
 				break;
+			case Keys.ESCAPE:
+				windowFocused = !windowFocused;
 			default:
 				break;
 			}
@@ -381,10 +416,14 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
+		System.out.println("Game paused/lost focus");
+		windowFocused = false;
 	}
 
 	@Override
 	public void resume() {
+		System.out.println("Game resumed/gained focus");
+		windowFocused = true;
 	}
 
 	@Override
