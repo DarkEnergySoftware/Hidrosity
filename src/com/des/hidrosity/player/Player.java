@@ -457,7 +457,8 @@ public class Player extends GameObject {
 		if (dying) {
 			currentFrame = currentAnimation.getKeyFrame(timeSpentDying, false);
 		} else {
-			currentFrame = currentAnimation.getKeyFrame(animationStateTime, false);
+			currentFrame = currentAnimation.getKeyFrame(animationStateTime,
+					false);
 		}
 	}
 
@@ -630,22 +631,22 @@ public class Player extends GameObject {
 		timeStartedHurting = TimeUtils.millis();
 
 		if (bulletParent.getX() > getX()) {
-			knockBack(-1);
+			knockBackLeft();
 		} else {
-			knockBack(1);
+			knockBackRight();
 		}
 	}
 
-	private void knockBack(int direction) {
-		if (currentDirection == PlayerDirection.Left) {
-			physicsBody.applyLinearImpulse(new Vector2(
-					direction * PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody
-					.getWorldCenter(), true);
-		} else if (currentDirection == PlayerDirection.Right) {
-			physicsBody.applyLinearImpulse(new Vector2(
-					direction * PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody
-					.getWorldCenter(), true);
-		}
+	private void knockBackRight() {
+		physicsBody.applyLinearImpulse(new Vector2(
+				PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody
+				.getWorldCenter(), true);
+	}
+
+	private void knockBackLeft() {
+		physicsBody.applyLinearImpulse(new Vector2(
+				-PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody
+				.getWorldCenter(), true);
 	}
 
 	private void setAnimationToHurt() {
