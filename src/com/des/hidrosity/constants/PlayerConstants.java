@@ -18,9 +18,4 @@ public class PlayerConstants {
 	public static final long HURT_TIME = 400;
 	
 	public static final int HEALTH_DECREASE = 1;
-<<<<<<< HEAD
-	public static final float KNOCKBACK_FORCE = 0.3f;
-	public static final float DYING_TIME = 1f;
-=======
->>>>>>> cleanup
 }
