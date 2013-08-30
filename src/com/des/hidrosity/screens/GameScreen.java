@@ -161,12 +161,12 @@ public class GameScreen implements Screen {
 
 	private void checkIfShouldResetPlayerPos() {
 		if (player.getPhysicsBody().getPosition().y <= GameConstants.GROUND_Y) {
-			resetPlayerPosition();
+			resetPlayer();
 			resetCameraPosition();
 		}
 	}
 
-	private void resetPlayerPosition() {
+	private void resetPlayer() {
 		Vector2 spawnPosition = new Vector2();
 		spawnPosition.x = levelManager.getPlayerSpawnPosition().x
 				* GameConstants.UNIT_SCALE;
@@ -174,6 +174,8 @@ public class GameScreen implements Screen {
 				* GameConstants.UNIT_SCALE;
 		player.getPhysicsBody().setTransform(spawnPosition, 0f);
 		player.updateNonPhysicsPosition();
+		
+		player.decreaseLife();
 	}
 
 	private void resetCameraPosition() {

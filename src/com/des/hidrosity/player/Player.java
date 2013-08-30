@@ -676,4 +676,8 @@ public class Player extends GameObject {
 	public boolean isDead() {
 		return dead;
 	}
+
+	public void decreaseLife() {
+		health = 0;
+	}
 }
