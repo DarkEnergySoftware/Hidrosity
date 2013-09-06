@@ -28,13 +28,13 @@ public class Player extends GameObject {
 
 	private enum PlayerState {
 		Standing, Waiting, Running, Jumping, ShootingStanding, ShootingRunning, ShootingJumping, Spawning, Hurt
-	};
+	}
 
 	private PlayerState currentState;
 
 	private enum PlayerDirection {
 		Left, Right
-	};
+	}
 
 	private PlayerDirection currentDirection;
 
@@ -174,7 +174,7 @@ public class Player extends GameObject {
 	}
 
 	private void setAnimationToDying() {
-		if (CharacterManager.getCharacter().hasDeathAnimation == false) {
+		if (!CharacterManager.getCharacter().hasDeathAnimation) {
 			return;
 		}
 
@@ -227,11 +227,7 @@ public class Player extends GameObject {
 	}
 
 	private boolean hurtAnimationFinished() {
-		if (TimeUtils.millis() - timeStartedHurting > PlayerConstants.HURT_TIME) {
-			return true;
-		}
-
-		return false;
+		return (TimeUtils.millis() - timeStartedHurting) > PlayerConstants.HURT_TIME;
 	}
 
 	private void setAnimationToStanding() {
@@ -265,14 +261,11 @@ public class Player extends GameObject {
 	}
 
 	private void checkIfStateShouldBeSpawning() {
-		if (CharacterManager.getCharacter().hasSpawnAnimation == false) {
-			return;
-		}
-		if (dying) {
-			return;
-		}
+        if (!CharacterManager.getCharacter().hasSpawnAnimation || dying) {
+            return;
+        }
 
-		if (notFinishedSpawning()) {
+        if (notFinishedSpawning()) {
 			setStateToSpawning();
 		} else {
 			spawning = false;
@@ -291,12 +284,8 @@ public class Player extends GameObject {
 	}
 
 	private boolean notFinishedSpawning() {
-		if (TimeUtils.millis() - timePlayerCreated < PlayerConstants.SPAWN_TIME) {
-			return true;
-		}
-
-		return false;
-	}
+        return TimeUtils.millis() - timePlayerCreated < PlayerConstants.SPAWN_TIME;
+    }
 
 	private void checkIfStateShouldBeJumping() {
 		if (dying) {
@@ -334,8 +323,8 @@ public class Player extends GameObject {
 		}
 
 		if (currentState != PlayerState.Waiting) {
-			return;
-		}
+            return;
+        }
 	}
 
 	private void updateStandingTime() {
@@ -473,7 +462,7 @@ public class Player extends GameObject {
 			}
 		}
 
-		if (movingTooFastLeft() == false) {
+		if (!movingTooFastLeft()) {
 			physicsBody.applyLinearImpulse(new Vector2(-PlayerConstants.SPEED,
 					0f), physicsBody.getWorldCenter(), true);
 		}
@@ -486,12 +475,8 @@ public class Player extends GameObject {
 	}
 
 	private boolean movingTooFastLeft() {
-		if (physicsBody.getLinearVelocity().x < -PlayerConstants.MAX_VELOCITY) {
-			return true;
-		}
-
-		return false;
-	}
+        return physicsBody.getLinearVelocity().x < -PlayerConstants.MAX_VELOCITY;
+    }
 
 	public void moveRight() {
 		if (!hurt) {
@@ -504,7 +489,7 @@ public class Player extends GameObject {
 			}
 		}
 
-		if (movingTooFastRight() == false) {
+		if (!movingTooFastRight()) {
 			physicsBody.applyLinearImpulse(new Vector2(PlayerConstants.SPEED,
 					0f), physicsBody.getWorldCenter(), true);
 		}
@@ -517,12 +502,8 @@ public class Player extends GameObject {
 	}
 
 	private boolean movingTooFastRight() {
-		if (physicsBody.getLinearVelocity().x > PlayerConstants.MAX_VELOCITY) {
-			return true;
-		}
-
-		return false;
-	}
+        return physicsBody.getLinearVelocity().x > PlayerConstants.MAX_VELOCITY;
+    }
 
 	public void jump() {
 		if (!canJump) {
