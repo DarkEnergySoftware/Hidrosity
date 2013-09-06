@@ -32,8 +32,6 @@ public class StationaryEnemy extends Enemy {
     private Animation hurtRightAnimation;
     private Animation currentAnimation;
 
-    private TextureRegion currentFrame;
-
 	public StationaryEnemy(Vector2 position, String textureName, Player player) {
 		super(position, textureName, player);
 
