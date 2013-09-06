@@ -38,9 +38,9 @@ public class StationaryEnemy extends Enemy {
         physicsBody.setType(BodyDef.BodyType.StaticBody);
 
         hurtLeftAnimation = new Animation(0.1f, new TextureRegion(new Texture("res/enemies/stationary enemy/left.png")),
-                                                new TextureRegion(new Texture("res/enemies/stationary enemy/blank.png")));
+                                                new TextureRegion(new Texture("res/enemies/stationary enemy/hurtLeft.png")));
         hurtRightAnimation = new Animation(0.1f, new TextureRegion(new Texture("res/enemies/stationary enemy/right.png")),
-                new TextureRegion(new Texture("res/enemies/stationary enemy/blank.png")));
+                new TextureRegion(new Texture("res/enemies/stationary enemy/hurtRight.png")));
 
         hurtLeftAnimation.setPlayMode(Animation.LOOP);
         hurtRightAnimation.setPlayMode(Animation.LOOP);

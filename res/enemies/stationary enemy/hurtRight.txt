@@ -1,2 +1,2 @@
+right.png
 hurtRight.png
-blank.png
