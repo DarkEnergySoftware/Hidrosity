@@ -12,4 +12,6 @@ public class EnemyConstants {
 
 	public static final float SHOOT_RANGE = Gdx.graphics.getWidth() / 2;
 	public static final long SHOOT_TIME = 250;
+
+    public static final long HURT_TIME = 400;
 }

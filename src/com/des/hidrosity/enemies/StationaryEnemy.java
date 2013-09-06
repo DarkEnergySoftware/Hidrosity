@@ -1,6 +1,10 @@
 package com.des.hidrosity.enemies;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -20,11 +24,28 @@ public class StationaryEnemy extends Enemy {
 
 	private boolean shooting = false;
 	private long timeStartedShooting;
+    private long timeStartedHurting;
+
+    private float animationStateTime;
+
+    private Animation hurtLeftAnimation;
+    private Animation hurtRightAnimation;
+    private Animation currentAnimation;
+
+    private TextureRegion currentFrame;
 
 	public StationaryEnemy(Vector2 position, String textureName, Player player) {
 		super(position, textureName, player);
 
         physicsBody.setType(BodyDef.BodyType.StaticBody);
+
+        hurtLeftAnimation = new Animation(0.1f, new TextureRegion(new Texture("res/enemies/stationary enemy/left.png")),
+                                                new TextureRegion(new Texture("res/enemies/stationary enemy/blank.png")));
+        hurtRightAnimation = new Animation(0.1f, new TextureRegion(new Texture("res/enemies/stationary enemy/right.png")),
+                new TextureRegion(new Texture("res/enemies/stationary enemy/blank.png")));
+
+        hurtLeftAnimation.setPlayMode(Animation.LOOP);
+        hurtRightAnimation.setPlayMode(Animation.LOOP);
 
 		loadTextures();
 	}
@@ -43,9 +64,22 @@ public class StationaryEnemy extends Enemy {
 	@Override
 	public void update(float delta) {
 		super.update(delta);
-
+        updateAnimations();
 		updateShooting();
-	}
+    }
+
+    private void updateAnimations() {
+        animationStateTime += Gdx.graphics.getDeltaTime();
+
+        if (currentState == State.Hurt) {
+            if (TimeUtils.millis() - timeStartedHurting > EnemyConstants.HURT_TIME) {
+                currentState = State.Idle;
+                return;
+            }
+
+            setHurtAnimationAndState();
+        }
+    }
 
 	private void updateShooting() {
 		if (inRangeOfPlayer() && shouldShoot()) {
@@ -110,8 +144,18 @@ public class StationaryEnemy extends Enemy {
 				- getWidth(), getY() + getHeight()),
 				"res/bullets/jettenBullet.png", -1, GameScreen.physicsWorld, this);
 		bullets.add(b);
-		setTexture(shootLeftTexture);
 	}
+
+    private void setHurtAnimationAndState() {
+        if (currentDirection == Direction.Left) {
+            currentAnimation = hurtLeftAnimation;
+        } else {
+            currentAnimation = hurtRightAnimation;
+        }
+
+        currentState = State.Hurt;
+        Gdx.app.log("Stationary Enemy", "Time started hurting = " + timeStartedHurting);
+    }
 
 	private boolean shouldShoot() {
 		if (TimeUtils.millis() - lastTimeShot > EnemyConstants.SHOOT_DELAY
@@ -124,10 +168,19 @@ public class StationaryEnemy extends Enemy {
 
 	@Override
 	public void render(SpriteBatch spriteBatch) {
-		super.render(spriteBatch);
+        if (currentState == State.Hurt) {
+            setCurrentFrame();
+        }
+
+        super.render(spriteBatch);
 
 		renderBullets(spriteBatch);
 	}
+
+    private void setCurrentFrame() {
+        TextureRegion currentFrame = currentAnimation.getKeyFrame(animationStateTime, true);
+        setTexture(currentFrame.getTexture());
+    }
 
 	private void renderBullets(SpriteBatch spriteBatch) {
 		for (StationaryEnemyBullet b : bullets) {
@@ -138,6 +191,9 @@ public class StationaryEnemy extends Enemy {
 	@Override
 	public void hitByBullet() {
 		health -= 100 / 3;
+        Gdx.app.log("Stationary Enemy", "Hit by bullet");
+        setHurtAnimationAndState();
+        timeStartedHurting = TimeUtils.millis();
 	}
 
 	@Override

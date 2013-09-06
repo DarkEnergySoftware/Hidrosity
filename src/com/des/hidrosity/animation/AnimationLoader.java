@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
@@ -15,6 +16,8 @@ public class AnimationLoader {
 
 	public static Animation loadAnimation(float frameDuration,
 			String animationFilePath) {
+        Gdx.app.log("[Animation]", animationFilePath);
+
 		Array<String> framePaths = loadFramePathsFromFile(animationFilePath);
 		Array<TextureRegion> animationFrames = loadFramesFromPaths(framePaths);
 

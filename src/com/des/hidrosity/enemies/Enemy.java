@@ -39,7 +39,13 @@ public abstract class Enemy extends GameObject {
 		Left, Right
 	}
 
-	protected Direction currentDirection;
+    protected enum State {
+        Idle,
+        Hurt
+    }
+
+	protected Direction currentDirection = Direction.Left;
+    protected State currentState = State.Idle;
 
 	public Enemy(Vector2 position, String textureName, Player player) {
 		super(position, textureName);
@@ -71,6 +77,7 @@ public abstract class Enemy extends GameObject {
 		fixtureDef.shape = polygonShape;
 		fixtureDef.density = EnemyConstants.DENSITY;
 		fixtureDef.restitution = EnemyConstants.RESTITUTION;
+        fixtureDef.friction = EnemyConstants.FRICTION;
 		fixtureDef.filter.categoryBits = CollisionConstants.ENEMY;
 		fixtureDef.filter.maskBits = CollisionConstants.ENEMY_MASK;
         fixtureDef.isSensor = false;
