@@ -67,6 +67,8 @@ public class Player extends GameObject {
 	private int health = 10;
 	private int energy = 10;
 
+    private int numTimesJumped = 0;
+
 	public Player(Vector2 position, String textureName) {
 		super(position, textureName);
 
@@ -144,6 +146,8 @@ public class Player extends GameObject {
 
 	@Override
 	public void update(float delta) {
+        Gdx.app.log("Times jumped", String.valueOf(numTimesJumped));
+
 		updateTimes();
 		updateAnimations();
 		updateNonPhysicsPosition();
@@ -506,14 +510,22 @@ public class Player extends GameObject {
     }
 
 	public void jump() {
-		if (!canJump) {
-			return;
-		}
+		if (CharacterManager.getCharacter().canJumpTwice) {
+			if (numTimesJumped == 2) {
+                canJump = false;
+                return;
+            }
+		} else {
+            if (!canJump) {
+                return;
+            }
+        }
 
 		physicsBody
 				.applyLinearImpulse(
 						new Vector2(0f, PlayerConstants.JUMP_FORCE),
 						physicsBody.getWorldCenter(), true);
+        numTimesJumped++;
 	}
 
 	public void shoot() {
@@ -602,6 +614,10 @@ public class Player extends GameObject {
 
 	public void setCanJump(boolean canJump) {
 		this.canJump = canJump;
+
+        if (canJump) {
+            numTimesJumped = 0;
+        }
 	}
 
     public void hitByEnemy(Enemy enemy) {

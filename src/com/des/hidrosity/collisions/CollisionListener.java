@@ -174,7 +174,7 @@ public class CollisionListener implements ContactListener {
 				&& endUserDataB.toString().equals("level")) {
 			numPlayerCollisions--;
 
-			if (numPlayerCollisions < 0) {
+			if (numPlayerCollisions <= 0) {
 				player.setCanJump(false);
 			}
 
@@ -182,7 +182,7 @@ public class CollisionListener implements ContactListener {
 				&& endUserDataA.toString().equals("level")) {
 			numPlayerCollisions--;
 
-			if (numPlayerCollisions < 0) {
+			if (numPlayerCollisions <= 0) {
 				player.setCanJump(false);
 			}
 		}

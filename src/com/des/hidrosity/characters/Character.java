@@ -35,6 +35,7 @@ public abstract class Character {
 
 	public boolean hasSpawnAnimation = false;
 	public boolean hasDeathAnimation = false;
+    public boolean canJumpTwice = false;
 
 	public Character() {
 		loadStandingAnimations();

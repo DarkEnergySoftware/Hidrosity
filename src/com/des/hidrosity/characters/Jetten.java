@@ -14,6 +14,7 @@ public class Jetten extends Character {
 
 		hasSpawnAnimation = true;
 		hasDeathAnimation = true;
+        canJumpTwice = true;
 
 		loadAppearAnimation();
 		loadDeathAnimation();
