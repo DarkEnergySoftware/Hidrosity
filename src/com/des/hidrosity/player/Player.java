@@ -623,6 +623,20 @@ public class Player extends GameObject {
 		this.canJump = canJump;
 	}
 
+    public void hitByEnemy(Enemy enemy) {
+        health -= PlayerConstants.HEALTH_DECREASE;
+        currentState = PlayerState.Hurt;
+        setAnimationToHurt();
+        hurt = true;
+        timeStartedHurting = TimeUtils.millis();
+
+        if (enemy.getX() > getX()) {
+            knockBackLeft();
+        } else {
+            knockBackRight();
+        }
+    }
+
 	public void hitByBullet(Enemy bulletParent) {
 		health -= PlayerConstants.HEALTH_DECREASE;
 		currentState = PlayerState.Hurt;

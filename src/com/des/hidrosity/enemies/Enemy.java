@@ -73,6 +73,7 @@ public abstract class Enemy extends GameObject {
 		fixtureDef.restitution = EnemyConstants.RESTITUTION;
 		fixtureDef.filter.categoryBits = CollisionConstants.ENEMY;
 		fixtureDef.filter.maskBits = CollisionConstants.ENEMY_MASK;
+        fixtureDef.isSensor = false;
 
 		physicsBody = GameScreen.physicsWorld.createBody(bodyDef);
 		physicsBody.setFixedRotation(true);

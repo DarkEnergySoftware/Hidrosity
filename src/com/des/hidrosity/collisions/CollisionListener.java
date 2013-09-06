@@ -1,5 +1,6 @@
 package com.des.hidrosity.collisions;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -36,12 +37,24 @@ public class CollisionListener implements ContactListener {
 		beginUserDataA = contact.getFixtureA().getUserData();
 		beginUserDataB = contact.getFixtureB().getUserData();
 
+        Gdx.app.log("Collision A", beginUserDataA.toString());
+        Gdx.app.log("Collision B", beginUserDataB.toString());
+
 		checkIfPlayerHitByBullet(contact);
+        checkIfPlayerHitsEnemy(contact);
 		checkIfPlayerTouchesGround(contact);
 		checkIfEnemyHitByBullet(contact);
 		checkIfBulletHitsLevel(contact);
 		checkIfEnemyBulletHitsLevel(contact);
 	}
+
+    private void checkIfPlayerHitsEnemy(Contact contact) {
+        if (beginUserDataA instanceof Player && beginUserDataB instanceof Enemy) {
+            player.hitByEnemy((Enemy) beginUserDataB);
+        } else if (beginUserDataB instanceof Player && beginUserDataA instanceof Enemy) {
+            player.hitByEnemy((Enemy) beginUserDataA);
+        }
+    }
 
 	@SuppressWarnings("unused")
 	private void printDebugBeginContact() {
@@ -89,9 +102,17 @@ public class CollisionListener implements ContactListener {
 		if (beginUserDataA instanceof PlayerBullet
 				&& beginUserDataB instanceof Enemy) {
 			((Enemy) beginUserDataB).hitByBullet();
+			
+			if (notAlreadyRemoving((Bullet) beginUserDataA)) {
+				GameScreen.bulletsToRemove.add((Bullet) beginUserDataA);
+			}
 		} else if (beginUserDataB instanceof PlayerBullet
 				&& beginUserDataA instanceof Enemy) {
 			((Enemy) beginUserDataA).hitByBullet();
+			
+			if (notAlreadyRemoving((Bullet) beginUserDataB)) {
+				GameScreen.bulletsToRemove.add((Bullet) beginUserDataB);
+			}
 		}
 	}
 

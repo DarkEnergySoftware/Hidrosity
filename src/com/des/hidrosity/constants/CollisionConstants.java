@@ -8,9 +8,9 @@ public class CollisionConstants {
 	public static final short ENEMY_BULLET = 0x0008;
 	public static final short LEVEL = 0x0016;
 
-	public static final short PLAYER_MASK = ENEMY_BULLET | LEVEL;
+	public static final short PLAYER_MASK = ENEMY | ENEMY_BULLET | LEVEL;
 	public static final short PLAYER_BULLET_MASK = ENEMY | LEVEL;
-	public static final short ENEMY_MASK = LEVEL;
+	public static final short ENEMY_MASK = LEVEL | PLAYER;
 	public static final short ENEMY_BULLET_MASK = PLAYER | LEVEL;
 	public static final short LEVEL_MASK = -1;
 }

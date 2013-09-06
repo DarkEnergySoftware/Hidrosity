@@ -3,6 +3,7 @@ package com.des.hidrosity.enemies;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.des.hidrosity.bullets.StationaryEnemyBullet;
@@ -22,6 +23,9 @@ public class StationaryEnemy extends Enemy {
 
 	public StationaryEnemy(Vector2 position, String textureName, Player player) {
 		super(position, textureName, player);
+
+        physicsBody.setType(BodyDef.BodyType.StaticBody);
+
 		loadTextures();
 	}
 
@@ -133,7 +137,7 @@ public class StationaryEnemy extends Enemy {
 
 	@Override
 	public void hitByBullet() {
-		health -= 5;
+		health -= 100 / 3;
 	}
 
 	@Override

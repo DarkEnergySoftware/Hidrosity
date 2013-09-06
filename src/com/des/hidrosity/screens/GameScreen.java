@@ -255,8 +255,7 @@ public class GameScreen implements Screen {
 
 			renderGame();
 			renderUi();
-
-			fpsLogger.log();
+            renderDebugWorld();
 		} else {
 			renderNotFocused();
 		}
