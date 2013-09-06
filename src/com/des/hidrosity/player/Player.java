@@ -633,16 +633,36 @@ public class Player extends GameObject {
 	}
 
 	private void knockBackRight() {
-		physicsBody.applyLinearImpulse(new Vector2(
-				PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody
-				.getWorldCenter(), true);
+	    if (canJump) {
+            physicsBody.applyLinearImpulse(new Vector2(
+                    PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody
+                    .getWorldCenter(), true);
+        } else {
+            smallKnockBackRight();
+        }
 	}
 
+    private void smallKnockBackRight() {
+        physicsBody.applyLinearImpulse(new Vector2(
+                PlayerConstants.KNOCKBACK_FORCE / 2, 0), physicsBody
+                .getWorldCenter(), true);
+    }
+
 	private void knockBackLeft() {
-		physicsBody.applyLinearImpulse(new Vector2(
-				-PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody
-				.getWorldCenter(), true);
+        if (canJump) {
+            physicsBody.applyLinearImpulse(new Vector2(
+                    -PlayerConstants.KNOCKBACK_FORCE, 0), physicsBody
+                    .getWorldCenter(), true);
+        } else {
+            smallKnockBackLeft();
+        }
 	}
+
+    private void smallKnockBackLeft() {
+        physicsBody.applyLinearImpulse(new Vector2(
+                -PlayerConstants.KNOCKBACK_FORCE / 2, 0), physicsBody
+                .getWorldCenter(), true);
+    }
 
 	private void setAnimationToHurt() {
 		if (currentDirection == PlayerDirection.Left) {
