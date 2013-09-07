@@ -146,8 +146,6 @@ public class Player extends GameObject {
 
 	@Override
 	public void update(float delta) {
-        Gdx.app.log("Times jumped", String.valueOf(numTimesJumped));
-
 		updateTimes();
 		updateAnimations();
 		updateNonPhysicsPosition();
