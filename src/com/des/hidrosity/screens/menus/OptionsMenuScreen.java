@@ -16,16 +16,6 @@ public class OptionsMenuScreen extends Menu implements Screen {
 
 	public OptionsMenuScreen() {
 		super(loadTextures());
-
-		createFadeInTween();
-	}
-
-	private void createFadeInTween() {
-		Tween.registerAccessor(Sprite.class, new SpriteTweenAccessor());
-		Tween.set(startingSprite, SpriteTweenAccessor.ALPHA).target(0f)
-				.start(tweenManager);
-		Tween.to(startingSprite, SpriteTweenAccessor.ALPHA, 0.8f).target(1)
-				.start(tweenManager);
 	}
 
 	private static Texture[] loadTextures() {

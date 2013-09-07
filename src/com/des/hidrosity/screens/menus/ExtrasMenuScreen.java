@@ -1,32 +1,18 @@
 package com.des.hidrosity.screens.menus;
 
-import aurelienribon.tweenengine.Tween;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.des.hidrosity.constants.KeyConstants;
 import com.des.hidrosity.interfaces.Menu;
-import com.des.hidrosity.tweens.SpriteTweenAccessor;
 import com.jakehorsfield.libld.Utils;
 
 public class ExtrasMenuScreen extends Menu implements Screen {
 
 	public ExtrasMenuScreen() {
 		super(loadTextures());
-
-		createFadeInTween();
-	}
-
-	private void createFadeInTween() {
-		Tween.registerAccessor(Sprite.class, new SpriteTweenAccessor());
-		Tween.set(startingSprite, SpriteTweenAccessor.ALPHA).target(0f)
-				.start(tweenManager);
-		Tween.to(startingSprite, SpriteTweenAccessor.ALPHA, 0.8f).target(1)
-				.start(tweenManager);
 	}
 
 	private static Texture[] loadTextures() {
