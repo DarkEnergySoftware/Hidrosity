@@ -466,7 +466,7 @@ public class Player extends GameObject {
 			}
 		}
 
-		if (!movingTooFastLeft()) {
+		if (!hurt && !movingTooFastLeft()) {
 			physicsBody.applyLinearImpulse(new Vector2(-PlayerConstants.SPEED,
 					0f), physicsBody.getWorldCenter(), true);
 		}
@@ -493,7 +493,7 @@ public class Player extends GameObject {
 			}
 		}
 
-		if (!movingTooFastRight()) {
+		if (!hurt && !movingTooFastRight()) {
 			physicsBody.applyLinearImpulse(new Vector2(PlayerConstants.SPEED,
 					0f), physicsBody.getWorldCenter(), true);
 		}
@@ -521,11 +521,13 @@ public class Player extends GameObject {
             }
         }
 
-		physicsBody
-				.applyLinearImpulse(
-						new Vector2(0f, PlayerConstants.JUMP_FORCE),
-						physicsBody.getWorldCenter(), true);
-        numTimesJumped++;
+        if (!hurt) {
+            physicsBody
+                    .applyLinearImpulse(
+                            new Vector2(0f, PlayerConstants.JUMP_FORCE),
+                            physicsBody.getWorldCenter(), true);
+            numTimesJumped++;
+        }
 	}
 
 	public void shoot() {
