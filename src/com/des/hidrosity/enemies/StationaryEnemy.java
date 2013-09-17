@@ -152,7 +152,6 @@ public class StationaryEnemy extends Enemy {
         }
 
         currentState = State.Hurt;
-        Gdx.app.log("Stationary Enemy", "Time started hurting = " + timeStartedHurting);
     }
 
 	private boolean shouldShoot() {
@@ -188,8 +187,7 @@ public class StationaryEnemy extends Enemy {
 
 	@Override
 	public void hitByBullet() {
-		health -= 100 / 3;
-        Gdx.app.log("Stationary Enemy", "Hit by bullet");
+		health -= 34;
         setHurtAnimationAndState();
         timeStartedHurting = TimeUtils.millis();
 	}

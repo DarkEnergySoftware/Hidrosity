@@ -16,8 +16,6 @@ public class AnimationLoader {
 
 	public static Animation loadAnimation(float frameDuration,
 			String animationFilePath) {
-        Gdx.app.log("[Animation]", animationFilePath);
-
 		Array<String> framePaths = loadFramePathsFromFile(animationFilePath);
 		Array<TextureRegion> animationFrames = loadFramesFromPaths(framePaths);
 

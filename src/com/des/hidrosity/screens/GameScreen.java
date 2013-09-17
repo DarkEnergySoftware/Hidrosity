@@ -417,13 +417,11 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
-		System.out.println("Game paused/lost focus");
 		windowFocused = false;
 	}
 
 	@Override
 	public void resume() {
-		System.out.println("Game resumed/gained focus");
 		windowFocused = true;
 	}
 

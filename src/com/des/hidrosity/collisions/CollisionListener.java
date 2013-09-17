@@ -23,6 +23,8 @@ public class CollisionListener implements ContactListener {
 
 	private Object endUserDataA;
 	private Object endUserDataB;
+	
+	public static boolean debug = false;
 
 	public CollisionListener(Player player) {
 		this.player = player;
@@ -37,8 +39,10 @@ public class CollisionListener implements ContactListener {
 		beginUserDataA = contact.getFixtureA().getUserData();
 		beginUserDataB = contact.getFixtureB().getUserData();
 
-        Gdx.app.log("Collision A", beginUserDataA.toString());
-        Gdx.app.log("Collision B", beginUserDataB.toString());
+		if (debug) {
+			Gdx.app.log("Collision A", beginUserDataA.toString());
+			Gdx.app.log("Collision B", beginUserDataB.toString());
+		}
 
 		checkIfPlayerHitByBullet(contact);
         checkIfPlayerHitsEnemy(contact);
@@ -56,7 +60,6 @@ public class CollisionListener implements ContactListener {
         }
     }
 
-	@SuppressWarnings("unused")
 	private void printDebugBeginContact() {
 		System.out.println("[Begin Contact] " + beginUserDataA + ", "
 				+ beginUserDataB);
@@ -163,7 +166,6 @@ public class CollisionListener implements ContactListener {
 		checkIfPlayerLeavesGround();
 	}
 
-	@SuppressWarnings("unused")
 	private void printDebugEndContact() {
 		System.out.println("[End Contact] " + endUserDataA + ", "
 				+ endUserDataB);

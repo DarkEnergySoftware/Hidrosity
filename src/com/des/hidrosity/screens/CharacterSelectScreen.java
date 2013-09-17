@@ -1,13 +1,10 @@
 package com.des.hidrosity.screens;
 
-import aurelienribon.tweenengine.Tween;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.des.hidrosity.audio.MusicManager;
 import com.des.hidrosity.characters.CharacterManager;
 import com.des.hidrosity.characters.Jetten;
@@ -15,7 +12,6 @@ import com.des.hidrosity.characters.TheHero;
 import com.des.hidrosity.constants.KeyConstants;
 import com.des.hidrosity.interfaces.Menu;
 import com.des.hidrosity.screens.menus.MainMenuScreen;
-import com.des.hidrosity.tweens.SpriteTweenAccessor;
 import com.jakehorsfield.libld.Utils;
 
 public class CharacterSelectScreen extends Menu implements Screen {
