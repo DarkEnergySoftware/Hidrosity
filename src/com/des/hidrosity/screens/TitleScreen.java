@@ -27,8 +27,8 @@ public class TitleScreen extends Menu implements Screen {
 
 	private static Texture[] loadTextures() {
 		return new Texture[] {
-				Utils.loadTexture("res/menus/title menu/image1.png"),
-				Utils.loadTexture("res/menus/title menu/image2.png") };
+				Utils.loadTexture("res/menus/title menu/image2.png"),
+				Utils.loadTexture("res/menus/title menu/image1.png") };
 	}
 
 	@Override
